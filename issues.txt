@@ -1,0 +1,6 @@
+###
+issue 1
+in blairwisp, sliders don't work quite right for mortal 4, 
+there might be some script that causes his insanity to never go below willpower
+(it can be set above however)
+###

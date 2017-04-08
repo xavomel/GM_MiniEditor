@@ -27,27 +27,27 @@ def save_file(filepath, filedata):
         _file.write(unhexlify(filedata))
 
 
-def location_to_number(location):
+def address_to_number(address):
     # because addressing begins at 00400000 for some reason
-    return int(location, 16) - int("00400000", 16)
+    return int(address, 16) - int("00400000", 16)
 
 
-def jump_to_location(location):
-    return 2 * location_to_number(location)
+def jump_to_address(address):
+    return 2 * address_to_number(address)
 
 
-def get_bytes(location, nr):
-    index = jump_to_location(location)
+def get_bytes(address, nr):
+    index = jump_to_address(address)
     return data[index:index + nr * 2].upper()
 
 
-def set_bytes(location, value):
-    if len(location) != 8:
+def set_bytes(address, value):
+    if len(address) != 8:
         raise ValueError
     if len(value) % 2 != 0:
         raise ValueError
     else:
-        index = jump_to_location(location)
+        index = jump_to_address(address)
         return data[:index] + value.lower() + data[index + len(value):]
 
 
@@ -101,7 +101,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         try:
             with open(filepath, "rb") as _file:
                 raw = _file.read()
-                locations = raw.split()
+                addresses = raw.split()
 
                 # file empty
                 if os.path.getsize(filepath) == 0:
@@ -109,11 +109,11 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
                 temp = Scenario()
 
-                j = len(locations)
+                j = len(addresses)
                 if j > 0:
-                    temp.setMaxHaunters(locations[0])
+                    temp.setMaxHaunters(addresses[0])
                 if j > 1:
-                    mood_list = locations[1].split(",")
+                    mood_list = addresses[1].split(",")
                     temp.setMood(mood_list)
 
                 _scenario = temp
@@ -193,14 +193,14 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 break
 
         if self.load_scenario(scenario_folder_path + "\scenario") != -1:
-            location = _scenario.max_haunters
-            if location != "NULL":
-                self.spinBox.setValue(int(get_bytes(location, 1), 16))
+            address = _scenario.max_haunters
+            if address != "NULL":
+                self.spinBox.setValue(int(get_bytes(address, 1), 16))
                 self.spinBox.setEnabled(True)
                 self.spinBox.setHidden(False)
-            location = _scenario.mood[0]
-            if location != "NULL":
-                self.comboBox_5.setCurrentIndex(int(get_bytes(location, 1), 16) - 39)
+            address = _scenario.mood[0]
+            if address != "NULL":
+                self.comboBox_5.setCurrentIndex(int(get_bytes(address, 1), 16) - 39)
                 self.comboBox_5.setEnabled(True)
                 self.comboBox_5.setHidden(False)
         else:
@@ -288,25 +288,25 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
     def setWillpower(self):
         if activeMortal:
-            location = mortals[activeMortal - 1].willpower
+            address = mortals[activeMortal - 1].willpower
             id = self.sender().value()
             hex_id = float_to_hex(id)[:4]
             value = reverse_hex_string(hex_id)
             global data
-            data = set_bytes(location, value)
+            data = set_bytes(address, value)
 
     def setInsanity(self):
         if activeMortal:
-            location = mortals[activeMortal - 1].insanity
+            address = mortals[activeMortal - 1].insanity
             id = self.sender().value()
             hex_id = float_to_hex(id)[:4]
             value = reverse_hex_string(hex_id)
             global data
-            data = set_bytes(location, value)
+            data = set_bytes(address, value)
 
     def setBelief(self):
         if activeMortal:
-            location = mortals[activeMortal - 1].belief
+            address = mortals[activeMortal - 1].belief
             id = self.sender().value()
 
             # because belief scales inversely
@@ -318,23 +318,23 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             hex_id = float_to_hex(reverse_id)[:4]
             value = reverse_hex_string(hex_id)
             global data
-            data = set_bytes(location, value)
+            data = set_bytes(address, value)
 
     def setConciousFear(self):
         if activeMortal:
-            location = mortals[activeMortal - 1].fearcon
+            address = mortals[activeMortal - 1].fearcon
             id = self.sender().currentIndex()
             value = '{:02x}'.format(id)
             global data
-            data = set_bytes(location, value)
+            data = set_bytes(address, value)
 
     def setUnconciousFear(self):
         if activeMortal:
-            location = mortals[activeMortal - 1].fearsub
+            address = mortals[activeMortal - 1].fearsub
             id = self.sender().currentIndex()
             value = '{:02x}'.format(id)
             global data
-            data = set_bytes(location, value)
+            data = set_bytes(address, value)
 
     def setHaunterSlots(self):
         if _scenario and _scenario.max_haunters != "NULL":
@@ -347,32 +347,32 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         if _scenario:
             id = self.sender().currentIndex() + 39
 
-            for location in _scenario.mood:
-                if location != "NULL":
+            for address in _scenario.mood:
+                if address != "NULL":
                     value = '{:02x}'.format(id)
                     global data
-                    data = set_bytes(location, value)
+                    data = set_bytes(address, value)
 
     def setBytesAtAddress(self):
         text, ok = QtGui.QInputDialog.getText(self, ' ', 'Enter address, bytes (separated with @)')
         input = []
-        location = ""
+        address = ""
         value = ""
 
         if ok:
             input = text.split("@")
 
         if len(input) == 2:
-            location = str(input[0]).strip()
+            address = str(input[0]).strip()
             value = str(input[1]).strip()
 
             try:
                 global data
-                data = set_bytes(location, value)
+                data = set_bytes(address, value)
             except ValueError:
                 self.show_message("Invalid arguments")
             else:
-                self.show_message("Set %s at %s" % (value, location))
+                self.show_message("Set %s at %s" % (value, address))
 
     def setUnlimitedPlasm(self):
         if self.sender().isEnabled():
@@ -395,47 +395,47 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
             if checked:
                 # disable red color when goldplasm is insufficient
-                location = "00472A02"
+                address = "00472A02"
                 for i in range(10):
-                    data = set_bytes(location, "0000")
-                    location = add_hex(location, "00000006")
+                    data = set_bytes(address, "0000")
+                    address = add_hex(address, "00000006")
 
                 # enable buying when goldplasm is insufficient (doesn't work when it's negative)
-                location = "0047331E"
+                address = "0047331E"
                 for i in range(10):
-                    data = set_bytes(location, "0000")
-                    location = add_hex(location, "0000000A")
+                    data = set_bytes(address, "0000")
+                    address = add_hex(address, "0000000A")
 
                 # disables subtraction of power cost from current goldplasm when buying powers
-                location = "00473465"
+                address = "00473465"
                 for i in range(10):
-                    data = set_bytes(location, "0000")
-                    location = add_hex(location, "0000000A")
+                    data = set_bytes(address, "0000")
+                    address = add_hex(address, "0000000A")
 
             else:
                 # enable red color when goldplasm is insufficient
-                location = "00472A02"
+                address = "00472A02"
                 for cost in goldplasm_costs:
                     value = '{:02x}'.format(cost).zfill(4)
                     value = reverse_hex_string(value)
-                    data = set_bytes(location, value)
-                    location = add_hex(location, "00000006")
+                    data = set_bytes(address, value)
+                    address = add_hex(address, "00000006")
 
                 # disable buying when goldplasm is insufficient (doesn't work when it's negative)
-                location = "0047331E"
+                address = "0047331E"
                 for cost in goldplasm_costs:
                     value = '{:02x}'.format(cost).zfill(4)
                     value = reverse_hex_string(value)
-                    data = set_bytes(location, value)
-                    location = add_hex(location, "0000000A")
+                    data = set_bytes(address, value)
+                    address = add_hex(address, "0000000A")
 
                 # enable subtraction of power cost from current goldplasm when buying powers
-                location = "00473465"
+                address = "00473465"
                 for cost in goldplasm_costs:
                     value = '{:02x}'.format(cost).zfill(4)
                     value = reverse_hex_string(value)
-                    data = set_bytes(location, value)
-                    location = add_hex(location, "0000000A")
+                    data = set_bytes(address, value)
+                    address = add_hex(address, "0000000A")
 
     def setInstantPowerRecharge(self):
         if self.sender().isEnabled():
@@ -512,6 +512,16 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 data = set_bytes("00606787", "7422")  # bind from field
                 data = set_bytes("00606C24", "741C")  # benching
                 data = set_bytes("0060867F", "741B")  # unknown bind reject
+
+    def setDisableFireExtinguishers(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
+            if checked:
+                data = set_bytes("0060139E", "6860029000")  # ReactionScream
+            else:
+                data = set_bytes("0060139E", "68B0FF8F00")  # ReactionExtinguishFire
 
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
@@ -622,6 +632,20 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox7.blockSignals(False)
 
+    def getState_DisableFireExtinguishers(self):
+        self.checkBox8.blockSignals(True)
+
+        val = get_bytes("0060139E", 5)
+        if val == "6860029000":
+            self.checkBox8.setChecked(True)
+        elif val == "68B0FF8F00":
+            self.checkBox8.setChecked(False)
+        else:
+            self.show_message("Disable Fire Extinguishers: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox8.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -645,7 +669,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.show_message("File saved")
 
     def about(self):
-        self.show_message("Ghost Master MiniEditor v0.2.2", "created by Xavomel")
+        self.show_message("Ghost Master MiniEditor v0.2.3", "created by Xavomel")
 
     def show_tooltip(self, sender, text):
         position = sender.mapToGlobal(QtCore.QPoint(0, 0))
@@ -673,6 +697,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.getState_GhostCloning()
         self.getState_InsideOutsideOnAll()
         self.getState_IgnoreWards()
+        self.getState_DisableFireExtinguishers()
         self.checkBox1.setEnabled(True)
         self.checkBox2.setEnabled(True)
         self.checkBox3.setEnabled(True)
@@ -680,6 +705,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox5.setEnabled(True)
         self.checkBox6.setEnabled(True)
         self.checkBox7.setEnabled(True)
+        self.checkBox8.setEnabled(True)
 
 
 def main():

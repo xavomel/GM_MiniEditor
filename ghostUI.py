@@ -76,7 +76,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.horizontalSlider_3)
 
         self.verticalLayoutWidget_3 = QtGui.QWidget(self.centralwidget)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 239)) # increase last param by 23 for each new checkbox
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 262)) # increase last param by 23 for each new checkbox
         self.verticalLayoutWidget_3.setObjectName(_fromUtf8("verticalLayoutWidget_3"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
@@ -124,6 +124,11 @@ class Ui_MainWindow(object):
         self.checkBox7.setObjectName(_fromUtf8("checkBox_7"))
         self.checkBox7.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox7)
+
+        self.checkBox8 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
+        self.checkBox8.setObjectName(_fromUtf8("checkBox_8"))
+        self.checkBox8.setEnabled(False)
+        self.verticalLayout_3.addWidget(self.checkBox8)
 
         self.comboBox_4 = QtGui.QComboBox(self.verticalLayoutWidget)
         self.comboBox_4.setObjectName(_fromUtf8("comboBox_4"))
@@ -259,6 +264,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.checkBox5, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setGhostCloning)
         QtCore.QObject.connect(self.checkBox6, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setInsideOutsideOnAll)
         QtCore.QObject.connect(self.checkBox7, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setIgnoreWards)
+        QtCore.QObject.connect(self.checkBox8, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setDisableFireExtinguishers)
         QtCore.QObject.connect(self.spinBox, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.setHaunterSlots)
 
         QtCore.QObject.connect(self.comboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setConciousFear)
@@ -280,7 +286,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Ghost Master MiniEditor v0.2.2", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Ghost Master MiniEditor v0.2.3", None))
         self.spinBox.setStatusTip(_translate("MainWindow", "Haunter Slots", None))
         self.horizontalSlider.setStatusTip(_translate("MainWindow", "Willpower", None))
         self.horizontalSlider_2.setStatusTip(_translate("MainWindow", "Insanity", None))
@@ -294,6 +300,7 @@ class Ui_MainWindow(object):
         self.checkBox5.setText(_translate("MainWindow", "Ghost Cloning", None))
         self.checkBox6.setText(_translate("MainWindow", "Inside/Outside On All Ghosts", None))
         self.checkBox7.setText(_translate("MainWindow", "Ignore Wards", None))
+        self.checkBox8.setText(_translate("MainWindow", "Disable Fire Extinguishers", None))
         self.comboBox.setStatusTip(_translate("MainWindow", "Concious fear", None))
         self.comboBox.setItemText(0, _translate("MainWindow", "none", None))
         self.comboBox.setItemText(1, _translate("MainWindow", "blood", None))

@@ -1,5 +1,5 @@
 # Ghost Master MiniEditor
-![alt tag](https://raw.githubusercontent.com/xavomel/GM_MiniEditor/master/data/screen.png)
+![alt tag](https://raw.githubusercontent.com/xavomel/GM_MiniEditor/master/data/screen.PNG)
 
 ## Help and discussion
 http://ghostmaster.proboards.com/thread/2972/ghost-master-minieditor
@@ -25,7 +25,9 @@ http://ghostmaster.proboards.com/thread/2293/any-ghost-level-mod
 - Reveal hidden ghosts & mortals
 - Choose multiple copies of the same ghost during Team Selection
 - Give Inside/Outside fetter to all ghosts
+- Fetter sharing
 - Ignore wards
+- Disable Fire Extinguishers
 - Change the maximum team size in selected scenario
 - Change the mood of mortals in selected scenario
 - Set bytes at address (for advanced users) 

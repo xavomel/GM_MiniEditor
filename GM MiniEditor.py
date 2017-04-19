@@ -523,6 +523,16 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             else:
                 data = set_bytes("0060139E", "68B0FF8F00")  # ReactionExtinguishFire
 
+    def setFetterSharing(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
+            if checked:
+                data = set_bytes("0047C332", "9090909090909090")
+            else:
+                data = set_bytes("0047C332", "39B7880000007407")
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -646,6 +656,20 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox8.blockSignals(False)
 
+    def getState_FetterSharing(self):
+        self.checkBox9.blockSignals(True)
+
+        val = get_bytes("0047C332", 8)
+        if val == "9090909090909090":
+            self.checkBox9.setChecked(True)
+        elif val == "39B7880000007407":
+            self.checkBox9.setChecked(False)
+        else:
+            self.show_message("Fetter Sharing: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox9.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -669,7 +693,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.show_message("File saved")
 
     def about(self):
-        self.show_message("Ghost Master MiniEditor v0.2.3", "created by Xavomel")
+        self.show_message("Ghost Master MiniEditor v0.2.4", "created by Xavomel")
 
     def show_tooltip(self, sender, text):
         position = sender.mapToGlobal(QtCore.QPoint(0, 0))
@@ -698,6 +722,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.getState_InsideOutsideOnAll()
         self.getState_IgnoreWards()
         self.getState_DisableFireExtinguishers()
+        self.getState_FetterSharing()
         self.checkBox1.setEnabled(True)
         self.checkBox2.setEnabled(True)
         self.checkBox3.setEnabled(True)
@@ -706,6 +731,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox6.setEnabled(True)
         self.checkBox7.setEnabled(True)
         self.checkBox8.setEnabled(True)
+        self.checkBox9.setEnabled(True)
 
 
 def main():

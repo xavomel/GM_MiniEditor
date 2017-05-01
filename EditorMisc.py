@@ -36,3 +36,21 @@ class Scenario:
 
     def setMood(self, location_list):
         self.mood = list(location_list)
+
+
+class Tooltips:
+    UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
+    UNLIMITED_GOLDPLASM = "Affects all scenarios."
+    INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \
+                             "\nInstead their effects becomes permanent on \ncasting and can be stacked multiple times."
+    RESPONSIVE_EMPTY_PORTRAITS = "Affects all scenarios. \n\nClicking on an empty portrait of a hidden mortal \nwill reveal his name, stats and bio button." \
+                                 "\nClicking on an empty portrait of a hidden ghost \nwill reveal his name and more." \
+                                 "\nPortraits of normal restless ghosts are responsive \neven without first finding them in game. (silhouette)"
+    GHOST_CLONING = "Affects all scenarios. \n\nYou can choose the same ghost multiple times in Team Selection." \
+                    "\nClicking on empty portraits in Team Selection is NOT recommended."
+    INSIDE_OUTSIDE_ON_ALL_GHOSTS = "Affects all scenarios."
+    FETTER_SHARING = "Affects all scenarios. \n\nEach fetter may be shared by multiple ghosts." \
+                     "\nBecause possessed mortals are fetters, they also may be shared" \
+                     "\n(extra ghosts will be benched when the possession ends)."
+    IGNORE_WARDS = "Affects all scenarios."
+    DISABLE_FIRE_EXTINGUISHERS = "Affects all scenarios."

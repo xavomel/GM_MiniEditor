@@ -1,10 +1,13 @@
 from PyQt4 import QtCore, QtGui, Qt
+from EditorMisc import Tooltips
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     def _fromUtf8(s):
         return s
+
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -13,6 +16,7 @@ try:
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -85,46 +89,47 @@ class Ui_MainWindow(object):
 
         self.checkBox1 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox1.setObjectName(_fromUtf8("checkBox_1"))
+        self.checkBox1.setToolTip(Tooltips.UNLIMITED_PLASM)
         self.checkBox1.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox1)
-
         self.checkBox2 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox2.setObjectName(_fromUtf8("checkBox_2"))
+        self.checkBox2.setToolTip(Tooltips.UNLIMITED_GOLDPLASM)
         self.checkBox2.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox2)
-
         self.checkBox3 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox3.setObjectName(_fromUtf8("checkBox_3"))
+        self.checkBox3.setToolTip(Tooltips.INSTANT_POWER_RECHARGE)
         self.checkBox3.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox3)
-
         self.checkBox4 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox4.setObjectName(_fromUtf8("checkBox_4"))
+        self.checkBox4.setToolTip(Tooltips.RESPONSIVE_EMPTY_PORTRAITS)
         self.checkBox4.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox4)
-
         self.checkBox5 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox5.setObjectName(_fromUtf8("checkBox_5"))
+        self.checkBox5.setToolTip(Tooltips.GHOST_CLONING)
         self.checkBox5.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox5)
-
         self.checkBox6 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox6.setObjectName(_fromUtf8("checkBox_6"))
+        self.checkBox6.setToolTip(Tooltips.INSIDE_OUTSIDE_ON_ALL_GHOSTS)
         self.checkBox6.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox6)
-
         self.checkBox9 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox9.setObjectName(_fromUtf8("checkBox_9"))
+        self.checkBox9.setToolTip(Tooltips.FETTER_SHARING)
         self.checkBox9.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox9)
-
         self.checkBox7 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox7.setObjectName(_fromUtf8("checkBox_7"))
+        self.checkBox7.setToolTip(Tooltips.IGNORE_WARDS)
         self.checkBox7.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox7)
-
         self.checkBox8 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox8.setObjectName(_fromUtf8("checkBox_8"))
+        self.checkBox8.setToolTip(Tooltips.DISABLE_FIRE_EXTINGUISHERS)
         self.checkBox8.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox8)
 
@@ -254,7 +259,12 @@ class Ui_MainWindow(object):
             c.setEnabled(False)
 
         self.retranslateUi(MainWindow)
-        QtCore.QObject.connect(self.pushButton_9, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.setBytesAtAddress)
+        QtCore.QObject.connect(self.horizontalSlider, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.sliderMoved)
+        QtCore.QObject.connect(self.horizontalSlider_2, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.sliderMoved)
+        QtCore.QObject.connect(self.horizontalSlider_3, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.sliderMoved)
+        QtCore.QObject.connect(self.horizontalSlider, QtCore.SIGNAL(_fromUtf8("sliderReleased()")), MainWindow.setWillpower)
+        QtCore.QObject.connect(self.horizontalSlider_2, QtCore.SIGNAL(_fromUtf8("sliderReleased()")), MainWindow.setInsanity)
+        QtCore.QObject.connect(self.horizontalSlider_3, QtCore.SIGNAL(_fromUtf8("sliderReleased()")), MainWindow.setBelief)
         QtCore.QObject.connect(self.checkBox1, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setUnlimitedPlasm)
         QtCore.QObject.connect(self.checkBox2, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setUnlimitedGoldplasm)
         QtCore.QObject.connect(self.checkBox3, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setInstantPowerRecharge)
@@ -264,34 +274,25 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.checkBox7, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setIgnoreWards)
         QtCore.QObject.connect(self.checkBox8, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setDisableFireExtinguishers)
         QtCore.QObject.connect(self.checkBox9, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setFetterSharing)
-        QtCore.QObject.connect(self.spinBox, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.setHaunterSlots)
-
         QtCore.QObject.connect(self.comboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setConciousFear)
         QtCore.QObject.connect(self.comboBox_2, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setUnconciousFear)
         QtCore.QObject.connect(self.comboBox_3, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.scenarioChanged)
         QtCore.QObject.connect(self.comboBox_4, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.mortalChanged)
         QtCore.QObject.connect(self.comboBox_5, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setMood)
-
-        QtCore.QObject.connect(self.horizontalSlider, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.sliderMoved)
-        QtCore.QObject.connect(self.horizontalSlider_2, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.sliderMoved)
-        QtCore.QObject.connect(self.horizontalSlider_3, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.sliderMoved)
-        QtCore.QObject.connect(self.horizontalSlider, QtCore.SIGNAL(_fromUtf8("sliderReleased()")), MainWindow.setWillpower)
-        QtCore.QObject.connect(self.horizontalSlider_2, QtCore.SIGNAL(_fromUtf8("sliderReleased()")), MainWindow.setInsanity)
-        QtCore.QObject.connect(self.horizontalSlider_3, QtCore.SIGNAL(_fromUtf8("sliderReleased()")), MainWindow.setBelief)
-
         QtCore.QObject.connect(self.actionOpen, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.open_data)
         QtCore.QObject.connect(self.actionSave, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.save_data)
         QtCore.QObject.connect(self.actionAbout, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.about)
+        QtCore.QObject.connect(self.spinBox, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.setHaunterSlots)
+        QtCore.QObject.connect(self.pushButton_9, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.setBytesAtAddress)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Ghost Master MiniEditor v0.2.4", None))
-        self.spinBox.setStatusTip(_translate("MainWindow", "Haunter Slots", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Ghost Master MiniEditor v0.2.5", None))
+        self.label.setText(_translate("MainWindow", "Open the file", None))
+        self.label_2.setText(_translate("MainWindow", "Scenario name", None))
         self.horizontalSlider.setStatusTip(_translate("MainWindow", "Willpower", None))
         self.horizontalSlider_2.setStatusTip(_translate("MainWindow", "Insanity", None))
         self.horizontalSlider_3.setStatusTip(_translate("MainWindow", "Belief", None))
-        self.pushButton_9.setText(_translate("MainWindow", "Set bytes @ address\nUSE AT OWN RISK", None))
-        self.label.setText(_translate("MainWindow", "Open the file", None))
         self.checkBox1.setText(_translate("MainWindow", "Unlimited Plasm", None))
         self.checkBox2.setText(_translate("MainWindow", "Unlimited Gold Plasm", None))
         self.checkBox3.setText(_translate("MainWindow", "Instant Power Recharge", None))
@@ -335,12 +336,10 @@ class Ui_MainWindow(object):
         self.comboBox_2.setItemText(13, _translate("MainWindow", "water", None))
         self.comboBox_2.setItemText(14, _translate("MainWindow", "pursuit*", None))
         self.comboBox_2.setItemText(15, _translate("MainWindow", "", None))
-
         self.comboBox_3.setStatusTip(_translate("MainWindow", "Scenarios", None))
         self.comboBox_3.setItemText(0, _translate("MainWindow", "pick scenario", None))
         self.comboBox_4.setStatusTip(_translate("MainWindow", "Mortals", None))
         self.comboBox_4.setItemText(0, _translate("MainWindow", "pick mortal", None))
-
         self.comboBox_5.setStatusTip(_translate("MainWindow", "Mood (scenario-wide)", None))
         self.comboBox_5.setItemText(0, _translate("MainWindow", "none", None))
         self.comboBox_5.setItemText(1, _translate("MainWindow", "neutral", None))
@@ -351,9 +350,9 @@ class Ui_MainWindow(object):
         self.comboBox_5.setItemText(6, _translate("MainWindow", "terrified", None))
         self.comboBox_5.setItemText(7, _translate("MainWindow", "insane", None))
         self.comboBox_5.setItemText(8, _translate("MainWindow", " ", None))
-
-        self.label_2.setText(_translate("MainWindow", "Scenario name", None))
         self.menuMenu.setTitle(_translate("MainWindow", "Menu", None))
         self.actionOpen.setText(_translate("MainWindow", "Open", None))
         self.actionSave.setText(_translate("MainWindow", "Save", None))
         self.actionAbout.setText(_translate("MainWindow", "About", None))
+        self.spinBox.setStatusTip(_translate("MainWindow", "Haunter Slots", None))
+        self.pushButton_9.setText(_translate("MainWindow", "Set bytes @ address\nUSE AT OWN RISK", None))

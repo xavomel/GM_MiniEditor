@@ -382,8 +382,6 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             if checked:
                 data = set_bytes("004A78D0", "D8E090909090")
                 data = set_bytes("0042F7B9", "D8C890909090")
-                self.show_message("Unlimited Plasm enabled in all scenarios.",
-                                  "NOTE: \nPowers can be used even if \nthey appear to be too expensive.")
             else:
                 data = set_bytes("004A78D0", "D80588019500")
                 data = set_bytes("0042F7B9", "D82588019500")
@@ -444,9 +442,6 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
             if checked:
                 data = set_bytes("00788B77", "B80000000090")
-                self.show_message("Instant Power Recharge enabled in all scenarios.",
-                                  "NOTE: \nThis also affects continuous powers, \t\twhich are no longer channeled. "
-                                  "\nInstead their effects becomes permanent on casting and can be stacked multiple times.")
             else:
                 data = set_bytes("00788B77", "8B801CD99000")
 
@@ -458,10 +453,6 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             if checked:
                 data = set_bytes("004266B7", "EB41")  # ghosts
                 data = set_bytes("00428F42", "90909090909090908B87F00000009090909090909090")  # mortals
-                self.show_message("Responsive Empty Portraits enabled in all scenarios.",
-                                  "Clicking on an empty portrait of a hidden mortal \nwill reveal his name, stats and bio button."
-                                  "\nClicking on an empty portrait of a hidden ghost \nwill reveal his name and more."
-                                  "\nPortraits of normal restless ghosts are responsive \neven without first finding them in game. (silhouette)")
             else:
                 data = set_bytes("004266B7", "7441")  # ghosts
                 data = set_bytes("00428F42", "85C90F84210100008B87F000000085C00F8513010000")  # mortals
@@ -477,9 +468,6 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 data = set_bytes("0045C7D2", "00")  # grey-out when removing
                 data = set_bytes("0045C977", "00")  # grey-out when recommended
                 data = set_bytes("0045BE03", "00")  # grey-out when changing tabs
-                self.show_message("Ghost Cloning enabled in all scenarios.",
-                                  "You can choose the same ghost multiple times in Team Selection."
-                                  "\n\nClicking on empty portraits in Team Selection is NOT recommended. ")
             else:
                 data = set_bytes("0045C4C1", "74")  # clones
                 data = set_bytes("0045C5F3", "01")  # grey-out when adding
@@ -693,7 +681,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.show_message("File saved")
 
     def about(self):
-        self.show_message("Ghost Master MiniEditor v0.2.4", "created by Xavomel")
+        self.show_message("Ghost Master MiniEditor v0.2.5", "created by Xavomel")
 
     def show_tooltip(self, sender, text):
         position = sender.mapToGlobal(QtCore.QPoint(0, 0))

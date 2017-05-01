@@ -39,6 +39,7 @@ http://ghostmaster.proboards.com/thread/2293/any-ghost-level-mod
 "Summoners Not Included"
 "Deadfellas"
 "Unusual Suspects"
+"Poultrygeist"
 "Blairwisp Project"
 "Spooky Hollow"
 "Full Mortal Jacket"

@@ -54,3 +54,5 @@ class Tooltips:
                      "\n(extra ghosts will be benched when the possession ends)."
     IGNORE_WARDS = "Affects all scenarios."
     DISABLE_FIRE_EXTINGUISHERS = "Affects all scenarios."
+    MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless ghosts to other matching fetters." \
+                              "\nNOTE: bind button will work despite being greyed out."

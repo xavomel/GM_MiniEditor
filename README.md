@@ -25,6 +25,7 @@ http://ghostmaster.proboards.com/thread/2293/any-ghost-level-mod
 - Reveal hidden ghosts & mortals
 - Choose multiple copies of the same ghost during Team Selection
 - Give Inside/Outside fetter to all ghosts
+- Movable restless ghosts
 - Fetter sharing
 - Ignore wards
 - Disable Fire Extinguishers

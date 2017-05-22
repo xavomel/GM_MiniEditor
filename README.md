@@ -29,6 +29,7 @@ http://ghostmaster.proboards.com/thread/2293/any-ghost-level-mod
 - Fetter sharing
 - Ignore wards
 - Disable Fire Extinguishers
+- Disable Madness Immunity
 - Change the maximum team size in selected scenario
 - Change the mood of mortals in selected scenario
 - Set bytes at address (for advanced users) 

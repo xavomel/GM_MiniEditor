@@ -56,3 +56,6 @@ class Tooltips:
     DISABLE_FIRE_EXTINGUISHERS = "Affects all scenarios."
     MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless ghosts to other matching fetters." \
                               "\nNOTE: bind button will work despite being greyed out."
+    DISABLE_MADNESS_IMMUNITY = "Affects all scenarios. \n\nDisables madness immunity affecting certain mortals in game." \
+                               "\nEnables insanity slider for those mortals (default insanity is 1%)." \
+                               "\n\nDeselects current mortal to register changes."

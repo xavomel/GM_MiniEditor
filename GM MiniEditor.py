@@ -237,9 +237,17 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         else:
             self.horizontalSlider.setEnabled(False)
 
-        if mortal.insanity != "NULL":
+        if mortal.insanity[0] == "0":
             self.horizontalSlider_2.setEnabled(True)
             h = get_bytes(mortal.insanity, 2).zfill(8)
+            h = reverse_hex_string(h)
+            value = hex_to_float(h)
+            self.horizontalSlider_2.setValue(value)
+        elif mortal.insanity[0] == "?" and self.checkBox11.isChecked():
+            address = "0" + mortal.insanity[1:]
+
+            self.horizontalSlider_2.setEnabled(True)
+            h = get_bytes(address, 2).zfill(8)
             h = reverse_hex_string(h)
             value = hex_to_float(h)
             self.horizontalSlider_2.setValue(value)
@@ -298,6 +306,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def setInsanity(self):
         if activeMortal:
             address = mortals[activeMortal - 1].insanity
+            if address[0] == "?":
+                address = "0" + address[1:]
+
             id = self.sender().value()
             hex_id = float_to_hex(id)[:4]
             value = reverse_hex_string(hex_id)
@@ -533,6 +544,68 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 data = set_bytes("0042C5EE", "3935D8C694000F840A010000")
                 data = set_bytes("0042C612", "750D")
 
+    # replaces a lot of assembly code (some in strange places)
+    # make sure new features don't clash with it
+    def setDisableMadnessImmunity(self):
+        if self.sender().isEnabled():
+            self.comboBox_4.setCurrentIndex(0)  # deselects current mortal to register changes
+
+            global data
+            checked = self.sender().isChecked()
+
+            if checked:
+                # calamity
+                data = set_bytes("00503650", "C7053C588D000000803F")
+                data = set_bytes("00503B4A", "C705A4588D000000803F")
+                data = set_bytes("00503B5E", "A32C588D00")
+                data = set_bytes("00503C0D", "A330588D00")
+                # deadfellas
+                data = set_bytes("00514440", "C7058C838D000000803F")
+                data = set_bytes("00514D81", "C70524838D000000803F")
+                data = set_bytes("00514D9F", "A37C838D00")
+                data = set_bytes("00514CED", "A380838D00")
+                # suspects
+                data = set_bytes("0052C490", "C7059CAB8D000000803F")
+                data = set_bytes("0052C87A", "C705D4AC8D000000803F")
+                data = set_bytes("0052C88E", "A38CAB8D00")
+                data = set_bytes("0052CAFD", "A390AB8D00")
+                # poultrygeist
+                data = set_bytes("00509590", "C705D4618D000000803F")
+                data = set_bytes("0050965F", "C705DC638D000000803F")
+                data = set_bytes("00509679", "A3C4618D00")
+                data = set_bytes("00509A99", "A3C8618D00")
+                # spooky
+                data = set_bytes("00547BA0", "C705C4FF8D000000803F")
+                data = set_bytes("005481E2", "C7052C008E000000803F")
+                data = set_bytes("00548149", "A31C008E00")
+                data = set_bytes("005481FC", "A320008E00")
+            else:
+                # calamity
+                data = set_bytes("00503650", "E90B0000009090909090")
+                data = set_bytes("00503B4A", "A32C588D00A330588D00")
+                data = set_bytes("00503B5E", "A33C588D00")
+                data = set_bytes("00503C0D", "A3A4588D00")
+                # deadfellas
+                data = set_bytes("00514440", "E90B0000009090909090")
+                data = set_bytes("00514D81", "A37C838D00A380838D00")
+                data = set_bytes("00514D9F", "A38C838D00")
+                data = set_bytes("00514CED", "A324838D00")
+                # suspects
+                data = set_bytes("0052C490", "E90B0000009090909090")
+                data = set_bytes("0052C87A", "A38CAB8D00A390AB8D00")
+                data = set_bytes("0052C88E", "A39CAB8D00")
+                data = set_bytes("0052CAFD", "A3D4AC8D00")
+                # poultrygeist
+                data = set_bytes("00509590", "E90B0000009090909090")
+                data = set_bytes("0050965F", "A3C4618D00A3C8618D00")
+                data = set_bytes("00509679", "A3D4618D00")
+                data = set_bytes("00509A99", "A3DC638D00")
+                # spooky
+                data = set_bytes("00547BA0", "E90B0000009090909090")
+                data = set_bytes("005481E2", "A31C008E00A320008E00")
+                data = set_bytes("00548149", "A3C4FF8D00")
+                data = set_bytes("005481FC", "A32C008E00")
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -685,6 +758,25 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox10.blockSignals(False)
 
+    # checking everything is not practical, a few should be enough
+    def getState_DisableMadnessImmunity(self):
+        self.checkBox11.blockSignals(True)
+
+        valA = get_bytes("00514440", 5)
+        valB = get_bytes("00503B4A", 5)
+        valC = get_bytes("0052C88E", 5)
+        valD = get_bytes("00509A99", 5)
+        valE = get_bytes("00547BA0", 8)
+        if valA == "C7058C838D" and valB == "C705A4588D" and valC == "A38CAB8D00" and valD == "A3C8618D00" and valE == "C705C4FF8D000000":
+            self.checkBox11.setChecked(True)
+        elif valA == "E90B000000" and valB == "A32C588D00" and valC == "A39CAB8D00" and valD == "A3DC638D00" and valE == "E90B000000909090":
+            self.checkBox11.setChecked(False)
+        else:
+            self.show_message("Disable Madness Immunity: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox11.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -708,7 +800,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.show_message("File saved")
 
     def about(self):
-        self.show_message("Ghost Master MiniEditor v0.2.6", "created by Xavomel")
+        self.show_message("Ghost Master MiniEditor v0.2.7", "created by Xavomel")
 
     def show_tooltip(self, sender, text):
         position = sender.mapToGlobal(QtCore.QPoint(0, 0))
@@ -739,6 +831,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.getState_DisableFireExtinguishers()
         self.getState_FetterSharing()
         self.getState_MovableRestlessGhosts()
+        self.getState_DisableMadnessImmunity()
         self.checkBox1.setEnabled(True)
         self.checkBox2.setEnabled(True)
         self.checkBox3.setEnabled(True)
@@ -749,6 +842,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox8.setEnabled(True)
         self.checkBox9.setEnabled(True)
         self.checkBox10.setEnabled(True)
+        self.checkBox11.setEnabled(True)
 
 
 def main():

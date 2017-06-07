@@ -299,7 +299,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Ghost Master MiniEditor v0.2.7", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Ghost Master MiniEditor v0.2.8", None))
         self.label.setText(_translate("MainWindow", "Open the file", None))
         self.label_2.setText(_translate("MainWindow", "Scenario name", None))
         self.horizontalSlider.setStatusTip(_translate("MainWindow", "Willpower", None))

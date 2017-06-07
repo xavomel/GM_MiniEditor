@@ -19,7 +19,12 @@ http://ghostmaster.proboards.com/thread/2293/any-ghost-level-mod
 #### 3. PyQt4 for Python 2.7
 
 ## Features
-#### All Scenarios
+#### Scenarios
+- Edit mortals (change willpower, belief, insanity, concious and unconcious fears)
+- Change mood of mortals
+- Change maximum team size
+
+#### Game
 - Unlimited Plasm / Gold Plasm
 - Instant power recharge
 - Reveal hidden ghosts & mortals
@@ -30,23 +35,7 @@ http://ghostmaster.proboards.com/thread/2293/any-ghost-level-mod
 - Ignore wards
 - Disable Fire Extinguishers
 - Disable Madness Immunity
-- Change the maximum team size in selected scenario
-- Change the mood of mortals in selected scenario
 - Set bytes at address (for advanced users) 
-
-#### Supported Scenarios
-"Haunting 101"
-"Weird Seance"
-"Calamityville Horror"
-"Summoners Not Included"
-"Deadfellas"
-"Unusual Suspects"
-"Poultrygeist"
-"Blairwisp Project"
-"Spooky Hollow"
-"Full Mortal Jacket"
-"What Lies Over the Cuckoo’s Nest?"
-- Edit mortals (change willpower, belief, insanity, concious and unconcious fears)
 
 ## Usage
 1. copy the .exe you use to run the game to the editor's directory

@@ -35,6 +35,7 @@ http://ghostmaster.proboards.com/thread/2293/any-ghost-level-mod
 - Ignore wards
 - Disable Fire Extinguishers
 - Disable Madness Immunity
+- Uncover Fears
 - Set bytes at address (for advanced users) 
 
 ## Usage

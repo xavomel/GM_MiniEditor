@@ -606,6 +606,18 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 data = set_bytes("00548149", "A3C4FF8D00")
                 data = set_bytes("005481FC", "A32C008E00")
 
+    def setUncoverFears(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
+            if checked:
+                data = set_bytes("0047ED3D", "B8010000009090")
+                data = set_bytes("0047ED60", "B80100000090")
+            else:
+                data = set_bytes("0047ED3D", "8B84B7FC000000")
+                data = set_bytes("0047ED60", "8B81F8000000")
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -777,6 +789,21 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox11.blockSignals(False)
 
+    def getState_UncoverFears(self):
+        self.checkBox12.blockSignals(True)
+
+        valA = get_bytes("0047ED3D", 7)
+        valB = get_bytes("0047ED60", 6)
+        if valA == "B8010000009090" and valB == "B80100000090":
+            self.checkBox12.setChecked(True)
+        elif valA == "8B84B7FC000000" and valB == "8B81F8000000":
+            self.checkBox12.setChecked(False)
+        else:
+            self.show_message("Uncover Fears: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox12.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -800,7 +827,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.show_message("File saved")
 
     def about(self):
-        self.show_message("Ghost Master MiniEditor v0.2.8", "created by Xavomel")
+        self.show_message("Ghost Master MiniEditor v0.2.9", "created by Xavomel")
 
     def show_tooltip(self, sender, text):
         position = sender.mapToGlobal(QtCore.QPoint(0, 0))
@@ -832,6 +859,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.getState_FetterSharing()
         self.getState_MovableRestlessGhosts()
         self.getState_DisableMadnessImmunity()
+        self.getState_UncoverFears()
         self.checkBox1.setEnabled(True)
         self.checkBox2.setEnabled(True)
         self.checkBox3.setEnabled(True)
@@ -843,6 +871,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox9.setEnabled(True)
         self.checkBox10.setEnabled(True)
         self.checkBox11.setEnabled(True)
+        self.checkBox12.setEnabled(True)
 
 
 def main():

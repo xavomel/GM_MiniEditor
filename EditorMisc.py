@@ -59,3 +59,5 @@ class Tooltips:
     DISABLE_MADNESS_IMMUNITY = "Affects all scenarios. \n\nDisables madness immunity affecting certain mortals in game." \
                                "\nEnables insanity slider for those mortals (default insanity is 1%)." \
                                "\n\nDeselects current mortal to register changes."
+    UNCOVER_FEARS = "Affects all scenarios. \n\nMortals start with their fears already exposed" \
+                    "\n(Paranoias & Super Paranoias can be scored)."

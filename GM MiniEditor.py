@@ -827,7 +827,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.show_message("File saved")
 
     def about(self):
-        self.show_message("Ghost Master MiniEditor v0.2.9", "created by Xavomel")
+        self.show_message(Tooltips.VERSION, "created by Xavomel")
 
     def show_tooltip(self, sender, text):
         position = sender.mapToGlobal(QtCore.QPoint(0, 0))

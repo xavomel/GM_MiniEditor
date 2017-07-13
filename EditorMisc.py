@@ -39,6 +39,7 @@ class Scenario:
 
 
 class Tooltips:
+    VERSION = "Ghost Master MiniEditor v0.3.0"
     UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \

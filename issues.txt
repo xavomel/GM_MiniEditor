@@ -4,3 +4,9 @@ in blairwisp, sliders don't work quite right for mortal 4,
 there might be some script that causes his insanity to never go below willpower
 (it can be set above however)
 ###
+
+###
+issue 2
+handyman has only 1 set of addresses despite being present in 2 scenarios (calamityville horror and poultrygeist),
+any changes made to this mortal will affect both scenarios
+###

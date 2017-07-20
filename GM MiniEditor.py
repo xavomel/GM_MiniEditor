@@ -270,15 +270,25 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         else:
             self.horizontalSlider_3.setEnabled(False)
 
-        if mortal.fearcon != "NULL":
+        if mortal.fearcon[0] == "0":
             self.comboBox.setEnabled(True)
             self.comboBox.setCurrentIndex(int(get_bytes(mortal.fearcon, 1), 16))
+        elif mortal.fearcon[0] == "?" and self.checkBox13.isChecked():
+            address = "0" + mortal.fearcon[1:]
+
+            self.comboBox.setEnabled(True)
+            self.comboBox.setCurrentIndex(int(get_bytes(address, 1), 16))
         else:
             self.comboBox.setEnabled(False)
 
-        if mortal.fearsub != "NULL":
+        if mortal.fearsub[0] == "0":
             self.comboBox_2.setEnabled(True)
             self.comboBox_2.setCurrentIndex(int(get_bytes(mortal.fearsub, 1), 16))
+        elif mortal.fearsub[0] == "?" and self.checkBox13.isChecked():
+            address = "0" + mortal.fearsub[1:]
+
+            self.comboBox_2.setEnabled(True)
+            self.comboBox_2.setCurrentIndex(int(get_bytes(address, 1), 16))
         else:
             self.comboBox_2.setEnabled(False)
 
@@ -334,6 +344,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def setConciousFear(self):
         if activeMortal:
             address = mortals[activeMortal - 1].fearcon
+            if address[0] == "?":
+                address = "0" + address[1:]
+
             id = self.sender().currentIndex()
             value = '{:02x}'.format(id)
             global data
@@ -342,6 +355,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def setUnconciousFear(self):
         if activeMortal:
             address = mortals[activeMortal - 1].fearsub
+            if address[0] == "?":
+                address = "0" + address[1:]
+
             id = self.sender().currentIndex()
             value = '{:02x}'.format(id)
             global data
@@ -618,6 +634,34 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 data = set_bytes("0047ED3D", "8B84B7FC000000")
                 data = set_bytes("0047ED60", "8B81F8000000")
 
+    def setUnlockMissingFears(self):
+        if self.sender().isEnabled():
+            self.comboBox_4.setCurrentIndex(0)  # deselects current mortal to register changes
+
+            global data
+            checked = self.sender().isChecked()
+
+            mod_file = open("data\mods\Unlock Missing Fears", "rb")
+            byLine = mod_file.read().split("\n")
+            mod_file.close()
+
+            if checked:
+                for line in byLine:
+                    change = line.split()
+                    code_address = change[0]
+                    fear_address = change[2]
+                    fear_bytes = change[3]
+                    data = set_bytes(code_address, "909090909090")
+                    data = set_bytes(fear_address, fear_bytes)
+            else:
+                for line in byLine:
+                    change = line.split()
+                    code_address = change[0]
+                    code_bytes = change[1]
+                    fear_address = change[2]
+                    data = set_bytes(code_address, code_bytes)
+                    data = set_bytes(fear_address, "00")
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -804,6 +848,21 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox12.blockSignals(False)
 
+    def getState_UnlockMissingFears(self):
+        self.checkBox13.blockSignals(True)
+
+        valA = get_bytes("00531DD7", 6)
+        valB = get_bytes("008DC658", 1)
+        if valA == "909090909090" and valB == "01":
+            self.checkBox13.setChecked(True)
+        elif valA == "891524C78D00" and valB == "00":
+            self.checkBox13.setChecked(False)
+        else:
+            self.show_message("Unlock Missing Fears: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox13.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -860,6 +919,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.getState_MovableRestlessGhosts()
         self.getState_DisableMadnessImmunity()
         self.getState_UncoverFears()
+        self.getState_UnlockMissingFears()
         self.checkBox1.setEnabled(True)
         self.checkBox2.setEnabled(True)
         self.checkBox3.setEnabled(True)
@@ -872,6 +932,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox10.setEnabled(True)
         self.checkBox11.setEnabled(True)
         self.checkBox12.setEnabled(True)
+        self.checkBox13.setEnabled(True)
 
 
 def main():

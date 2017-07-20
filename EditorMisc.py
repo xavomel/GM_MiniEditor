@@ -39,7 +39,7 @@ class Scenario:
 
 
 class Tooltips:
-    VERSION = "Ghost Master MiniEditor v0.3.0"
+    VERSION = "Ghost Master MiniEditor v0.3.1"
     UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \
@@ -62,3 +62,7 @@ class Tooltips:
                                "\n\nDeselects current mortal to register changes."
     UNCOVER_FEARS = "Affects all scenarios. \n\nMortals start with their fears already exposed" \
                     "\n(Paranoias & Super Paranoias can be scored)."
+    UNLOCK_MISSING_FEARS = "Affects all scenarios. \n\nFears that were previously uneditable can now " \
+                           "\nbe changed (defaults to mortal's original fears)." \
+                           "\n\nDeselects current mortal to register changes." \
+                           "\n\nWARNING: editor will freeze for a few seconds."

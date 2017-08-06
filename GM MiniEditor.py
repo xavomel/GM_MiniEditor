@@ -280,6 +280,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.comboBox.setCurrentIndex(int(get_bytes(address, 1), 16))
         else:
             self.comboBox.setEnabled(False)
+            self.comboBox.blockSignals(True)
+            self.comboBox.setCurrentIndex(0)
+            self.comboBox.blockSignals(False)
 
         if mortal.fearsub[0] == "0":
             self.comboBox_2.setEnabled(True)
@@ -291,6 +294,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.comboBox_2.setCurrentIndex(int(get_bytes(address, 1), 16))
         else:
             self.comboBox_2.setEnabled(False)
+            self.comboBox_2.blockSignals(True)
+            self.comboBox_2.setCurrentIndex(0)
+            self.comboBox_2.blockSignals(False)
 
     def sliderMoved(self):
         slider = self.sender()
@@ -640,27 +646,43 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
             global data
             checked = self.sender().isChecked()
+            data_list = list(data)
 
             mod_file = open("data\mods\Unlock Missing Fears", "rb")
             byLine = mod_file.read().split("\n")
             mod_file.close()
 
+            for line in byLine:
+                changes = line.split()
+                code_address = changes[0]
+                fear_address = changes[2]
+                code_bytes = ""
+                fear_bytes = ""
+
+                if checked:
+                    code_bytes = "909090909090"
+                    fear_bytes = changes[3]
+                else:
+                    code_bytes = changes[1]
+                    fear_bytes = "00"
+
+                index = jump_to_address(code_address)
+                data_list[index:index + len(code_bytes)] = code_bytes
+
+                index = jump_to_address(fear_address)
+                data_list[index:index + len(fear_bytes)] = fear_bytes
+
+            data = "".join(data_list)
+
+    def setDisableCalmingEffects(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
             if checked:
-                for line in byLine:
-                    change = line.split()
-                    code_address = change[0]
-                    fear_address = change[2]
-                    fear_bytes = change[3]
-                    data = set_bytes(code_address, "909090909090")
-                    data = set_bytes(fear_address, fear_bytes)
+                data = set_bytes("00775CC9", "E92501000090")
             else:
-                for line in byLine:
-                    change = line.split()
-                    code_address = change[0]
-                    code_bytes = change[1]
-                    fear_address = change[2]
-                    data = set_bytes(code_address, code_bytes)
-                    data = set_bytes(fear_address, "00")
+                data = set_bytes("00775CC9", "0F8524010000")
 
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
@@ -863,6 +885,20 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox13.blockSignals(False)
 
+    def getState_DisableCalmingEffects(self):
+        self.checkBox14.blockSignals(True)
+
+        val = get_bytes("00775CC9", 6)
+        if val == "E92501000090":
+            self.checkBox14.setChecked(True)
+        elif val == "0F8524010000":
+            self.checkBox14.setChecked(False)
+        else:
+            self.show_message("Disable Calming Effects: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox14.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -920,6 +956,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.getState_DisableMadnessImmunity()
         self.getState_UncoverFears()
         self.getState_UnlockMissingFears()
+        self.getState_DisableCalmingEffects()
         self.checkBox1.setEnabled(True)
         self.checkBox2.setEnabled(True)
         self.checkBox3.setEnabled(True)
@@ -933,6 +970,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox11.setEnabled(True)
         self.checkBox12.setEnabled(True)
         self.checkBox13.setEnabled(True)
+        self.checkBox14.setEnabled(True)
 
 
 def main():

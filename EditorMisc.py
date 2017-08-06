@@ -39,7 +39,7 @@ class Scenario:
 
 
 class Tooltips:
-    VERSION = "Ghost Master MiniEditor v0.3.1"
+    VERSION = "Ghost Master MiniEditor v0.3.2"
     UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \
@@ -55,14 +55,15 @@ class Tooltips:
                      "\n(extra ghosts will be benched when the possession ends)."
     IGNORE_WARDS = "Affects all scenarios."
     DISABLE_FIRE_EXTINGUISHERS = "Affects all scenarios."
-    MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless ghosts to other matching fetters." \
+    MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless and banished ghosts to other matching fetters." \
                               "\nNOTE: bind button will work despite being greyed out."
     DISABLE_MADNESS_IMMUNITY = "Affects all scenarios. \n\nDisables madness immunity affecting certain mortals in game." \
                                "\nEnables insanity slider for those mortals (default insanity is 1%)." \
                                "\n\nDeselects current mortal to register changes."
     UNCOVER_FEARS = "Affects all scenarios. \n\nMortals start with their fears already exposed" \
                     "\n(Paranoias & Super Paranoias can be scored)."
-    UNLOCK_MISSING_FEARS = "Affects all scenarios. \n\nFears that were previously uneditable can now " \
+    UNLOCK_MISSING_FEARS = "Affects all scenarios. \n\nFears that were previously uneditable can now" \
                            "\nbe changed (defaults to mortal's original fears)." \
-                           "\n\nDeselects current mortal to register changes." \
-                           "\n\nWARNING: editor will freeze for a few seconds."
+                           "\n\nDeselects current mortal to register changes."
+    DISABLE_CALMING_EFFECTS = "Affects all scenarios. \n\nPrevents mortals from calming down via" \
+                              "\nnormal means or through Unearthly Calm power."

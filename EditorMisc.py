@@ -5,6 +5,7 @@ class Mortal:
         self.willpower = "NULL"
         self.fearcon = "NULL"
         self.fearsub = "NULL"
+        self.fearext = "NULL"
         self.name = "NULL"
 
     def setBelief(self, location):
@@ -21,6 +22,9 @@ class Mortal:
 
     def setFearsub(self, location):
         self.fearsub = location
+
+    def setFearext(self, location):
+        self.fearext = location
 
     def setName(self, name):
         self.name = name
@@ -39,7 +43,7 @@ class Scenario:
 
 
 class Tooltips:
-    VERSION = "Ghost Master MiniEditor v0.3.2"
+    VERSION = "Ghost Master MiniEditor v0.3.3"
     UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \
@@ -67,3 +71,7 @@ class Tooltips:
                            "\n\nDeselects current mortal to register changes."
     DISABLE_CALMING_EFFECTS = "Affects all scenarios. \n\nPrevents mortals from calming down via" \
                               "\nnormal means or through Unearthly Calm power."
+    UNLOCK_EXTRA_FEARS = "Affects all scenarios. \n\nYou can select an additional concious fear for each mortal," \
+                         "\nas if they were hit with Phobia power." \
+                         "\nYou can see it ingame by revealing the first concious fear." \
+                         "\n\nDeselects current mortal to register changes."

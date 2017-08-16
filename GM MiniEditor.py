@@ -147,13 +147,15 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                     if j > 1 and len(current[1]) == 8:
                         temp.setFearcon(current[1])
                     if j > 2 and len(current[2]) == 8:
-                        temp.setBelief(current[2])
+                        temp.setFearext(current[2])
                     if j > 3 and len(current[3]) == 8:
-                        temp.setInsanity(current[3])
+                        temp.setBelief(current[3])
                     if j > 4 and len(current[4]) == 8:
-                        temp.setWillpower(current[4])
-                    if j > 5:
-                        temp.setName(current[5])
+                        temp.setInsanity(current[4])
+                    if j > 5 and len(current[5]) == 8:
+                        temp.setWillpower(current[5])
+                    if j > 6:
+                        temp.setName(current[6])
 
                     mortals.append(temp)
                     self.comboBox_4.addItem("")
@@ -298,6 +300,20 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.comboBox_2.setCurrentIndex(0)
             self.comboBox_2.blockSignals(False)
 
+        if mortal.fearext[0] == "0" and self.checkBox15.isChecked():
+            self.comboBox_6.setEnabled(True)
+            self.comboBox_6.setCurrentIndex(int(get_bytes(mortal.fearext, 1), 16))
+        elif mortal.fearext[0] == "?" and self.checkBox15.isChecked():
+            address = "0" + mortal.fearext[1:]
+
+            self.comboBox_6.setEnabled(True)
+            self.comboBox_6.setCurrentIndex(int(get_bytes(address, 1), 16))
+        else:
+            self.comboBox_6.setEnabled(False)
+            self.comboBox_6.blockSignals(True)
+            self.comboBox_6.setCurrentIndex(0)
+            self.comboBox_6.blockSignals(False)
+
     def sliderMoved(self):
         slider = self.sender()
         if slider.isSliderDown():
@@ -361,6 +377,17 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def setUnconciousFear(self):
         if activeMortal:
             address = mortals[activeMortal - 1].fearsub
+            if address[0] == "?":
+                address = "0" + address[1:]
+
+            id = self.sender().currentIndex()
+            value = '{:02x}'.format(id)
+            global data
+            data = set_bytes(address, value)
+
+    def setExtraFear(self):
+        if activeMortal:
+            address = mortals[activeMortal - 1].fearext
             if address[0] == "?":
                 address = "0" + address[1:]
 
@@ -682,6 +709,33 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             else:
                 data = set_bytes("00775CC9", "0F8524010000")
 
+    def setUnlockExtraFears(self):
+        if self.sender().isEnabled():
+            self.comboBox_4.setCurrentIndex(0)  # deselects current mortal to register changes
+
+            global data
+            checked = self.sender().isChecked()
+            data_list = list(data)
+
+            mod_file = open("data\mods\Unlock Extra Fears", "rb")
+            byLine = mod_file.read().split("\n")
+            mod_file.close()
+
+            for line in byLine:
+                changes = line.split()
+                code_address = changes[0]
+                code_bytes = ""
+
+                if checked:
+                    code_bytes = "9090909090"
+                else:
+                    code_bytes = changes[1]
+
+                index = jump_to_address(code_address)
+                data_list[index:index + len(code_bytes)] = code_bytes
+
+            data = "".join(data_list)
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -834,7 +888,6 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox10.blockSignals(False)
 
-    # checking everything is not practical, a few should be enough
     def getState_DisableMadnessImmunity(self):
         self.checkBox11.blockSignals(True)
 
@@ -897,6 +950,21 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox14.blockSignals(False)
 
+    def getState_UnlockExtraFears(self):
+        self.checkBox15.blockSignals(True)
+
+        valA = get_bytes("00531DE7", 5)
+        valB = get_bytes("008DC72C", 1)
+        if valA == "9090909090":
+            self.checkBox15.setChecked(True)
+        elif valA == "A32CC78D00" and valB == "00":
+            self.checkBox15.setChecked(False)
+        else:
+            self.show_message("Unlock Extra Fears: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox15.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -955,6 +1023,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.getState_UncoverFears()
         self.getState_UnlockMissingFears()
         self.getState_DisableCalmingEffects()
+        self.getState_UnlockExtraFears()
         self.checkBox1.setEnabled(True)
         self.checkBox2.setEnabled(True)
         self.checkBox3.setEnabled(True)
@@ -969,6 +1038,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox12.setEnabled(True)
         self.checkBox13.setEnabled(True)
         self.checkBox14.setEnabled(True)
+        self.checkBox15.setEnabled(True)
 
 
 def main():

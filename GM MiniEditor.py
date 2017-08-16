@@ -566,8 +566,6 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 data = set_bytes("0042C5EE", "3935D8C694000F840A010000")
                 data = set_bytes("0042C612", "750D")
 
-    # replaces a lot of assembly code (some in strange places)
-    # make sure new features don't clash with it
     def setDisableMadnessImmunity(self):
         if self.sender().isEnabled():
             self.comboBox_4.setCurrentIndex(0)  # deselects current mortal to register changes
@@ -577,56 +575,56 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
             if checked:
                 # calamity
-                data = set_bytes("00503650", "C7053C588D000000803F")
-                data = set_bytes("00503B4A", "C705A4588D000000803F")
-                data = set_bytes("00503B5E", "A32C588D00")
-                data = set_bytes("00503C0D", "A330588D00")
+                data = set_bytes("00503B5E", "9090909090")
+                data = set_bytes("00503C0D", "9090909090")
+                data = set_bytes("008D583E", "803F")
+                data = set_bytes("008D58A6", "803F")
                 # deadfellas
-                data = set_bytes("00514440", "C7058C838D000000803F")
-                data = set_bytes("00514D81", "C70524838D000000803F")
-                data = set_bytes("00514D9F", "A37C838D00")
-                data = set_bytes("00514CED", "A380838D00")
+                data = set_bytes("00514CED", "9090909090")
+                data = set_bytes("00514D9F", "9090909090")
+                data = set_bytes("008D8326", "803F")
+                data = set_bytes("008D838E", "803F")
                 # suspects
-                data = set_bytes("0052C490", "C7059CAB8D000000803F")
-                data = set_bytes("0052C87A", "C705D4AC8D000000803F")
-                data = set_bytes("0052C88E", "A38CAB8D00")
-                data = set_bytes("0052CAFD", "A390AB8D00")
+                data = set_bytes("0052C88E", "9090909090")
+                data = set_bytes("0052CAFD", "9090909090")
+                data = set_bytes("008DAB9E", "803F")
+                data = set_bytes("008DACD6", "803F")
                 # poultrygeist
-                data = set_bytes("00509590", "C705D4618D000000803F")
-                data = set_bytes("0050965F", "C705DC638D000000803F")
-                data = set_bytes("00509679", "A3C4618D00")
-                data = set_bytes("00509A99", "A3C8618D00")
+                data = set_bytes("00509679", "9090909090")
+                data = set_bytes("00509A99", "9090909090")
+                data = set_bytes("008D61D6", "803F")
+                data = set_bytes("008D63DE", "803F")
                 # spooky
-                data = set_bytes("00547BA0", "C705C4FF8D000000803F")
-                data = set_bytes("005481E2", "C7052C008E000000803F")
-                data = set_bytes("00548149", "A31C008E00")
-                data = set_bytes("005481FC", "A320008E00")
+                data = set_bytes("00548149", "9090909090")
+                data = set_bytes("005481FC", "9090909090")
+                data = set_bytes("008DFFC6", "803F")
+                data = set_bytes("008E002E", "803F")
             else:
                 # calamity
-                data = set_bytes("00503650", "E90B0000009090909090")
-                data = set_bytes("00503B4A", "A32C588D00A330588D00")
                 data = set_bytes("00503B5E", "A33C588D00")
                 data = set_bytes("00503C0D", "A3A4588D00")
+                data = set_bytes("008D583E", "0000")
+                data = set_bytes("008D58A6", "0000")
                 # deadfellas
-                data = set_bytes("00514440", "E90B0000009090909090")
-                data = set_bytes("00514D81", "A37C838D00A380838D00")
-                data = set_bytes("00514D9F", "A38C838D00")
                 data = set_bytes("00514CED", "A324838D00")
+                data = set_bytes("00514D9F", "A38C838D00")
+                data = set_bytes("008D8326", "0000")
+                data = set_bytes("008D838E", "0000")
                 # suspects
-                data = set_bytes("0052C490", "E90B0000009090909090")
-                data = set_bytes("0052C87A", "A38CAB8D00A390AB8D00")
                 data = set_bytes("0052C88E", "A39CAB8D00")
                 data = set_bytes("0052CAFD", "A3D4AC8D00")
+                data = set_bytes("008DAB9E", "0000")
+                data = set_bytes("008DACD6", "0000")
                 # poultrygeist
-                data = set_bytes("00509590", "E90B0000009090909090")
-                data = set_bytes("0050965F", "A3C4618D00A3C8618D00")
                 data = set_bytes("00509679", "A3D4618D00")
                 data = set_bytes("00509A99", "A3DC638D00")
+                data = set_bytes("008D61D6", "0000")
+                data = set_bytes("008D63DE", "0000")
                 # spooky
-                data = set_bytes("00547BA0", "E90B0000009090909090")
-                data = set_bytes("005481E2", "A31C008E00A320008E00")
                 data = set_bytes("00548149", "A3C4FF8D00")
                 data = set_bytes("005481FC", "A32C008E00")
+                data = set_bytes("008DFFC6", "0000")
+                data = set_bytes("008E002E", "0000")
 
     def setUncoverFears(self):
         if self.sender().isEnabled():
@@ -840,14 +838,14 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def getState_DisableMadnessImmunity(self):
         self.checkBox11.blockSignals(True)
 
-        valA = get_bytes("00514440", 5)
-        valB = get_bytes("00503B4A", 5)
+        valA = get_bytes("00503B5E", 5)
+        valB = get_bytes("00514CED", 5)
         valC = get_bytes("0052C88E", 5)
-        valD = get_bytes("00509A99", 5)
-        valE = get_bytes("00547BA0", 8)
-        if valA == "C7058C838D" and valB == "C705A4588D" and valC == "A38CAB8D00" and valD == "A3C8618D00" and valE == "C705C4FF8D000000":
+        valD = get_bytes("00509679", 5)
+        valE = get_bytes("005481FC", 5)
+        if valA == "9090909090" and valB == "9090909090" and valC == "9090909090" and valD == "9090909090" and valE == "9090909090":
             self.checkBox11.setChecked(True)
-        elif valA == "E90B000000" and valB == "A32C588D00" and valC == "A39CAB8D00" and valD == "A3DC638D00" and valE == "E90B000000909090":
+        elif valA == "A33C588D00" and valB == "A324838D00" and valC == "A39CAB8D00" and valD == "A3D4618D00" and valE == "A32C008E00":
             self.checkBox11.setChecked(False)
         else:
             self.show_message("Disable Madness Immunity: undefined state",

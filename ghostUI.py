@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.horizontalSlider_3)
 
         self.verticalLayoutWidget_3 = QtGui.QWidget(self.centralwidget)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 469)) # increase last param by 23 for each new checkbox
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 492)) # increase last param by 23 for each new checkbox
         self.verticalLayoutWidget_3.setObjectName(_fromUtf8("verticalLayoutWidget_3"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
@@ -145,6 +145,11 @@ class Ui_MainWindow(object):
         self.checkBox15.setToolTip(Tooltips.UNLOCK_EXTRA_FEARS)
         self.checkBox15.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox15)
+        self.checkBox16 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
+        self.checkBox16.setObjectName(_fromUtf8("checkBox_16"))
+        self.checkBox16.setToolTip(Tooltips.FIX_COLD_PHOBIA)
+        self.checkBox16.setEnabled(False)
+        self.verticalLayout_3.addWidget(self.checkBox16)
 
         self.line_1 = QtGui.QFrame(self.verticalLayoutWidget_3)
         self.line_1.setFrameShape(QtGui.QFrame.HLine)
@@ -344,6 +349,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.checkBox13, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setUnlockMissingFears)
         QtCore.QObject.connect(self.checkBox14, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setDisableCalmingEffects)
         QtCore.QObject.connect(self.checkBox15, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setUnlockExtraFears)
+        QtCore.QObject.connect(self.checkBox16, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setFixColdPhobia)
         QtCore.QObject.connect(self.comboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setConciousFear)
         QtCore.QObject.connect(self.comboBox_2, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setUnconciousFear)
         QtCore.QObject.connect(self.comboBox_6, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setExtraFear)
@@ -380,6 +386,7 @@ class Ui_MainWindow(object):
         self.checkBox13.setText(_translate("MainWindow", "Unlock Missing Fears", None))
         self.checkBox14.setText(_translate("MainWindow", "Disable Calming Effects", None))
         self.checkBox15.setText(_translate("MainWindow", "Unlock Extra Fears", None))
+        self.checkBox16.setText(_translate("MainWindow", "Fix Cold Phobia", None))
         self.comboBox.setStatusTip(_translate("MainWindow", "Concious fear", None))
         self.comboBox.setItemText(0, _translate("MainWindow", "none", None))
         self.comboBox.setItemText(1, _translate("MainWindow", "blood", None))

@@ -43,7 +43,7 @@ class Scenario:
 
 
 class Tooltips:
-    VERSION = "Ghost Master MiniEditor v0.3.3"
+    VERSION = "Ghost Master MiniEditor v0.3.4"
     UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \
@@ -62,16 +62,16 @@ class Tooltips:
     MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless and banished ghosts to other matching fetters." \
                               "\nNOTE: bind button will work despite being greyed out."
     DISABLE_MADNESS_IMMUNITY = "Affects all scenarios. \n\nDisables madness immunity affecting certain mortals in game." \
-                               "\nEnables insanity slider for those mortals (default insanity is 1%)." \
-                               "\n\nDeselects current mortal to register changes."
+                               "\nEnables insanity slider for those mortals (default insanity is 1%)."
     UNCOVER_FEARS = "Affects all scenarios. \n\nMortals start with their fears already exposed" \
                     "\n(Paranoias & Super Paranoias can be scored)."
     UNLOCK_MISSING_FEARS = "Affects all scenarios. \n\nFears that were previously uneditable can now" \
-                           "\nbe changed (defaults to mortal's original fears)." \
-                           "\n\nDeselects current mortal to register changes."
+                           "\nbe changed (defaults to mortal's original fears)."
     DISABLE_CALMING_EFFECTS = "Affects all scenarios. \n\nPrevents mortals from calming down via" \
                               "\nnormal means or through Unearthly Calm power."
     UNLOCK_EXTRA_FEARS = "Affects all scenarios. \n\nYou can select an additional concious fear for each mortal," \
                          "\nas if they were hit with Phobia power." \
-                         "\nYou can see it ingame by revealing the first concious fear." \
-                         "\n\nDeselects current mortal to register changes."
+                         "\nYou can see it ingame by revealing the first concious fear."
+    FIX_COLD_PHOBIA = "Affects all scenarios. \n\nCold phobia exists but there are no powers of that type." \
+                      "\n\nThis changes the power type of Icy Touch and Frozen Stiff" \
+                      "\nfrom normal to cold so that cold phobia may be triggered."

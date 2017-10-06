@@ -10,3 +10,10 @@ issue 2
 handyman has only 1 set of addresses despite being present in 2 scenarios (calamityville horror and poultrygeist),
 any changes made to this mortal will affect both scenarios
 ###
+
+###
+issue 3
+in ghostbreakers, changing Windwalker's powers or trying to bind him somewhere else will cause the game to crash,
+most likely because he was not meant to be used in that scenario and was left incomplete 
+(he becomes interactable after enabling Responsive Empty Portraits)
+###

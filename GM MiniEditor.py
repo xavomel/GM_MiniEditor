@@ -74,6 +74,32 @@ def add_hex(hex1, hex2):
     return "00" + h[2:]
 
 
+def calculate_plasm(mean_terror, mortal_count, scenario_id):
+    if scenario_id == 2:
+        x = mean_terror * (mortal_count - 4)
+        x /= mortal_count
+    elif scenario_id == 10:
+        x = mean_terror * (mortal_count - 3) + 75
+        x /= mortal_count - 2
+    elif scenario_id == 14:
+        x = mean_terror * (mortal_count - 5) + 75 * 5
+        x /= mortal_count
+    else:
+        x = mean_terror
+
+    raw_plasm = x * (x * (x - 9) + 1500) / (30 + 5 * x)
+
+    if mortal_count < 20:
+        threshold = 50 * mortal_count
+
+        if raw_plasm <= threshold:
+            return raw_plasm
+        else:
+            return threshold + threshold * (raw_plasm - threshold) / (2000 - threshold)
+    else:
+        return raw_plasm
+
+
 ###########################################################
 
 
@@ -113,7 +139,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 if j > 0:
                     temp.setMaxHaunters(addresses[0])
                 if j > 1:
-                    mood_list = addresses[1].split(",")
+                    temp.setMeanTerror(addresses[1])
+                if j > 2:
+                    mood_list = addresses[2].split(",")
                     temp.setMood(mood_list)
 
                 _scenario = temp
@@ -178,6 +206,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.label_2.setHidden(True)
             self.spinBox.setEnabled(False)
             self.spinBox.setHidden(True)
+            self.spinBox_2.setEnabled(False)
+            self.spinBox_2.setHidden(True)
+            self.lineEdit.setHidden(True)
             self.comboBox_5.setEnabled(False)
             self.comboBox_5.setHidden(True)
             return
@@ -194,12 +225,29 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 self.label_2.setHidden(False)
                 break
 
+        if self.load_mortals(scenario_folder_path + "\mortals") != -1:
+            self.comboBox_4.setEnabled(True)
+
         if self.load_scenario(scenario_folder_path + "\scenario") != -1:
             address = _scenario.max_haunters
             if address != "NULL":
                 self.spinBox.setValue(int(get_bytes(address, 1), 16))
                 self.spinBox.setEnabled(True)
                 self.spinBox.setHidden(False)
+            address = _scenario.mean_terror
+            if address != "NULL":
+                h = get_bytes(address, 4)
+                h = reverse_hex_string(h)
+                value = hex_to_float(h)
+
+                self.spinBox_2.setValue(value)
+                self.spinBox_2.setEnabled(True)
+                self.spinBox_2.setHidden(False)
+
+                scenario_id = self.comboBox_3.currentIndex()
+                plasm = int(calculate_plasm(value, len(mortals), scenario_id))
+                self.lineEdit.setText(str(plasm))
+                self.lineEdit.setHidden(False)
             address = _scenario.mood[0]
             if address != "NULL":
                 self.comboBox_5.setCurrentIndex(int(get_bytes(address, 1), 16) - 39)
@@ -208,11 +256,11 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         else:
             self.spinBox.setEnabled(False)
             self.spinBox.setHidden(True)
+            self.spinBox_2.setEnabled(False)
+            self.spinBox_2.setHidden(True)
+            self.lineEdit.setHidden(True)
             self.comboBox_5.setEnabled(False)
             self.comboBox_5.setHidden(True)
-
-        if self.load_mortals(scenario_folder_path + "\mortals") != -1:
-            self.comboBox_4.setEnabled(True)
 
     def mortalChanged(self):
         global activeMortal
@@ -402,6 +450,19 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             value = '{:02x}'.format(id)
             global data
             data = set_bytes(_scenario.max_haunters, value)
+
+    def setMeanTerror(self):
+        if _scenario and _scenario.mean_terror != "NULL":
+            float_value = self.sender().value()
+
+            scenario_id = self.comboBox_3.currentIndex()
+            plasm = int(calculate_plasm(float_value, len(mortals), scenario_id))
+            self.lineEdit.setText(str(plasm))
+
+            value = float_to_hex(float_value)
+            value = reverse_hex_string(value)
+            global data
+            data = set_bytes(_scenario.mean_terror, value)
 
     def setMood(self):
         if _scenario:

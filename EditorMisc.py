@@ -8,23 +8,23 @@ class Mortal:
         self.fearext = "NULL"
         self.name = "NULL"
 
-    def setBelief(self, location):
-        self.belief = location
+    def setBelief(self, address):
+        self.belief = address
 
-    def setInsanity(self, location):
-        self.insanity = location
+    def setInsanity(self, address):
+        self.insanity = address
 
-    def setWillpower(self, location):
-        self.willpower = location
+    def setWillpower(self, address):
+        self.willpower = address
 
-    def setFearcon(self, location):
-        self.fearcon = location
+    def setFearcon(self, address):
+        self.fearcon = address
 
-    def setFearsub(self, location):
-        self.fearsub = location
+    def setFearsub(self, address):
+        self.fearsub = address
 
-    def setFearext(self, location):
-        self.fearext = location
+    def setFearext(self, address):
+        self.fearext = address
 
     def setName(self, name):
         self.name = name
@@ -33,17 +33,21 @@ class Mortal:
 class Scenario:
     def __init__(self):
         self.max_haunters = "NULL"
+        self.mean_terror = "NULL"
         self.mood = ["NULL"]
 
-    def setMaxHaunters(self, location):
-        self.max_haunters = location
+    def setMaxHaunters(self, address):
+        self.max_haunters = address
 
-    def setMood(self, location_list):
-        self.mood = list(location_list)
+    def setMeanTerror(self, address):
+        self.mean_terror = address
+
+    def setMood(self, address_list):
+        self.mood = list(address_list)
 
 
 class Tooltips:
-    VERSION = "Ghost Master MiniEditor v0.3.4"
+    VERSION = "Ghost Master MiniEditor v0.3.5"
     UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \

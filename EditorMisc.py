@@ -3,6 +3,7 @@ class Mortal:
         self.belief = "NULL"
         self.insanity = "NULL"
         self.willpower = "NULL"
+        self.terror = "NULL"
         self.fearcon = "NULL"
         self.fearsub = "NULL"
         self.fearext = "NULL"
@@ -16,6 +17,9 @@ class Mortal:
 
     def setWillpower(self, address):
         self.willpower = address
+
+    def setTerror(self, address):
+        self.terror = address
 
     def setFearcon(self, address):
         self.fearcon = address
@@ -33,21 +37,25 @@ class Mortal:
 class Scenario:
     def __init__(self):
         self.max_haunters = "NULL"
-        self.mean_terror = "NULL"
         self.mood = ["NULL"]
+        self.mean_terror_push = ["NULL"]
+        self.mean_terror_call = ["NULL"]
 
     def setMaxHaunters(self, address):
         self.max_haunters = address
 
-    def setMeanTerror(self, address):
-        self.mean_terror = address
-
     def setMood(self, address_list):
         self.mood = list(address_list)
 
+    def setMeanTerrorPush(self, address_list):
+        self.mean_terror_push = list(address_list)
+
+    def setMeanTerrorCall(self, address_list):
+        self.mean_terror_call = list(address_list)
+
 
 class Tooltips:
-    VERSION = "Ghost Master MiniEditor v0.3.5"
+    VERSION = "Ghost Master MiniEditor v0.3.6"
     UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \
@@ -79,3 +87,7 @@ class Tooltips:
     FIX_COLD_PHOBIA = "Affects all scenarios. \n\nCold phobia exists but there are no powers of that type." \
                       "\n\nThis changes the power type of Icy Touch and Frozen Stiff" \
                       "\nfrom normal to cold so that cold phobia may be triggered."
+    MANUAL_TERROR = "Affects current scenario. \n\nEnables terror slider for all mortals." \
+                    "\n\nWARNING: selecting this option sets the terror value of all mortals to 0." \
+                    "\nUnless some terror is assigned the starting plasm will also" \
+                    "\nequal 0 causing an automatic loss at the start of scenario."

@@ -139,10 +139,14 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 if j > 0:
                     temp.setMaxHaunters(addresses[0])
                 if j > 1:
-                    temp.setMeanTerror(addresses[1])
+                    addr_list = addresses[1].split(",")
+                    temp.setMood(addr_list)
                 if j > 2:
-                    mood_list = addresses[2].split(",")
-                    temp.setMood(mood_list)
+                    addr_list = addresses[2].split(",")
+                    temp.setMeanTerrorPush(addr_list)
+                if j > 3:
+                    addr_list = addresses[3].split(",")
+                    temp.setMeanTerrorCall(addr_list)
 
                 _scenario = temp
 
@@ -182,8 +186,10 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                         temp.setInsanity(current[4])
                     if j > 5 and len(current[5]) == 8:
                         temp.setWillpower(current[5])
-                    if j > 6:
-                        temp.setName(current[6])
+                    if j > 6 and len(current[6]) == 8:
+                        temp.setTerror(current[6])
+                    if j > 7:
+                        temp.setName(current[7])
 
                     mortals.append(temp)
                     self.comboBox_4.addItem("")
@@ -211,6 +217,8 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.lineEdit.setHidden(True)
             self.comboBox_5.setEnabled(False)
             self.comboBox_5.setHidden(True)
+            self.checkBox17.setEnabled(False)
+            self.checkBox17.setHidden(True)
             return
         else:
             activeScenario = scenario
@@ -234,20 +242,30 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 self.spinBox.setValue(int(get_bytes(address, 1), 16))
                 self.spinBox.setEnabled(True)
                 self.spinBox.setHidden(False)
-            address = _scenario.mean_terror
+
+            address = _scenario.mean_terror_push[0]
             if address != "NULL":
-                h = get_bytes(address, 4)
-                h = reverse_hex_string(h)
-                value = hex_to_float(h)
+                if _scenario.mean_terror_call[0] != "NULL":
+                    self.checkBox17.setEnabled(True)
+                    self.checkBox17.setHidden(False)
+                    self.getState_ManualTerror(_scenario)
 
-                self.spinBox_2.setValue(value)
-                self.spinBox_2.setEnabled(True)
-                self.spinBox_2.setHidden(False)
+                    address = add_hex(address, "00000001")
+                    h = get_bytes(address, 4)
+                    h = reverse_hex_string(h)
+                    value = hex_to_float(h)
 
-                scenario_id = self.comboBox_3.currentIndex()
-                plasm = int(calculate_plasm(value, len(mortals), scenario_id))
-                self.lineEdit.setText(str(plasm))
-                self.lineEdit.setHidden(False)
+                    if not self.checkBox17.isChecked():
+                        self.spinBox_2.setValue(value)
+                        self.spinBox_2.setEnabled(True)
+                    self.spinBox_2.setHidden(False)
+
+                    value = self.spinBox_2.value()
+                    scenario_id = self.comboBox_3.currentIndex()
+                    plasm = int(calculate_plasm(value, len(mortals), scenario_id))
+                    self.lineEdit.setText(str(plasm))
+                    self.lineEdit.setHidden(False)
+
             address = _scenario.mood[0]
             if address != "NULL":
                 self.comboBox_5.setCurrentIndex(int(get_bytes(address, 1), 16) - 39)
@@ -261,6 +279,8 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.lineEdit.setHidden(True)
             self.comboBox_5.setEnabled(False)
             self.comboBox_5.setHidden(True)
+            self.checkBox17.setEnabled(False)
+            self.checkBox17.setHidden(True)
 
     def mortalChanged(self):
         global activeMortal
@@ -320,6 +340,23 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         else:
             self.horizontalSlider_3.setEnabled(False)
 
+        if mortal.terror[0] == "0":
+            self.horizontalSlider_4.setEnabled(True)
+            h = get_bytes(mortal.terror, 4)
+            h = reverse_hex_string(h)
+            value = hex_to_float(h)
+            self.horizontalSlider_4.setValue(value)
+        elif mortal.terror[0] == "?" and self.checkBox17.isChecked():
+            address = "0" + mortal.terror[1:]
+
+            self.horizontalSlider_4.setEnabled(True)
+            h = get_bytes(address, 4)
+            h = reverse_hex_string(h)
+            value = hex_to_float(h)
+            self.horizontalSlider_4.setValue(value)
+        else:
+            self.horizontalSlider_4.setEnabled(False)
+
         if mortal.fearcon[0] == "0":
             self.comboBox.setEnabled(True)
             self.comboBox.setCurrentIndex(int(get_bytes(mortal.fearcon, 1), 16))
@@ -373,6 +410,8 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 self.show_tooltip(slider, "Insanity: %d" % id)
             elif sliderText == "horizontalSlider_3":
                 self.show_tooltip(slider, "Belief: %d" % id)
+            elif sliderText == "horizontalSlider_4":
+                self.show_tooltip(slider, "Terror: %d" % id)
 
     def setWillpower(self):
         if activeMortal:
@@ -407,6 +446,18 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 reverse_id = -id % self.sender().maximum()
 
             hex_id = float_to_hex(reverse_id)[:4]
+            value = reverse_hex_string(hex_id)
+            global data
+            data = set_bytes(address, value)
+
+    def setTerror(self):
+        if activeMortal:
+            address = mortals[activeMortal - 1].terror
+            if address[0] == "?":
+                address = "0" + address[1:]
+
+            id = self.sender().value()
+            hex_id = float_to_hex(id)
             value = reverse_hex_string(hex_id)
             global data
             data = set_bytes(address, value)
@@ -452,17 +503,20 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             data = set_bytes(_scenario.max_haunters, value)
 
     def setMeanTerror(self):
-        if _scenario and _scenario.mean_terror != "NULL":
+        if _scenario and _scenario.mean_terror_push[0] != "NULL":
             float_value = self.sender().value()
 
             scenario_id = self.comboBox_3.currentIndex()
             plasm = int(calculate_plasm(float_value, len(mortals), scenario_id))
             self.lineEdit.setText(str(plasm))
 
-            value = float_to_hex(float_value)
-            value = reverse_hex_string(value)
-            global data
-            data = set_bytes(_scenario.mean_terror, value)
+            if not self.checkBox17.isChecked():
+                address = add_hex(_scenario.mean_terror_push[0], "00000001")
+                value = float_to_hex(float_value)
+                value = reverse_hex_string(value)
+
+                global data
+                data = set_bytes(address, value)
 
     def setMood(self):
         if _scenario:
@@ -813,6 +867,50 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 data = set_bytes("0057B4D3", "6A09")
                 data = set_bytes("0057C2C9", "6A09")
 
+    def setManualTerror(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
+            if checked:
+                data = set_bytes(_scenario.mean_terror_push[0], "9090909090")
+                data = set_bytes(_scenario.mean_terror_call[0], "9090909090")
+                self.spinBox_2.setEnabled(False)
+            else:
+                data = set_bytes(_scenario.mean_terror_push[0], _scenario.mean_terror_push[1])
+                data = set_bytes(_scenario.mean_terror_call[0], _scenario.mean_terror_call[1])
+                self.spinBox_2.setEnabled(True)
+
+                # reset terror values for non-static mortals
+                for m in mortals:
+                    if m.terror[0] == "?":
+                        address = "0" + m.terror[1:]
+                        data = set_bytes(address, "00000000")
+
+            data_list = list(data)
+
+            mod_file = open("data\mods\Manual Terror", "rb")
+            byLine = mod_file.read().split("\n")
+            mod_file.close()
+
+            for line in byLine:
+                changes = line.split()
+                code_address = changes[0]
+                code_bytes = ""
+
+                if checked:
+                    code_bytes = "9090909090"
+                else:
+                    code_bytes = changes[1]
+
+                index = jump_to_address(code_address)
+                data_list[index:index + len(code_bytes)] = code_bytes
+
+            data = "".join(data_list)
+            index = self.comboBox_4.currentIndex()
+            self.comboBox_4.setCurrentIndex(0)
+            self.comboBox_4.setCurrentIndex(index)
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -1056,6 +1154,23 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                               "Choose your preferred setting again \n(unless you made custom changes)")
 
         self.checkBox16.blockSignals(False)
+
+    def getState_ManualTerror(self, scenario):
+        self.checkBox17.blockSignals(True)
+
+        valA = get_bytes(scenario.mean_terror_push[0], 5)
+        valB = get_bytes(scenario.mean_terror_call[0], 5)
+        if valA == "9090909090" and valB == "9090909090":
+            self.checkBox17.setChecked(True)
+            self.spinBox_2.setEnabled(False)
+        elif valA[:2] == scenario.mean_terror_push[1][:2] and valB == scenario.mean_terror_call[1]:
+            self.checkBox17.setChecked(False)
+            self.spinBox_2.setEnabled(True)
+        else:
+            self.show_message("Manual Terror: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox17.blockSignals(False)
 
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")

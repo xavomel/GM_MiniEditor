@@ -55,7 +55,7 @@ class Scenario:
 
 
 class Tooltips:
-    VERSION = "Ghost Master MiniEditor v0.3.6"
+    VERSION = "Ghost Master MiniEditor v0.3.7"
     UNLIMITED_PLASM = "Affects all scenarios. \n\nPowers can be used even if \nthey appear to be too expensive."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \
@@ -91,3 +91,9 @@ class Tooltips:
                     "\n\nWARNING: selecting this option sets the terror value of all mortals to 0." \
                     "\nUnless some terror is assigned the starting plasm will also" \
                     "\nequal 0 causing an automatic loss at the start of scenario."
+    GLOBAL_GHOST_LEVEL = "Affects all scenarios. \n\nChanges the training level of all restless ghosts" \
+                         "\nand all ghosts you receive before each act." \
+                         "\n\nNewly freed ghosts will also have that level" \
+                         "\n(but previously freed ghosts will not be affected)." \
+                         "\n\nNOTE: to change the level of starting ghosts" \
+                         "\nyou will have to start a new game."

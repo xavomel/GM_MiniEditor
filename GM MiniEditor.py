@@ -528,6 +528,34 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                     global data
                     data = set_bytes(address, value)
 
+    # there are 47 ghosts but for some reason raindancer is at 48, wavemaster is at 50, stormtalon is at 51
+    def setGhostLevel(self):
+        if self.sender().isEnabled():
+            global data
+            level = self.sender().currentIndex() - 1
+            checked = level != -1
+
+            data_list = list(data)
+
+            mod_file = open("data\mods\Global Ghost Level", "rb")
+            byLine = mod_file.read().split("\n")
+            mod_file.close()
+
+            for line in byLine:
+                changes = line.split()
+                code_address = changes[0]
+                code_bytes = ""
+
+                if checked:
+                    code_bytes = '{:02x}'.format(level)
+                else:
+                    code_bytes = changes[1]
+
+                index = jump_to_address(code_address)
+                data_list[index:index + len(code_bytes)] = code_bytes
+
+            data = "".join(data_list)
+
     def setBytesAtAddress(self):
         text, ok = QtGui.QInputDialog.getText(self, ' ', 'Enter address, bytes (separated with @)')
         input = []
@@ -1172,6 +1200,24 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.checkBox17.blockSignals(False)
 
+    def getState_GlobalGhostLevel(self):
+        self.comboBox_7.blockSignals(True)
+
+        valA = get_bytes("008F1F68", 1)
+        valB = get_bytes("008F31F8", 1)
+        valC = get_bytes("008F4AB8", 1)
+        valD = get_bytes("008F69A8", 1)
+        if valA == valB == valC == valD:
+            level = int(valA, 16) + 1
+            self.comboBox_7.setCurrentIndex(level)
+        elif valA == "00" and valB == "03" and valC == "02" and valD == "01":
+            self.comboBox_7.setCurrentIndex(0)
+        else:
+            self.show_message("Global Ghost Level: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.comboBox_7.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -1183,6 +1229,8 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.actionSave.setEnabled(True)
         self.pushButton_9.setEnabled(True)
+        self.comboBox_7.setEnabled(True)
+        self.getState_GlobalGhostLevel()
         self.checkBoxSetup()
         self.find_scenarios()
 

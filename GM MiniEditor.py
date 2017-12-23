@@ -583,11 +583,31 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             checked = self.sender().isChecked()
 
             if checked:
+                # disable power cost
                 data = set_bytes("004A78D0", "D8E090909090")
                 data = set_bytes("0042F7B9", "D8C890909090")
+
+                # disable red power bar when plasm is insufficient
+                # by replacing coordinates of texture loaded from ui/powerbar4.tga
+                # from red bar to blue bar
+                data = set_bytes("0041E99D", "6800008E3E")
+                data = set_bytes("0041E9A2", "680000303E")
+                data = set_bytes("0041E9B1", "680000583E")
+
+                # disable red text when plasm is insufficient
+                data = set_bytes("0042F519", "6A00")
             else:
+                # enable power cost
                 data = set_bytes("004A78D0", "D80588019500")
                 data = set_bytes("0042F7B9", "D82588019500")
+
+                # enable red power bar when plasm is insufficient
+                data = set_bytes("0041E99D", "680000543E")
+                data = set_bytes("0041E9A2", "680000303E")
+                data = set_bytes("0041E9B1", "680000103E")
+
+                # enable red text when plasm is insufficient
+                data = set_bytes("0042F519", "6A03")
 
     def setUnlimitedGoldplasm(self):
         if self.sender().isEnabled():
@@ -944,9 +964,13 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         valA = get_bytes("004A78D0", 6)
         valB = get_bytes("0042F7B9", 6)
-        if valA == "D8E090909090" and valB == "D8C890909090":
+        valC = get_bytes("0041E99D", 5)
+        valD = get_bytes("0041E9A2", 5)
+        valE = get_bytes("0041E9B1", 5)
+        valF = get_bytes("0042F519", 2)
+        if valA == "D8E090909090" and valB == "D8C890909090" and valC == "6800008E3E" and valD == "680000303E" and valE == "680000583E" and valF == "6A00":
             self.checkBox1.setChecked(True)
-        elif valA == "D80588019500" and valB == "D82588019500":
+        elif valA == "D80588019500" and valB == "D82588019500" and valC == "680000543E" and valD == "680000303E" and valE == "680000103E" and valF == "6A03":
             self.checkBox1.setChecked(False)
         else:
             self.show_message("Unlimited Plasm: undefined state",

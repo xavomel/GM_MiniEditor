@@ -616,47 +616,23 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
             if checked:
                 # disable red color when goldplasm is insufficient
-                address = "00472A02"
-                for i in range(10):
-                    data = set_bytes(address, "0000")
-                    address = add_hex(address, "00000006")
+                data = set_bytes("004729F8", "EB43")
 
                 # enable buying when goldplasm is insufficient (doesn't work when it's negative)
-                address = "0047331E"
-                for i in range(10):
-                    data = set_bytes(address, "0000")
-                    address = add_hex(address, "0000000A")
+                data = set_bytes("00473311", "EB6B")
 
                 # disables subtraction of power cost from current goldplasm when buying powers
-                address = "00473465"
-                for i in range(10):
-                    data = set_bytes(address, "0000")
-                    address = add_hex(address, "0000000A")
+                data = set_bytes("00473458", "EB6B")
 
             else:
                 # enable red color when goldplasm is insufficient
-                address = "00472A02"
-                for cost in goldplasm_costs:
-                    value = '{:02x}'.format(cost).zfill(4)
-                    value = reverse_hex_string(value)
-                    data = set_bytes(address, value)
-                    address = add_hex(address, "00000006")
+                data = set_bytes("004729F8", "7743")
 
                 # disable buying when goldplasm is insufficient (doesn't work when it's negative)
-                address = "0047331E"
-                for cost in goldplasm_costs:
-                    value = '{:02x}'.format(cost).zfill(4)
-                    value = reverse_hex_string(value)
-                    data = set_bytes(address, value)
-                    address = add_hex(address, "0000000A")
+                data = set_bytes("00473311", "776B")
 
                 # enable subtraction of power cost from current goldplasm when buying powers
-                address = "00473465"
-                for cost in goldplasm_costs:
-                    value = '{:02x}'.format(cost).zfill(4)
-                    value = reverse_hex_string(value)
-                    data = set_bytes(address, value)
-                    address = add_hex(address, "0000000A")
+                data = set_bytes("00473458", "776B")
 
     def setInstantPowerRecharge(self):
         if self.sender().isEnabled():
@@ -981,12 +957,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def getState_UnlimitedGoldplasm(self):
         self.checkBox2.blockSignals(True)
 
-        valA = get_bytes("00472A02", 1)
-        valB = get_bytes("0047331E", 1)
-        valC = get_bytes("00473465", 1)
-        if valA == "00" and valB == "00" and valC == "00":
+        valA = get_bytes("004729F8", 2)
+        valB = get_bytes("00473311", 2)
+        valC = get_bytes("00473458", 2)
+        if valA == "EB43" and valB == "EB6B" and valC == "EB6B":
             self.checkBox2.setChecked(True)
-        elif valA == "32" and valB == "32" and valC == "32":  # 32 is hex for 50 - lowest power cost
+        elif valA == "7743" and valB == "776B" and valC == "776B":
             self.checkBox2.setChecked(False)
         else:
             self.show_message("Unlimited Gold Plasm: undefined state",

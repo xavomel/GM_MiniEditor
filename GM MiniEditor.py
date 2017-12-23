@@ -662,13 +662,13 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             checked = self.sender().isChecked()
 
             if checked:
-                data = set_bytes("0045C4C1", "EB")  # clones
+                data = set_bytes("0045C4BE", "83F8037526")  # clones, jump to "success" if eax != 3 (empty portrait)
                 data = set_bytes("0045C5F3", "00")  # grey-out when adding
                 data = set_bytes("0045C7D2", "00")  # grey-out when removing
                 data = set_bytes("0045C977", "00")  # grey-out when recommended
                 data = set_bytes("0045BE03", "00")  # grey-out when changing tabs
             else:
-                data = set_bytes("0045C4C1", "74")  # clones
+                data = set_bytes("0045C4BE", "83F8027426")  # clones
                 data = set_bytes("0045C5F3", "01")  # grey-out when adding
                 data = set_bytes("0045C7D2", "01")  # grey-out when removing
                 data = set_bytes("0045C977", "01")  # grey-out when recommended
@@ -1002,14 +1002,14 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def getState_GhostCloning(self):
         self.checkBox5.blockSignals(True)
 
-        valA = get_bytes("0045C4C1", 1)
+        valA = get_bytes("0045C4BE", 5)
         valB = get_bytes("0045C5F3", 1)
         valC = get_bytes("0045C7D2", 1)
         valD = get_bytes("0045C977", 1)
         valE = get_bytes("0045BE03", 1)
-        if valA == "EB" and valB == "00" and valC == "00" and valD == "00" and valE == "00":
+        if valA == "83F8037526" and valB == "00" and valC == "00" and valD == "00" and valE == "00":
             self.checkBox5.setChecked(True)
-        elif valA == "74" and valB == "01" and valC == "01" and valD == "01" and valE == "01":
+        elif valA == "83F8027426" and valB == "01" and valC == "01" and valD == "01" and valE == "01":
             self.checkBox5.setChecked(False)
         else:
             self.show_message("Ghost Cloning: undefined state",

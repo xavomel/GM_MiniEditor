@@ -63,8 +63,7 @@ class Tooltips:
     RESPONSIVE_EMPTY_PORTRAITS = "Affects all scenarios. \n\nClicking on an empty portrait of a hidden mortal \nwill reveal his name, stats and bio button." \
                                  "\nClicking on an empty portrait of a hidden ghost \nwill reveal his name and more." \
                                  "\nPortraits of normal restless ghosts are responsive \neven without first finding them in game. (silhouette)"
-    GHOST_CLONING = "Affects all scenarios. \n\nYou can choose the same ghost multiple times in Team Selection." \
-                    "\nClicking on empty portraits in Team Selection is NOT recommended."
+    GHOST_CLONING = "Affects all scenarios. \n\nYou can choose the same ghost multiple times in Team Selection."
     INSIDE_OUTSIDE_ON_ALL_GHOSTS = "Affects all scenarios."
     FETTER_SHARING = "Affects all scenarios. \n\nEach fetter may be shared by multiple ghosts." \
                      "\nBecause possessed mortals are fetters, they also may be shared" \

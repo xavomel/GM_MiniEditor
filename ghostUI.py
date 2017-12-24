@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
         #self.horizontalSlider_4.setStyleSheet("background: rgb(223, 0, 41)")
 
         self.verticalLayoutWidget_3 = QtGui.QWidget(self.centralwidget)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 515)) # increase last param by 23 for each new checkbox
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 538)) # increase last param by 23 for each new checkbox
         self.verticalLayoutWidget_3.setObjectName(_fromUtf8("verticalLayoutWidget_3"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
@@ -126,6 +126,11 @@ class Ui_MainWindow(object):
         self.checkBox3.setToolTip(Tooltips.INSTANT_POWER_RECHARGE)
         self.checkBox3.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox3)
+        self.checkBox18 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
+        self.checkBox18.setObjectName(_fromUtf8("checkBox_18"))
+        self.checkBox18.setToolTip(Tooltips.CONTINUOUS_POWER_RECASTING)
+        self.checkBox18.setEnabled(False)
+        self.verticalLayout_3.addWidget(self.checkBox18)
         self.checkBox4 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox4.setObjectName(_fromUtf8("checkBox_4"))
         self.checkBox4.setToolTip(Tooltips.RESPONSIVE_EMPTY_PORTRAITS)
@@ -399,6 +404,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.checkBox15, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setUnlockExtraFears)
         QtCore.QObject.connect(self.checkBox16, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setFixColdPhobia)
         QtCore.QObject.connect(self.checkBox17, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setManualTerror)
+        QtCore.QObject.connect(self.checkBox18, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setContinuousPowerRecasting)
         QtCore.QObject.connect(self.comboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setConciousFear)
         QtCore.QObject.connect(self.comboBox_2, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setUnconciousFear)
         QtCore.QObject.connect(self.comboBox_6, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setExtraFear)
@@ -440,6 +446,7 @@ class Ui_MainWindow(object):
         self.checkBox15.setText(_translate("MainWindow", "Unlock Extra Fears", None))
         self.checkBox16.setText(_translate("MainWindow", "Fix Cold Phobia", None))
         self.checkBox17.setText(_translate("MainWindow", "Manual Terror", None))
+        self.checkBox18.setText(_translate("MainWindow", "Continuous Power Recasting", None))
         self.comboBox.setStatusTip(_translate("MainWindow", "Concious fear", None))
         self.comboBox.setItemText(0, _translate("MainWindow", "none", None))
         self.comboBox.setItemText(1, _translate("MainWindow", "blood", None))

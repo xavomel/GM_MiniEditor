@@ -638,11 +638,26 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         if self.sender().isEnabled():
             global data
             checked = self.sender().isChecked()
+            data_list = list(data)
 
-            if checked:
-                data = set_bytes("00788B77", "B80000000090")
-            else:
-                data = set_bytes("00788B77", "8B801CD99000")
+            mod_file = open("data\mods\Instant Power Recharge", "rb")
+            byLine = mod_file.read().split("\n")
+            mod_file.close()
+
+            for line in byLine:
+                changes = line.split()
+                code_address = changes[0]
+                code_bytes = ""
+
+                if checked:
+                    code_bytes = "00000000"
+                else:
+                    code_bytes = changes[1]
+
+                index = jump_to_address(code_address)
+                data_list[index:index + len(code_bytes)] = code_bytes
+
+            data = "".join(data_list)
 
     def setResponsivePortraits(self):
         if self.sender().isEnabled():
@@ -935,6 +950,30 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.comboBox_4.setCurrentIndex(0)
             self.comboBox_4.setCurrentIndex(index)
 
+    def setContinuousPowerRecasting(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+            data_list = list(data)
+
+            mod_file = open("data\mods\Continuous Power Recasting", "rb")
+            byLine = mod_file.read().split("\n")
+            mod_file.close()
+
+            for line in byLine:
+                code_address = line
+                code_bytes = ""
+
+                if checked:
+                    code_bytes = "00000000"
+                else:
+                    code_bytes = "FEFFFFFF"
+
+                index = jump_to_address(code_address)
+                data_list[index:index + len(code_bytes)] = code_bytes
+
+            data = "".join(data_list)
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -973,10 +1012,15 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def getState_InstantPowerRecharge(self):
         self.checkBox3.blockSignals(True)
 
-        value = get_bytes("00788B77", 6)
-        if value == "B80000000090":
+        valA = get_bytes("0090D91C", 4)
+        valB = get_bytes("0090DA1C", 4)
+        valC = get_bytes("0090D97C", 4)
+        valD = get_bytes("0090E81C", 4)
+        valE = get_bytes("0090E8DC", 4)
+        valF = get_bytes("0090E6BC", 4)
+        if valA == "00000000" and valB == "00000000" and valC == "00000000" and valD == "00000000" and valE == "00000000" and valF == "00000000":
             self.checkBox3.setChecked(True)
-        elif value == "8B801CD99000":
+        elif valA == "0F000000" and valB == "1E000000" and valC == "3C000000" and valD == "5A000000" and valE == "96000000" and valF == "2C010000":
             self.checkBox3.setChecked(False)
         else:
             self.show_message("Instant Power Recharge: undefined state",
@@ -1218,6 +1262,23 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         self.comboBox_7.blockSignals(False)
 
+    def getState_ContinuousPowerRecasting(self):
+        self.checkBox18.blockSignals(True)
+
+        valA = get_bytes("0090DAFC", 4)
+        valB = get_bytes("0090E5DC", 4)
+        valC = get_bytes("0090E79C", 4)
+        valD = get_bytes("0090E95C", 4)
+        if valA == "00000000" and valB == "00000000" and valC == "00000000" and valD == "00000000":
+            self.checkBox18.setChecked(True)
+        elif valA == "FEFFFFFF" and valB == "FEFFFFFF" and valC == "FEFFFFFF" and valD == "FEFFFFFF":
+            self.checkBox18.setChecked(False)
+        else:
+            self.show_message("Continuous Power Recasting: undefined state",
+                              "Choose your preferred setting again \n(unless you made custom changes)")
+
+        self.checkBox18.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -1280,6 +1341,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.getState_DisableCalmingEffects()
         self.getState_UnlockExtraFears()
         self.getState_FixColdPhobia()
+        self.getState_ContinuousPowerRecasting()
         self.checkBox1.setEnabled(True)
         self.checkBox2.setEnabled(True)
         self.checkBox3.setEnabled(True)
@@ -1296,6 +1358,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox14.setEnabled(True)
         self.checkBox15.setEnabled(True)
         self.checkBox16.setEnabled(True)
+        self.checkBox18.setEnabled(True)
 
 
 def main():

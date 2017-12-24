@@ -55,11 +55,13 @@ class Scenario:
 
 
 class Tooltips:
-    VERSION = "Ghost Master MiniEditor v0.3.7"
+    VERSION = "Ghost Master MiniEditor v0.4.0"
     UNLIMITED_PLASM = "Affects all scenarios."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
-    INSTANT_POWER_RECHARGE = "Affects all scenarios. \n\nThis also modifies continuous powers, \nwhich are no longer channeled." \
-                             "\nInstead their effects becomes permanent on \ncasting and can be stacked multiple times."
+    INSTANT_POWER_RECHARGE = "Affects all scenarios."
+    CONTINUOUS_POWER_RECASTING = "Affects all scenarios. \n\nContinuous powers are no longer channeled." \
+                                 "\nInstead their effects become permanent on \ncasting and can be stacked multiple times." \
+                                 "\n\nHINT: try casting Hidden Maze a few times."
     RESPONSIVE_EMPTY_PORTRAITS = "Affects all scenarios. \n\nClicking on an empty portrait of a hidden mortal \nwill reveal his name, stats and bio button." \
                                  "\nClicking on an empty portrait of a hidden ghost \nwill reveal his name and more." \
                                  "\nPortraits of normal restless ghosts are responsive \neven without first finding them in game. (silhouette)"
@@ -71,7 +73,7 @@ class Tooltips:
     IGNORE_WARDS = "Affects all scenarios."
     DISABLE_FIRE_EXTINGUISHERS = "Affects all scenarios."
     MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless and banished ghosts to other matching fetters." \
-                              "\nNOTE: bind button will work despite being greyed out."
+                              "\n\nNOTE: bind button will work despite being greyed out."
     DISABLE_MADNESS_IMMUNITY = "Affects all scenarios. \n\nDisables madness immunity affecting certain mortals in game." \
                                "\nEnables insanity slider for those mortals (default insanity is 1%)."
     UNCOVER_FEARS = "Affects all scenarios. \n\nMortals start with their fears already exposed" \

@@ -54,8 +54,36 @@ class Scenario:
         self.mean_terror_call = list(address_list)
 
 
-class Tooltips:
+class Constants:
+    NO_OF_CHECKS = 18
     VERSION = "Ghost Master MiniEditor v0.4.0"
+    FEATURE_DISABLED = "This feature has been disabled.\n\n" \
+                       "REASON:\n" \
+                       "Outdated version of this feature was detected in the .exe.\n\n" \
+                       "SOLUTIONS:\n" \
+                       "1)\n" \
+                       "Open the .exe in an older version of MiniEditor, uncheck\n" \
+                       "this feature and save. The new .exe should work fine.\n" \
+                       "2)\n" \
+                       "Start over with a clean, unmodified .exe."
+    INVALID = "All checks have FAILED - opened file is not a valid .exe"
+    FAILED = "Some checks have FAILED - there are features in undefined state"
+    OUTDATED = "Some features are OUTDATED - opened file was modified in an earlier version of MiniEditor"
+    INVALID_SOLUTION = "Solutions:\n" \
+                       "1)\n" \
+                       "open a valid .exe"
+    FAILED_SOLUTION = "Solutions for FAILED:\n" \
+                      "1)\n" \
+                      "reset the feature by enabling and disabling it\n" \
+                      "then choose your preferred setting\n" \
+                      "2)\n" \
+                      "ignore it if you made any custom changes by yourself "
+    OUTDATED_SOLUTION = "Solutions for OUTDATED:\n" \
+                        "1)\n" \
+                        "Open the .exe in MiniEditor version 0.3.7 or earlier, disable the offending features and save." \
+                        " The new .exe should work fine.\n" \
+                        "2)\n" \
+                        "Start over with a clean, unmodified .exe."
     UNLIMITED_PLASM = "Affects all scenarios."
     UNLIMITED_GOLDPLASM = "Affects all scenarios."
     INSTANT_POWER_RECHARGE = "Affects all scenarios."

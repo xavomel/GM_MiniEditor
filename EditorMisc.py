@@ -56,7 +56,7 @@ class Scenario:
 
 class Constants:
     NO_OF_CHECKS = 18
-    VERSION = "Ghost Master MiniEditor v0.4.0"
+    VERSION = "Ghost Master MiniEditor v0.4.1"
     FEATURE_DISABLED = "This feature has been disabled.\n\n" \
                        "REASON:\n" \
                        "Outdated version of this feature was detected in the .exe.\n\n" \
@@ -100,8 +100,7 @@ class Constants:
                      "\n(extra ghosts will be benched when the possession ends)."
     IGNORE_WARDS = "Affects all scenarios."
     DISABLE_FIRE_EXTINGUISHERS = "Affects all scenarios."
-    MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless and banished ghosts to other matching fetters." \
-                              "\n\nNOTE: bind button will work despite being greyed out."
+    MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless and banished ghosts to other matching fetters."
     DISABLE_MADNESS_IMMUNITY = "Affects all scenarios. \n\nDisables madness immunity affecting certain mortals in game." \
                                "\nEnables insanity slider for those mortals (default insanity is 1%)."
     UNCOVER_FEARS = "Affects all scenarios. \n\nMortals start with their fears already exposed" \

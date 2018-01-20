@@ -741,11 +741,37 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             checked = self.sender().isChecked()
 
             if checked:
+                # enable binding
                 data = set_bytes("0042C5EE", "909090909090909090909090")
                 data = set_bytes("0042C612", "EB0D")
+
+                # bind button visuals
+                data = set_bytes("0042DB44", "9090909090909090")  # disable gray-out
+                data = set_bytes("0042C2F0", "90909090")  # enable hover effect
+
+                # enable highlights
+                # works for all ghosts when hovering over ghost
+                # works for discovered ghosts when hovering over portrait
+                data = set_bytes("00418B01", "9090909090909090")
+
+                # enable highlight workarounds
+                data = set_bytes("00426371", "9090909090909090")  # undiscovered ghosts
+                data = set_bytes("00426379", "909090909090EB08")  # hidden ghosts
             else:
+                # disable binding
                 data = set_bytes("0042C5EE", "3935D8C694000F840A010000")
                 data = set_bytes("0042C612", "750D")
+
+                # bind button visuals
+                data = set_bytes("0042DB44", "391DD8C69400741F")  # enable gray-out
+                data = set_bytes("0042C2F0", "85C9742B")  # disable hover effect
+
+                # disable highlights
+                data = set_bytes("00418B01", "39902C0100007522")
+
+                # disable highlight workarounds
+                data = set_bytes("00426371", "3990F80100007408")  # undiscovered ghosts
+                data = set_bytes("00426379", "3990300100007408")  # hidden ghosts
 
     def setDisableMadnessImmunity(self):
         if self.sender().isEnabled():
@@ -1165,10 +1191,20 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         valA = get_bytes("0042C5EE", 12)
         valB = get_bytes("0042C612", 2)
+        valC = get_bytes("0042DB44", 8)
+        valD = get_bytes("0042C2F0", 4)
+        valE = get_bytes("00418B01", 8)
+        valF = get_bytes("00426371", 8)
+        valG = get_bytes("00426379", 8)
         if valA == "909090909090909090909090" and valB == "EB0D":
-            self.checkBox10.setChecked(True)
-            retStr = "OK True"
-        elif valA == "3935D8C694000F840A010000" and valB == "750D":
+            if valC == "9090909090909090" and valD == "90909090" and valE == "9090909090909090" and valF == "9090909090909090" and valG == "909090909090EB08":
+                self.checkBox10.setChecked(True)
+                retStr = "OK True"
+            else:
+                self.checkBox10.setToolTip(Constants.FEATURE_DISABLED)
+                self.checkBox10.setEnabled(False)
+                retStr = "OUTDATED Movable Restless Ghosts"
+        elif valA == "3935D8C694000F840A010000" and valB == "750D" and valC == "391DD8C69400741F" and valD == "85C9742B" and valE == "39902C0100007522" and valF == "3990F80100007408" and valG == "3990300100007408":
             self.checkBox10.setChecked(False)
             retStr = "OK False"
         else:
@@ -1436,7 +1472,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             label_text = ""
             label2_text = ""
 
-            if stateList[1].startswith("OUT") or stateList[2].startswith("OUT") or stateList[3].startswith("OUT") or stateList[6].startswith("OUT"):
+            if stateList[1].startswith("OUT") or stateList[2].startswith("OUT") or stateList[3].startswith("OUT") or stateList[6].startswith("OUT") or stateList[9].startswith("OUT"):
                 dialog_length += 50
                 label_text = Constants.OUTDATED
                 label2_text = Constants.OUTDATED_SOLUTION

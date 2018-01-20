@@ -1012,16 +1012,16 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         if valA == "D8E090909090" and valB == "D8C890909090":
             if valC == "6800008E3E" and valD == "680000303E" and valE == "680000583E" and valF == "6A00":
                 self.checkBox1.setChecked(True)
-                retStr = "OK True"
+                retStr = ("OK", True, "")
             else:
                 self.checkBox1.setToolTip(Constants.FEATURE_DISABLED)
                 self.checkBox1.setEnabled(False)
-                retStr = "OUTDATED Unlimited Plasm"
+                retStr = ("OUTDATED", "Unlimited Plasm", "v0.3.7")
         elif valA == "D80588019500" and valB == "D82588019500" and valC == "680000543E" and valD == "680000303E" and valE == "680000103E" and valF == "6A03":
             self.checkBox1.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Unlimited Plasm"
+            retStr = ("FAILED", "Unlimited Plasm", "")
 
         self.checkBox1.blockSignals(False)
         return retStr
@@ -1038,15 +1038,15 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         if valD == "00" and valE == "00" and valF == "00":
             self.checkBox2.setToolTip(Constants.FEATURE_DISABLED)
             self.checkBox2.setEnabled(False)
-            retStr = "OUTDATED Unlimited Goldplasm"
+            retStr = ("OUTDATED", "Unlimited Goldplasm", "v0.3.7")
         elif valA == "EB43" and valB == "EB6B" and valC == "EB6B":
             self.checkBox2.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "7743" and valB == "776B" and valC == "776B":
             self.checkBox2.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Unlimited Goldplasm"
+            retStr = ("FAILED", "Unlimited Goldplasm", "")
 
         self.checkBox2.blockSignals(False)
         return retStr
@@ -1064,15 +1064,15 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         if valG == "B80000000090":
             self.checkBox3.setToolTip(Constants.FEATURE_DISABLED)
             self.checkBox3.setEnabled(False)
-            retStr = "OUTDATED Power Recharge"
+            retStr = ("OUTDATED", "Instant Power Recharge", "v0.3.7")
         elif valA == "00000000" and valB == "00000000" and valC == "00000000" and valD == "00000000" and valE == "00000000" and valF == "00000000":
             self.checkBox3.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "0F000000" and valB == "1E000000" and valC == "3C000000" and valD == "5A000000" and valE == "96000000" and valF == "2C010000":
             self.checkBox3.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Instant Power Recharge"
+            retStr = ("FAILED", "Instant Power Recharge", "")
 
         self.checkBox3.blockSignals(False)
         return retStr
@@ -1084,12 +1084,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         valB = get_bytes("00428F42", 22)
         if valA == "EB41" and valB == "90909090909090908B87F00000009090909090909090":
             self.checkBox4.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "7441" and valB == "85C90F84210100008B87F000000085C00F8513010000":
             self.checkBox4.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Responsive Empty Portraits"
+            retStr = ("FAILED", "Responsive Empty Portraits", "")
 
         self.checkBox4.blockSignals(False)
         return retStr
@@ -1106,15 +1106,15 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         if valF == "EB":
             self.checkBox5.setToolTip(Constants.FEATURE_DISABLED)
             self.checkBox5.setEnabled(False)
-            retStr = "OUTDATED Ghost Cloning"
+            retStr = ("OUTDATED", "Ghost Cloning", "v0.3.7")
         elif valA == "83F8037526" and valB == "00" and valC == "00" and valD == "00" and valE == "00":
             self.checkBox5.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "83F8027426" and valB == "01" and valC == "01" and valD == "01" and valE == "01":
             self.checkBox5.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Ghost Cloning"
+            retStr = ("FAILED", "Ghost Cloning", "")
 
         self.checkBox5.blockSignals(False)
         return retStr
@@ -1125,12 +1125,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         val = get_bytes("004CB01B", 2)
         if val == "9090":
             self.checkBox6.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif val == "743F":
             self.checkBox6.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Inside/Outside On All Ghosts"
+            retStr = ("FAILED", "Inside/Outside On All Ghosts", "")
 
         self.checkBox6.blockSignals(False)
         return retStr
@@ -1144,12 +1144,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         valD = get_bytes("0060867F", 2)
         if valA == "909090909090" and valB == "EB22" and valC == "EB1C" and valD == "EB1B":
             self.checkBox7.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "0F8486000000" and valB == "7422" and valC == "741C" and valD == "741B":
             self.checkBox7.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Ignore Wards"
+            retStr = ("FAILED", "Ignore Wards", "")
 
         self.checkBox7.blockSignals(False)
         return retStr
@@ -1160,12 +1160,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         val = get_bytes("0060139E", 5)
         if val == "6860029000":
             self.checkBox8.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif val == "68B0FF8F00":
             self.checkBox8.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Disable Fire Extinguishers"
+            retStr = ("FAILED", "Disable Fire Extinguishers", "")
 
         self.checkBox8.blockSignals(False)
         return retStr
@@ -1176,12 +1176,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         val = get_bytes("0047C332", 8)
         if val == "9090909090909090":
             self.checkBox9.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif val == "39B7880000007407":
             self.checkBox9.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Fetter Sharing"
+            retStr = ("FAILED", "Fetter Sharing", "")
 
         self.checkBox9.blockSignals(False)
         return retStr
@@ -1199,16 +1199,16 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         if valA == "909090909090909090909090" and valB == "EB0D":
             if valC == "9090909090909090" and valD == "90909090" and valE == "9090909090909090" and valF == "9090909090909090" and valG == "909090909090EB08":
                 self.checkBox10.setChecked(True)
-                retStr = "OK True"
+                retStr = ("OK", True, "")
             else:
                 self.checkBox10.setToolTip(Constants.FEATURE_DISABLED)
                 self.checkBox10.setEnabled(False)
-                retStr = "OUTDATED Movable Restless Ghosts"
+                retStr = ("OUTDATED", "Movable Restless Ghosts", "v0.4.0")
         elif valA == "3935D8C694000F840A010000" and valB == "750D" and valC == "391DD8C69400741F" and valD == "85C9742B" and valE == "39902C0100007522" and valF == "3990F80100007408" and valG == "3990300100007408":
             self.checkBox10.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Movable Restless Ghosts"
+            retStr = ("FAILED", "Movable Restless Ghosts", "")
 
         self.checkBox10.blockSignals(False)
         return retStr
@@ -1223,12 +1223,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         valE = get_bytes("005481FC", 5)
         if valA == "9090909090" and valB == "9090909090" and valC == "9090909090" and valD == "9090909090" and valE == "9090909090":
             self.checkBox11.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "A33C588D00" and valB == "A324838D00" and valC == "A39CAB8D00" and valD == "A3D4618D00" and valE == "A32C008E00":
             self.checkBox11.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Disable Madness Immunity"
+            retStr = ("FAILED", "Disable Madness Immunity", "")
 
         self.checkBox11.blockSignals(False)
         return retStr
@@ -1240,12 +1240,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         valB = get_bytes("0047ED60", 6)
         if valA == "B8010000009090" and valB == "B80100000090":
             self.checkBox12.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "8B84B7FC000000" and valB == "8B81F8000000":
             self.checkBox12.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Uncover Fears"
+            retStr = ("FAILED", "Uncover Fears", "")
 
         self.checkBox12.blockSignals(False)
         return retStr
@@ -1257,12 +1257,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         valB = get_bytes("008DC658", 1)
         if valA == "909090909090":
             self.checkBox13.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "891524C78D00" and valB == "00":
             self.checkBox13.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Unlock Missing Fears"
+            retStr = ("FAILED", "Unlock Missing Fears", "")
 
         self.checkBox13.blockSignals(False)
         return retStr
@@ -1273,12 +1273,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         val = get_bytes("00775CC9", 6)
         if val == "E92501000090":
             self.checkBox14.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif val == "0F8524010000":
             self.checkBox14.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Disable Calming Effects"
+            retStr = ("FAILED", "Disable Calming Effects", "")
 
         self.checkBox14.blockSignals(False)
         return retStr
@@ -1290,12 +1290,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         valB = get_bytes("008DC72C", 1)
         if valA == "9090909090":
             self.checkBox15.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "A32CC78D00" and valB == "00":
             self.checkBox15.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Unlock Extra Fears"
+            retStr = ("FAILED", "Unlock Extra Fears", "")
 
         self.checkBox15.blockSignals(False)
         return retStr
@@ -1307,12 +1307,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         valB = get_bytes("0057C2C9", 2)
         if valA == "6A02" and valB == "6A02":
             self.checkBox16.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "6A09" and valB == "6A09":
             self.checkBox16.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Fix Cold Phobia"
+            retStr = ("FAILED", "Fix Cold Phobia", "")
 
         self.checkBox16.blockSignals(False)
         return retStr
@@ -1344,12 +1344,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         if valA == valB == valC == valD:
             level = int(valA, 16) + 1
             self.comboBox_7.setCurrentIndex(level)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "00" and valB == "03" and valC == "02" and valD == "01":
             self.comboBox_7.setCurrentIndex(0)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Global Ghost Level"
+            retStr = ("FAILED", "Global Ghost Level", "")
 
         self.comboBox_7.blockSignals(False)
         return retStr
@@ -1363,12 +1363,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         valD = get_bytes("0090E95C", 4)
         if valA == "00000000" and valB == "00000000" and valC == "00000000" and valD == "00000000":
             self.checkBox18.setChecked(True)
-            retStr = "OK True"
+            retStr = ("OK", True, "")
         elif valA == "FEFFFFFF" and valB == "FEFFFFFF" and valC == "FEFFFFFF" and valD == "FEFFFFFF":
             self.checkBox18.setChecked(False)
-            retStr = "OK False"
+            retStr = ("OK", False, "")
         else:
-            retStr = "FAILED Continuous Power Recasting"
+            retStr = ("FAILED", "Continuous Power Recasting", "")
 
         self.checkBox18.blockSignals(False)
         return retStr
@@ -1459,28 +1459,31 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         stateList.append(self.getState_UnlockMissingFears())
 
         text = ""
-        fail_counter = 0
+        outdated_counter = 0
+        failed_counter = 0
+
         for state in stateList:
-            if not state.startswith("OK"):
-                text += state.replace(" ", "\t", 1)
-                text += "\n"
-                if state.startswith("FAIL"):
-                    fail_counter += 1
+            if state[0] == "OUTDATED":
+                text += "%s\t%s\t%s\n" % (state[0], state[1].ljust(28), state[2])
+                outdated_counter += 1
+            elif state[0] == "FAILED":
+                text += "%s\t%s\n" % (state[0], state[1])
+                failed_counter += 1
 
         if text != "":
             dialog_length = 300
             label_text = ""
             label2_text = ""
 
-            if stateList[1].startswith("OUT") or stateList[2].startswith("OUT") or stateList[3].startswith("OUT") or stateList[6].startswith("OUT") or stateList[9].startswith("OUT"):
+            if outdated_counter > 0:
                 dialog_length += 50
                 label_text = Constants.OUTDATED
                 label2_text = Constants.OUTDATED_SOLUTION
 
-            if fail_counter == Constants.NO_OF_CHECKS:
+            if failed_counter == Constants.NO_OF_CHECKS:
                 label_text = Constants.INVALID
                 label2_text = Constants.INVALID_SOLUTION
-            elif fail_counter > 0:
+            elif failed_counter > 0:
                 if label_text == "" and label2_text == "":
                     dialog_length += 50
                     label_text += Constants.FAILED

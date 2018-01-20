@@ -68,7 +68,7 @@ class Constants:
                        "Start over with a clean, unmodified .exe."
     INVALID = "All checks have FAILED - opened file is not a valid .exe"
     FAILED = "Some checks have FAILED - there are features in undefined state"
-    OUTDATED = "Some features are OUTDATED - opened file was modified in an earlier version of MiniEditor"
+    OUTDATED = "Some features are OUTDATED - opened file was modified in an older version of MiniEditor"
     INVALID_SOLUTION = "Solutions:\n" \
                        "1)\n" \
                        "open a valid .exe"
@@ -80,7 +80,7 @@ class Constants:
                       "ignore it if you made any custom changes by yourself "
     OUTDATED_SOLUTION = "Solutions for OUTDATED:\n" \
                         "1)\n" \
-                        "Open the .exe in MiniEditor version 0.3.7 or earlier, disable the offending features and save." \
+                        "Open the .exe in specified version of MiniEditor (or older), disable the offending feature and save." \
                         " The new .exe should work fine.\n" \
                         "2)\n" \
                         "Start over with a clean, unmodified .exe."

@@ -119,9 +119,6 @@ class Constants:
                     "\n\nWARNING: selecting this option sets the terror value of all mortals to 0." \
                     "\nUnless some terror is assigned the starting plasm will also" \
                     "\nequal 0 causing an automatic loss at the start of scenario."
-    GLOBAL_GHOST_LEVEL = "Affects all scenarios. \n\nChanges the training level of all restless ghosts" \
-                         "\nand all ghosts you receive before each act." \
-                         "\n\nNewly freed ghosts will also have that level" \
-                         "\n(but previously freed ghosts will not be affected)." \
-                         "\n\nNOTE: to change the level of starting ghosts" \
-                         "\nyou will have to start a new game."
+    GLOBAL_GHOST_LEVEL = "Affects all scenarios. \n\nChanges the training level of all ghosts." \
+                         "\n\nGhosts will continue to gain experience but" \
+                         "\nthey cannot level up while this option is enabled."

@@ -14,7 +14,6 @@ mortals = []
 activeMortal = None
 _scenario = None
 activeScenario = None
-goldplasm_costs = [50, 75, 100, 250, 500, 750, 1000, 1500, 2000, 2500]
 
 
 def open_file(filepath):
@@ -528,29 +527,35 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                     global data
                     data = set_bytes(address, value)
 
-    # there are 47 ghosts but for some reason raindancer is at 48, wavemaster is at 50, stormtalon is at 51
     def setGhostLevel(self):
         if self.sender().isEnabled():
             global data
-            level = self.sender().currentIndex() - 1
-            checked = level != -1
+            chosen_level = self.sender().currentIndex() - 1
+            checked = chosen_level != -1
 
             data_list = list(data)
+            level_list = []
 
             mod_file = open("data\mods\Global Ghost Level", "rb")
             byLine = mod_file.read().split("\n")
             mod_file.close()
 
             for line in byLine:
-                changes = line.split()
-                code_address = changes[0]
-                code_bytes = ""
+                level = line.split()
+                code_address = level[0]
+                code_bytes = level[1]
+                level_list.append([code_address, code_bytes])
 
-                if checked:
-                    code_bytes = '{:02x}'.format(level)
-                else:
-                    code_bytes = changes[1]
+            if checked:
+                chosen_bytes = level_list[chosen_level][1]
 
+                for level in level_list:
+                    code_bytes = level[1]
+                    level[1] = chosen_bytes[:8] + code_bytes[8:16] + chosen_bytes[16:]
+
+            for level in level_list:
+                code_address = level[0]
+                code_bytes = level[1]
                 index = jump_to_address(code_address)
                 data_list[index:index + len(code_bytes)] = code_bytes
 
@@ -1337,15 +1342,24 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def getState_GlobalGhostLevel(self):
         self.comboBox_7.blockSignals(True)
 
-        valA = get_bytes("008F1F68", 1)
-        valB = get_bytes("008F31F8", 1)
-        valC = get_bytes("008F4AB8", 1)
-        valD = get_bytes("008F69A8", 1)
-        if valA == valB == valC == valD:
+        valA = get_bytes("008F8928", 1)
+        valB = get_bytes("008F89C8", 1)
+        valC = get_bytes("008F892D", 12)
+        valD = get_bytes("008F89CD", 12)
+        valE = get_bytes("008F1F68", 1)  # old
+        valF = get_bytes("008F31F8", 1)  # old
+        valG = get_bytes("008F4AB8", 1)  # old
+
+        if valE == valF == valG:
+            self.comboBox_7.setToolTip(Constants.FEATURE_DISABLED)
+            self.comboBox_7.setEnabled(False)
+            retStr = ("OUTDATED", "Global Ghost Level", "v0.4.0")
+        elif valA == valB and valC == valD:
             level = int(valA, 16) + 1
             self.comboBox_7.setCurrentIndex(level)
             retStr = ("OK", True, "")
-        elif valA == "00" and valB == "03" and valC == "02" and valD == "01":
+        elif valA == "00" and valB == "08" and valC == "000000000000000A00000028" \
+                and valD == "0000004F0000004F0000004F":
             self.comboBox_7.setCurrentIndex(0)
             retStr = ("OK", False, "")
         else:

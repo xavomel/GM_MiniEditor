@@ -21,7 +21,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(800, 600)
+        MainWindow.resize(800, 616)
         MainWindow.setToolTip(_fromUtf8(""))
         MainWindow.setStatusTip(_fromUtf8(""))
         MainWindow.setWhatsThis(_fromUtf8(""))
@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
         #self.horizontalSlider_4.setStyleSheet("background: rgb(223, 0, 41)")
 
         self.verticalLayoutWidget_3 = QtGui.QWidget(self.centralwidget)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 538)) # increase last param by 23 for each new checkbox
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 561)) # increase last param by 23 for each new checkbox
         self.verticalLayoutWidget_3.setObjectName(_fromUtf8("verticalLayoutWidget_3"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
@@ -211,6 +211,11 @@ class Ui_MainWindow(object):
         self.checkBox13.setToolTip(Constants.UNLOCK_MISSING_FEARS)
         self.checkBox13.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox13)
+        self.checkBox19 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
+        self.checkBox19.setObjectName(_fromUtf8("checkBox_19"))
+        self.checkBox19.setToolTip(Constants.GHOST_RETRAINING)
+        self.checkBox19.setEnabled(False)
+        self.verticalLayout_3.addWidget(self.checkBox19)
 
         self.comboBox_4 = QtGui.QComboBox(self.verticalLayoutWidget)
         self.comboBox_4.setObjectName(_fromUtf8("comboBox_4"))
@@ -407,6 +412,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.checkBox16, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setFixColdPhobia)
         QtCore.QObject.connect(self.checkBox17, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setManualTerror)
         QtCore.QObject.connect(self.checkBox18, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setContinuousPowerRecasting)
+        QtCore.QObject.connect(self.checkBox19, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setGhostRetraining)
         QtCore.QObject.connect(self.comboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setConciousFear)
         QtCore.QObject.connect(self.comboBox_2, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setUnconciousFear)
         QtCore.QObject.connect(self.comboBox_6, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setExtraFear)
@@ -449,6 +455,7 @@ class Ui_MainWindow(object):
         self.checkBox16.setText(_translate("MainWindow", "Fix Cold Phobia", None))
         self.checkBox17.setText(_translate("MainWindow", "Manual Terror", None))
         self.checkBox18.setText(_translate("MainWindow", "Continuous Power Recasting", None))
+        self.checkBox19.setText(_translate("MainWindow", "Ghost Retraining", None))
         self.comboBox.setStatusTip(_translate("MainWindow", "Concious fear", None))
         self.comboBox.setItemText(0, _translate("MainWindow", "none", None))
         self.comboBox.setItemText(1, _translate("MainWindow", "blood", None))

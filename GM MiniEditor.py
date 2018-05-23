@@ -1005,6 +1005,38 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
             data = "".join(data_list)
 
+    # code injection replaces some of the Trainspooking code
+    # causing the cinematic after What Lies Over the Cuckoos Nest to no longer be displayed
+    def setGhostRetraining(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
+            if checked:
+                # enable code injection jump
+                data = set_bytes("004ADB49", "E932F10900")
+
+                # enable code injection
+                data = set_bytes("0054CC80", "83FE0A0F8DED0EF6FF8D94B5A80000008B02C1E0058B8018D"
+                                             "9900039C80F85AB0EF6FF8B4C2414890AE9C80EF6FF90909090")
+
+                # enable UI changes
+                data = set_bytes("00471135", "00")
+                data = set_bytes("0047105B", "9090")
+                data = set_bytes("00471069", "9090")
+            else:
+                # disable code injection jump
+                data = set_bytes("004ADB49", "83FE0A7D28")
+
+                # disable code injection
+                data = set_bytes("0054CC80", "81EC00040000568BF1E802AEECFF6A00687103000068200F8"
+                                             "E00E821F7F6FF83C40450E868ECF6FFE82359F6FFA140808C00")
+
+                # disable UI changes
+                data = set_bytes("00471135", "01")
+                data = set_bytes("0047105B", "7533")
+                data = set_bytes("00471069", "7413")
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -1387,6 +1419,30 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox18.blockSignals(False)
         return retStr
 
+    def getState_GhostRetraining(self):
+        self.checkBox19.blockSignals(True)
+
+        valA = get_bytes("004ADB49", 5)
+        valB = get_bytes("0054CC80", 50)
+        valC = get_bytes("00471135", 1)
+        valD = get_bytes("0047105B", 2)
+        valE = get_bytes("00471069", 2)
+        if valA == "E932F10900" and valB == "83FE0A0F8DED0EF6FF8D94B5A80000008B02C1E0058B8018D" \
+                                            "9900039C80F85AB0EF6FF8B4C2414890AE9C80EF6FF90909090" \
+                and valC == "00" and valD == "9090" and valE == "9090":
+            self.checkBox19.setChecked(True)
+            retStr = ("OK", True, "")
+        elif valA == "83FE0A7D28" and valB == "81EC00040000568BF1E802AEECFF6A00687103000068200F8" \
+                                              "E00E821F7F6FF83C40450E868ECF6FFE82359F6FFA140808C00" \
+                and valC == "01" and valD == "7533" and valE == "7413":
+            self.checkBox19.setChecked(False)
+            retStr = ("OK", False, "")
+        else:
+            retStr = ("FAILED", "Ghost Retraining", "")
+
+        self.checkBox19.blockSignals(False)
+        return retStr
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -1450,6 +1506,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox15.setEnabled(True)
         self.checkBox16.setEnabled(True)
         self.checkBox18.setEnabled(True)
+        self.checkBox19.setEnabled(True)
 
     def integrity_check(self):
         stateList = list()
@@ -1471,6 +1528,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         stateList.append(self.getState_DisableFireExtinguishers())
         stateList.append(self.getState_DisableMadnessImmunity())
         stateList.append(self.getState_UnlockMissingFears())
+        stateList.append(self.getState_GhostRetraining())
 
         text = ""
         outdated_counter = 0

@@ -55,8 +55,8 @@ class Scenario:
 
 
 class Constants:
-    NO_OF_CHECKS = 18
-    VERSION = "Ghost Master MiniEditor v0.4.1"
+    NO_OF_CHECKS = 19
+    VERSION = "Ghost Master MiniEditor v0.4.2"
     FEATURE_DISABLED = "This feature has been disabled.\n\n" \
                        "REASON:\n" \
                        "Outdated version of this feature was detected in the .exe.\n\n" \
@@ -122,3 +122,7 @@ class Constants:
     GLOBAL_GHOST_LEVEL = "Affects all scenarios. \n\nChanges the training level of all ghosts." \
                          "\n\nGhosts will continue to gain experience but" \
                          "\nthey cannot level up while this option is enabled."
+    GHOST_RETRAINING = "Affects all scenarios." \
+                       "\n\nLearned powers can be repicked in the Ghoul Room for the original price." \
+                       "\n\nWARNING: Trainspooking cinematic will no longer be displayed after" \
+                       "\nWhat Lies Over the Cuckoos Nest is completed for the first time."

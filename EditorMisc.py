@@ -56,7 +56,7 @@ class Scenario:
 
 class Constants:
     NO_OF_CHECKS = 19
-    VERSION = "Ghost Master MiniEditor v0.4.2"
+    VERSION = "Ghost Master MiniEditor v0.4.2b"
     FEATURE_DISABLED = "This feature has been disabled.\n\n" \
                        "REASON:\n" \
                        "Outdated version of this feature was detected in the .exe.\n\n" \

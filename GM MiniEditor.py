@@ -920,10 +920,44 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 index = jump_to_address(code_address)
                 data_list[index:index + len(code_bytes)] = code_bytes
 
+            if not checked:
+                self.reset_extra_fears(data_list)
+
             data = "".join(data_list)
             index = self.comboBox_4.currentIndex()
             self.comboBox_4.setCurrentIndex(0)
             self.comboBox_4.setCurrentIndex(index)
+
+    def reset_extra_fears(self, data_list):
+        scenario_dirs = list()
+        data_folder_content = os.listdir(data_folder_path)
+        for content in data_folder_content:
+            content_path = data_folder_path + "\\" + content
+
+            if content.startswith("scenario") and os.path.isdir(content_path):
+                scenario_dirs.append(content_path)
+
+        for path in scenario_dirs:
+            mortals_path = path + "\mortals"
+
+            if os.path.isfile(mortals_path):
+                with open(mortals_path, "rb") as mortals_file:
+                    raw = mortals_file.read()
+                    byMortal = raw.split("\n")
+
+                    for mortal in byMortal:
+                        addresses = mortal.split()
+
+                        if len(addresses) >= 2:
+                            extra_fear_address = addresses[2]
+
+                            if extra_fear_address != "NULL":
+                                if extra_fear_address.startswith("?"):
+                                    extra_fear_address = "0" + extra_fear_address[1:]
+
+                                code_bytes = "00"
+                                index = jump_to_address(extra_fear_address)
+                                data_list[index:index + len(code_bytes)] = code_bytes
 
     def setFixColdPhobia(self):
         if self.sender().isEnabled():

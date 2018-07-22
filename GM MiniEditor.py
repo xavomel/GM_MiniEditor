@@ -1071,6 +1071,16 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 data = set_bytes("0047105B", "7533")
                 data = set_bytes("00471069", "7413")
 
+    def setExplorationMode(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
+            if checked:
+                data = set_bytes("0078EFCD", "EB2E")
+            else:
+                data = set_bytes("0078EFCD", "742E")
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -1477,6 +1487,22 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox19.blockSignals(False)
         return retStr
 
+    def getState_ExplorationMode(self):
+        self.checkBox20.blockSignals(True)
+
+        valA = get_bytes("0078EFCD", 2)
+        if valA == "EB2E":
+            self.checkBox20.setChecked(True)
+            retStr = ("OK", True, "")
+        elif valA == "742E":
+            self.checkBox20.setChecked(False)
+            retStr = ("OK", False, "")
+        else:
+            retStr = ("FAILED", "Exploration Mode", "")
+
+        self.checkBox20.blockSignals(False)
+        return retStr
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -1541,6 +1567,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox16.setEnabled(True)
         self.checkBox18.setEnabled(True)
         self.checkBox19.setEnabled(True)
+        self.checkBox20.setEnabled(True)
 
     def integrity_check(self):
         stateList = list()
@@ -1563,6 +1590,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         stateList.append(self.getState_DisableMadnessImmunity())
         stateList.append(self.getState_UnlockMissingFears())
         stateList.append(self.getState_GhostRetraining())
+        stateList.append(self.getState_ExplorationMode())
 
         text = ""
         outdated_counter = 0

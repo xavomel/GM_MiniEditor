@@ -56,8 +56,8 @@ class Scenario:
 
 class Constants:
     NULL = "NULL"
-    NO_OF_CHECKS = 19
-    VERSION = "Ghost Master MiniEditor v0.4.2b"
+    NO_OF_CHECKS = 20
+    VERSION = "Ghost Master MiniEditor v0.4.3"
     FEATURE_DISABLED = "This feature has been disabled.\n\n" \
                        "REASON:\n" \
                        "Outdated version of this feature was detected in the .exe.\n\n" \
@@ -127,3 +127,14 @@ class Constants:
                        "\n\nLearned powers can be repicked in the Ghoul Room for the original price." \
                        "\n\nWARNING: Trainspooking cinematic will no longer be displayed after" \
                        "\nWhat Lies Over the Cuckoos Nest is completed for the first time."
+    EXPLORATION_MODE = "WARNING: not suitable for normal play." \
+                       "\n\nAffects all scenarios." \
+                       "\n\nEnables free camera that is slightly bothersome to use." \
+                       "\n\nManeuver the camera by:" \
+                       "\n1) Rotating it to point in desired direction" \
+                       "\n    (move the mouse while holding it's right button)." \
+                       "\n\n2) Moving it in desired direction by using keyboard arrows" \
+                       "\n    (forward will not always go forward, experiment!)." \
+                       "\n\nNOTE: press 1 to return camera to starting position" \
+                       "\nNOTE: lower camera speed in options to 20 if it's hard to control" \
+                       "\nNOTE: some objects may be invisible if you are not on that floor"

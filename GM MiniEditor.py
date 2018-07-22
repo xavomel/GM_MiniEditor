@@ -237,14 +237,14 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
         if self.load_scenario(scenario_folder_path + "\scenario") != -1:
             address = _scenario.max_haunters
-            if address != "NULL":
+            if address != Constants.NULL:
                 self.spinBox.setValue(int(get_bytes(address, 1), 16))
                 self.spinBox.setEnabled(True)
                 self.spinBox.setHidden(False)
 
             address = _scenario.mean_terror_push[0]
-            if address != "NULL":
-                if _scenario.mean_terror_call[0] != "NULL":
+            if address != Constants.NULL:
+                if _scenario.mean_terror_call[0] != Constants.NULL:
                     self.checkBox17.setEnabled(True)
                     self.checkBox17.setHidden(False)
                     self.getState_ManualTerror(_scenario)
@@ -266,7 +266,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                     self.lineEdit.setHidden(False)
 
             address = _scenario.mood[0]
-            if address != "NULL":
+            if address != Constants.NULL:
                 self.comboBox_5.setCurrentIndex(int(get_bytes(address, 1), 16) - 39)
                 self.comboBox_5.setEnabled(True)
                 self.comboBox_5.setHidden(False)
@@ -289,7 +289,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             activeMortal = mortal_id
             mortal = mortals[mortal_id - 1]
             text = ("Mortal %d" % mortal_id)
-            if mortal.name != "NULL":
+            if mortal.name != Constants.NULL:
                 text += " : %s" % mortal.name
             self.label.setText(text)
         else:
@@ -297,7 +297,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             mortal = Mortal()
             self.label.setText("Choose a mortal")
 
-        if mortal.willpower != "NULL":
+        if mortal.willpower != Constants.NULL:
             self.horizontalSlider.setEnabled(True)
             h = get_bytes(mortal.willpower, 2).zfill(8)
             h = reverse_hex_string(h)
@@ -323,7 +323,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         else:
             self.horizontalSlider_2.setEnabled(False)
 
-        if mortal.belief != "NULL":
+        if mortal.belief != Constants.NULL:
             self.horizontalSlider_3.setEnabled(True)
             h = get_bytes(mortal.belief, 2).zfill(8)
             h = reverse_hex_string(h)
@@ -495,14 +495,14 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             data = set_bytes(address, value)
 
     def setHaunterSlots(self):
-        if _scenario and _scenario.max_haunters != "NULL":
+        if _scenario and _scenario.max_haunters != Constants.NULL:
             id = self.sender().value()
             value = '{:02x}'.format(id)
             global data
             data = set_bytes(_scenario.max_haunters, value)
 
     def setMeanTerror(self):
-        if _scenario and _scenario.mean_terror_push[0] != "NULL":
+        if _scenario and _scenario.mean_terror_push[0] != Constants.NULL:
             float_value = self.sender().value()
 
             scenario_id = self.comboBox_3.currentIndex()
@@ -522,7 +522,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             id = self.sender().currentIndex() + 39
 
             for address in _scenario.mood:
-                if address != "NULL":
+                if address != Constants.NULL:
                     value = '{:02x}'.format(id)
                     global data
                     data = set_bytes(address, value)
@@ -951,7 +951,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                         if len(addresses) >= 2:
                             extra_fear_address = addresses[2]
 
-                            if extra_fear_address != "NULL":
+                            if extra_fear_address != Constants.NULL:
                                 if extra_fear_address.startswith("?"):
                                     extra_fear_address = "0" + extra_fear_address[1:]
 

@@ -1,13 +1,13 @@
 class Mortal:
     def __init__(self):
-        self.belief = "NULL"
-        self.insanity = "NULL"
-        self.willpower = "NULL"
-        self.terror = "NULL"
-        self.fearcon = "NULL"
-        self.fearsub = "NULL"
-        self.fearext = "NULL"
-        self.name = "NULL"
+        self.belief = Constants.NULL
+        self.insanity = Constants.NULL
+        self.willpower = Constants.NULL
+        self.terror = Constants.NULL
+        self.fearcon = Constants.NULL
+        self.fearsub = Constants.NULL
+        self.fearext = Constants.NULL
+        self.name = Constants.NULL
 
     def setBelief(self, address):
         self.belief = address
@@ -36,10 +36,10 @@ class Mortal:
 
 class Scenario:
     def __init__(self):
-        self.max_haunters = "NULL"
-        self.mood = ["NULL"]
-        self.mean_terror_push = ["NULL"]
-        self.mean_terror_call = ["NULL"]
+        self.max_haunters = Constants.NULL
+        self.mood = [Constants.NULL]
+        self.mean_terror_push = [Constants.NULL]
+        self.mean_terror_call = [Constants.NULL]
 
     def setMaxHaunters(self, address):
         self.max_haunters = address
@@ -55,6 +55,7 @@ class Scenario:
 
 
 class Constants:
+    NULL = "NULL"
     NO_OF_CHECKS = 19
     VERSION = "Ghost Master MiniEditor v0.4.2b"
     FEATURE_DISABLED = "This feature has been disabled.\n\n" \

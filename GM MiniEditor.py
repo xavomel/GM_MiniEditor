@@ -11,6 +11,7 @@ import os
 data = None
 data_folder_path = os.path.dirname(os.path.abspath(sys.argv[0])) + "\data"
 mortals = []
+scripts = []
 activeMortal = None
 _scenario = None
 activeScenario = None
@@ -1081,6 +1082,22 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             else:
                 data = set_bytes("0078EFCD", "742E")
 
+    def setScript(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
+            obj_name = self.sender().objectName().split("_")
+            idx = int(obj_name[2])
+            code_address = scripts[idx][0]
+
+            if checked:
+                code_bytes = scripts[idx][1]
+                data = set_bytes(code_address, code_bytes)
+            else:
+                default_other_object_script = "68D01B9000"
+                data = set_bytes(code_address, default_other_object_script)
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -1503,6 +1520,22 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox20.blockSignals(False)
         return retStr
 
+    def getState_Scripts(self):
+        for idx, elem in enumerate(scripts):
+            checkbox = self.findChild(QtGui.QCheckBox, "checkBox_scr_%d" % idx)
+            checkbox.blockSignals(True)
+
+            code_address = elem[0]
+            code_bytes = elem[1]
+
+            valA = get_bytes(code_address, 5)
+            if valA == code_bytes:
+                checkbox.setChecked(True)
+            else:
+                checkbox.setChecked(False)
+
+            checkbox.blockSignals(False)
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -1527,6 +1560,31 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def about(self):
         self.show_message(Constants.VERSION, "created by Xavomel")
 
+    # reads data from file only once (if scripts window doesn't exist)
+    # subsequent clicks just reopen the window
+    def show_scripts_window(self):
+        if not hasattr(self, "scripts_window"):
+            mod_file = open("data\mods\Scripts", "rb")
+            byLine = mod_file.read().split("\n")
+            mod_file.close()
+
+            global scripts
+            for line in byLine:
+                changes = line.split()
+                code_address = changes[0]
+                code_bytes = changes[1]
+                script_name = changes[2]
+                comment = ""
+                if len(changes) >= 4:
+                    comment = " - " + " ".join(changes[3:])
+                scripts.append([code_address, code_bytes, script_name, comment])
+
+            self.scripts_window = ghostUI.ScriptsWindow(self)
+            self.scripts_window.setupCheckBoxes(scripts)
+            self.getState_Scripts()
+
+        self.scripts_window.show()
+
     def show_tooltip(self, sender, text):
         position = sender.mapToGlobal(QtCore.QPoint(0, 0))
         QtGui.QToolTip.showText(position, text, None)
@@ -1547,6 +1605,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
     def enable_widgets(self):
         self.actionSave.setEnabled(True)
+        self.actionScripts.setEnabled(True)
         self.pushButton_9.setEnabled(True)
         self.comboBox_7.setEnabled(True)
         self.checkBox1.setEnabled(True)

@@ -451,6 +451,11 @@ class Ui_MainWindow(object):
         self.menuMenu.addAction(self.actionAbout)
         self.menubar.addAction(self.menuMenu.menuAction())
 
+        self.actionScripts = QtGui.QAction(MainWindow)
+        self.actionScripts.setObjectName(_fromUtf8("actionScripts"))
+        self.actionScripts.setEnabled(False)
+        self.menubar.addAction(self.actionScripts)
+
     def add_status_bar(self, MainWindow):
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -564,6 +569,7 @@ class Ui_MainWindow(object):
         self.actionOpen.setText(_translate("MainWindow", "Open", None))
         self.actionSave.setText(_translate("MainWindow", "Save", None))
         self.actionAbout.setText(_translate("MainWindow", "About", None))
+        self.actionScripts.setText(_translate("MainWindow", "Scripts", None))
         self.spinBox.setStatusTip(_translate("MainWindow", "Haunter Slots", None))
         self.spinBox_2.setStatusTip(_translate("MainWindow", "Mean Terror", None))
         self.lineEdit.setStatusTip(_translate("MainWindow", "Starting Plasm (estimate)", None))
@@ -608,6 +614,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionOpen, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.open_data)
         QtCore.QObject.connect(self.actionSave, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.save_data)
         QtCore.QObject.connect(self.actionAbout, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.about)
+        QtCore.QObject.connect(self.actionScripts, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.show_scripts_window)
         QtCore.QObject.connect(self.spinBox, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.setHaunterSlots)
         QtCore.QObject.connect(self.spinBox_2, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), MainWindow.setMeanTerror)
         QtCore.QObject.connect(self.pushButton_9, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.setBytesAtAddress)
@@ -622,8 +629,10 @@ class IntegrityCheckDialog(QtGui.QDialog):
     def setupUi(self, Dialog):
         Dialog.setWindowTitle("Integrity Check")
         self.horizontalLayout = QtGui.QHBoxLayout(Dialog)
+
         self.splitter = QtGui.QSplitter(Dialog)
         self.splitter.setOrientation(QtCore.Qt.Vertical)
+
         self.label = QtGui.QLabel(self.splitter)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setWordWrap(True)
@@ -633,4 +642,36 @@ class IntegrityCheckDialog(QtGui.QDialog):
         self.label_2 = QtGui.QLabel(self.splitter)
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setWordWrap(True)
+
         self.horizontalLayout.addWidget(self.splitter)
+
+
+class ScriptsWindow(QtGui.QDialog):
+    def __init__(self, parent):
+        super(ScriptsWindow, self).__init__(parent)
+        self.setupUi(self)
+
+    def setupUi(self, Dialog):
+        Dialog.setWindowTitle("Scripts")
+        self.horizontalLayout = QtGui.QHBoxLayout(Dialog)
+
+        self.scroll_area_content = QtGui.QWidget()
+        self.scroll_area = QtGui.QScrollArea(self)
+        self.scroll_area.setWidget(self.scroll_area_content)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setFixedSize(600, 600)
+
+        self.grid_layout = QtGui.QGridLayout(self.scroll_area_content)
+
+    def setupCheckBoxes(self, scripts):
+        for idx, elem in enumerate(scripts):
+            nr = str(idx + 1).zfill(3)
+            script_name = elem[2]
+            comment = elem[3]
+            checkBox = QtGui.QCheckBox()
+            checkBox.setObjectName(_fromUtf8("checkBox_scr_%d" % idx))
+            checkBox.setText(_translate("MainWindow", "%s - %s%s" % (nr, script_name, comment), None))
+            checkBox.clicked.connect(self.parent().setScript)
+            self.grid_layout.addWidget(checkBox, idx + 1, 0)
+
+        self.horizontalLayout.addWidget(self.scroll_area)

@@ -1,57 +1,38 @@
 class Mortal:
+    ATTRIBUTES = ["fearsub", "fearcon", "fearext",
+                  "belief", "insanity", "willpower", "terror", "name"]
+
     def __init__(self):
-        self.belief = Constants.NULL
-        self.insanity = Constants.NULL
-        self.willpower = Constants.NULL
-        self.terror = Constants.NULL
-        self.fearcon = Constants.NULL
-        self.fearsub = Constants.NULL
-        self.fearext = Constants.NULL
-        self.name = Constants.NULL
+        for attr in Mortal.ATTRIBUTES:
+            setattr(self, attr, Constants.NULL)
 
-    def setBelief(self, address):
-        self.belief = address
-
-    def setInsanity(self, address):
-        self.insanity = address
-
-    def setWillpower(self, address):
-        self.willpower = address
-
-    def setTerror(self, address):
-        self.terror = address
-
-    def setFearcon(self, address):
-        self.fearcon = address
-
-    def setFearsub(self, address):
-        self.fearsub = address
-
-    def setFearext(self, address):
-        self.fearext = address
-
-    def setName(self, name):
-        self.name = name
+    def setAttributes(self, value_list):
+        for idx, value in enumerate(value_list):
+            attr = Mortal.ATTRIBUTES[idx]
+            if len(value) == 8 or attr == "name":
+                setattr(self, attr, value)
 
 
 class Scenario:
+    ATTRIBUTES = ["max_haunters", "mood", "mean_terror_push", "mean_terror_call"]
+
     def __init__(self):
-        self.max_haunters = Constants.NULL
-        self.mood = [Constants.NULL]
-        self.mean_terror_push = [Constants.NULL]
-        self.mean_terror_call = [Constants.NULL]
+        for attr in Scenario.ATTRIBUTES:
+            if attr == "max_haunters":
+                setattr(self, attr, Constants.NULL)
+            else:
+                setattr(self, attr, list(Constants.NULL))
 
-    def setMaxHaunters(self, address):
-        self.max_haunters = address
-
-    def setMood(self, address_list):
-        self.mood = list(address_list)
-
-    def setMeanTerrorPush(self, address_list):
-        self.mean_terror_push = list(address_list)
-
-    def setMeanTerrorCall(self, address_list):
-        self.mean_terror_call = list(address_list)
+    def setAttributes(self, value_list):
+        for idx, value in enumerate(value_list):
+            attr = Scenario.ATTRIBUTES[idx]
+            if attr == "max_haunters":
+                if len(value) == 8:
+                    setattr(self, attr, value)
+            else:
+                value = value.split(",")
+                if len(value[0]) == 8:
+                    setattr(self, attr, list(value))
 
 
 class Constants:

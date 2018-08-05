@@ -127,28 +127,16 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         try:
             with open(filepath, "rb") as _file:
                 raw = _file.read()
-                addresses = raw.split()
+                values = raw.split()
 
                 # file empty
                 if os.path.getsize(filepath) == 0:
                     return -1
 
-                temp = Scenario()
+                scen = Scenario()
+                scen.setAttributes(values)
 
-                j = len(addresses)
-                if j > 0:
-                    temp.setMaxHaunters(addresses[0])
-                if j > 1:
-                    addr_list = addresses[1].split(",")
-                    temp.setMood(addr_list)
-                if j > 2:
-                    addr_list = addresses[2].split(",")
-                    temp.setMeanTerrorPush(addr_list)
-                if j > 3:
-                    addr_list = addresses[3].split(",")
-                    temp.setMeanTerrorCall(addr_list)
-
-                _scenario = temp
+                _scenario = scen
 
         except IOError:
             return -1
@@ -170,28 +158,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                     return -1
 
                 for i, x in enumerate(byMortal):
-                    current = x.split()
-                    temp = Mortal()
+                    values = x.split()
 
-                    j = len(current)
-                    if j > 0 and len(current[0]) == 8:
-                        temp.setFearsub(current[0])
-                    if j > 1 and len(current[1]) == 8:
-                        temp.setFearcon(current[1])
-                    if j > 2 and len(current[2]) == 8:
-                        temp.setFearext(current[2])
-                    if j > 3 and len(current[3]) == 8:
-                        temp.setBelief(current[3])
-                    if j > 4 and len(current[4]) == 8:
-                        temp.setInsanity(current[4])
-                    if j > 5 and len(current[5]) == 8:
-                        temp.setWillpower(current[5])
-                    if j > 6 and len(current[6]) == 8:
-                        temp.setTerror(current[6])
-                    if j > 7:
-                        temp.setName(current[7])
+                    mort = Mortal()
+                    mort.setAttributes(values)
 
-                    mortals.append(temp)
+                    mortals.append(mort)
                     self.comboBox_4.addItem("")
                     self.comboBox_4.setItemText(i + 1, "Mortal %d" % (i + 1))
 

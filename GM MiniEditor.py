@@ -1493,20 +1493,30 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         return retStr
 
     def getState_Scripts(self):
+        scripts_in_undefined_state = list()
+
         for idx, elem in enumerate(scripts):
             checkbox = self.findChild(QtGui.QCheckBox, "checkBox_scr_%d" % idx)
             checkbox.blockSignals(True)
 
             code_address = elem[0]
             code_bytes = elem[1]
+            default_other_object_script = "68D01B9000"
 
             valA = get_bytes(code_address, 5)
             if valA == code_bytes:
                 checkbox.setChecked(True)
-            else:
+            elif valA == default_other_object_script:
                 checkbox.setChecked(False)
+            else:
+                script_nr = str(idx + 1).zfill(3)
+                scripts_in_undefined_state.append(script_nr)
 
             checkbox.blockSignals(False)
+
+        if scripts_in_undefined_state:
+            self.show_message("Scripts in undefined state:\n" + "\n".join(scripts_in_undefined_state),
+                              "Choose your preferred settings again \n(unless you made custom changes)")
 
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
@@ -1532,9 +1542,8 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def about(self):
         self.show_message(Constants.VERSION, "created by Xavomel")
 
-    # reads data from file only once (if scripts window doesn't exist)
-    # subsequent clicks just reopen the window
     def show_scripts_window(self):
+        # create scripts window if it doesn't exist
         if not hasattr(self, "scripts_window"):
             mod_file = open("data\mods\Scripts", "rb")
             byLine = mod_file.read().split("\n")
@@ -1553,8 +1562,8 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
             self.scripts_window = ghostUI.ScriptsWindow(self)
             self.scripts_window.setupCheckBoxes(scripts)
-            self.getState_Scripts()
 
+        self.getState_Scripts()
         self.scripts_window.show()
 
     def show_tooltip(self, sender, text):

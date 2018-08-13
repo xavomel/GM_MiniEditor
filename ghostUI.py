@@ -666,12 +666,13 @@ class ScriptsWindow(QtGui.QDialog):
     def setupCheckBoxes(self, scripts):
         for idx, elem in enumerate(scripts):
             nr = str(idx + 1).zfill(3)
-            script_name = elem[2]
+            name = elem[2]
             comment = elem[3]
+            text = "%s - %s%s" % (nr, name, comment)
             checkBox = QtGui.QCheckBox()
             checkBox.setObjectName(_fromUtf8("checkBox_scr_%d" % idx))
-            checkBox.setText(_translate("MainWindow", "%s - %s%s" % (nr, script_name, comment), None))
+            checkBox.setText(_translate("MainWindow", text, None))
             checkBox.clicked.connect(self.parent().setScript)
-            self.grid_layout.addWidget(checkBox, idx + 1, 0)
+            self.grid_layout.addWidget(checkBox, idx, 0)
 
         self.horizontalLayout.addWidget(self.scroll_area)

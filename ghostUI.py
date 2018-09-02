@@ -398,9 +398,33 @@ class Ui_MainWindow(object):
         self.horizontalSlider_3.setPageStep(0)
         self.horizontalSlider_4.setPageStep(0)
 
-        #self.horizontalSlider_2.setStyleSheet("background: rgb(238, 156, 0)")
-        #self.horizontalSlider_3.setStyleSheet("background: rgb(0, 178, 235)")
-        #self.horizontalSlider_4.setStyleSheet("background: rgb(223, 0, 41)")
+        white = "rgb(255, 255, 255)"
+        red = "rgb(238, 156, 0)"
+        orange = "rgb(0, 178, 235)"
+        blue = "rgb(223, 0, 41)"
+        self.horizontalSlider.setStyleSheet(self.custom_slider_style_sheet(white))
+        self.horizontalSlider_2.setStyleSheet(self.custom_slider_style_sheet(red))
+        self.horizontalSlider_3.setStyleSheet(self.custom_slider_style_sheet(orange))
+        self.horizontalSlider_4.setStyleSheet(self.custom_slider_style_sheet(blue))
+
+    def custom_slider_style_sheet(self, color):
+        return '''
+        QSlider::groove:horizontal {
+            background-color: ''' + color + ''';
+            border: 1px solid;
+            height: 6px;
+        }
+        QSlider::groove:horizontal:disabled {
+            background-color: transparent;
+        }
+        QSlider::handle:horizontal {
+            background-color: black;
+            margin: -16px 0;
+            width: 10px;
+        }
+        QSlider::handle:horizontal:disabled {
+            background-color: transparent;
+        }'''
 
     def add_scenario_spin_boxes(self):
         self.spinBox = QtGui.QSpinBox(self.verticalLayoutWidget_4)

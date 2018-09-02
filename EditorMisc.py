@@ -91,9 +91,9 @@ class Constants:
                            "\nbe changed (defaults to mortal's original fears)."
     DISABLE_CALMING_EFFECTS = "Affects all scenarios. \n\nPrevents mortals from calming down via" \
                               "\nnormal means or through Unearthly Calm power."
-    UNLOCK_EXTRA_FEARS = "Affects all scenarios. \n\nYou can select an additional concious fear for each mortal," \
+    UNLOCK_EXTRA_FEARS = "Affects all scenarios. \n\nYou can select an additional conscious fear for each mortal," \
                          "\nas if they were hit with Phobia power." \
-                         "\nYou can see it ingame by revealing the first concious fear."
+                         "\nYou can see it ingame by revealing the first conscious fear."
     FIX_COLD_PHOBIA = "Affects all scenarios. \n\nCold phobia exists but there are no powers of that type." \
                       "\n\nThis changes the power type of Icy Touch and Frozen Stiff" \
                       "\nfrom normal to cold so that cold phobia may be triggered."

@@ -10,11 +10,11 @@ import os
 
 data = None
 data_folder_path = os.path.dirname(os.path.abspath(sys.argv[0])) + "\data"
+scenario_dirs = []
 mortals = []
 scripts = []
 activeMortal = None
 _scenario = None
-activeScenario = None
 
 
 def open_file(filepath):
@@ -109,15 +109,26 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.setupUi(self)
 
     def find_scenarios(self):
+        global scenario_dirs
+        scenario_dirs = []
         self.resetComboBox(self.comboBox_3, "pick scenario")
         self.comboBox_3.setEnabled(True)
         data_folder_content = os.listdir(data_folder_path)
 
         index = 1
         for item in data_folder_content:
-            if item.startswith("scenario_") and os.path.isdir(data_folder_path + "\\" + item):
+            item_path = data_folder_path + "\\" + item
+            if item.startswith("scenario_") and os.path.isdir(item_path):
+                scenario_dirs.append(item)
+
+                scenario_name = item
+                for filename in os.listdir(item_path):
+                    if filename.endswith(".txt"):
+                        scenario_name = filename.replace(".txt", "")
+                        break
+
                 self.comboBox_3.addItem("")
-                self.comboBox_3.setItemText(index, item)
+                self.comboBox_3.setItemText(index, scenario_name)
                 index += 1
 
     def load_scenario(self, filepath):
@@ -164,8 +175,14 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                     mort.setAttributes(values)
 
                     mortals.append(mort)
+
+                    if mort.name != Constants.NULL:
+                        mortal_name = mort.name
+                    else:
+                        mortal_name = "Mortal %d" % (i + 1)
+
                     self.comboBox_4.addItem("")
-                    self.comboBox_4.setItemText(i + 1, "Mortal %d" % (i + 1))
+                    self.comboBox_4.setItemText(i + 1, mortal_name)
 
         except IOError:
             return -1
@@ -174,11 +191,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             return -1
 
     def scenarioChanged(self):
-        global activeScenario
-        scenario = self.sender().currentText()
+        id = self.sender().currentIndex()
 
-        if not scenario or scenario == "pick scenario":
-            activeScenario = None
+        if id == -1 or id == 0:
             self.resetComboBox(self.comboBox_4, "pick mortals")
             self.label.setText("Choose a scenario")
             self.label_2.setHidden(True)
@@ -193,17 +208,12 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.checkBox17.setHidden(True)
             return
         else:
-            activeScenario = scenario
             self.label.setText("Choose a mortal")
 
+        scenario = scenario_dirs[id - 1]
         scenario_folder_path = str(data_folder_path + "\\" + scenario)
-        self.label_2.setText(" ")
-        for filename in os.listdir(scenario_folder_path):
-            if filename.endswith(".txt"):
-                scenarioName = filename.replace(".txt", "")
-                self.label_2.setText(scenarioName)
-                self.label_2.setHidden(False)
-                break
+        self.label_2.setText("Scenario %s" % scenario[-2:].lstrip("0"))
+        self.label_2.setHidden(False)
 
         if self.load_mortals(scenario_folder_path + "\mortals") != -1:
             self.comboBox_4.setEnabled(True)

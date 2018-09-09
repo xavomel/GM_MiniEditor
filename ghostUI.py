@@ -29,11 +29,6 @@ class Ui_MainWindow(object):
         MainWindow.setAccessibleDescription(_fromUtf8(""))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.verticalLayoutWidget = QtGui.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(630, 10, 160, 80))
-        self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
 
         # central panel - label
         self.add_central_label()
@@ -68,6 +63,11 @@ class Ui_MainWindow(object):
         self.add_recommended_check_boxes()
 
         # right panel
+        self.verticalLayoutWidget = QtGui.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(630, 10, 160, 38))
+        self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
+        self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.add_mortal_combo_box()
 
         # scenario panel

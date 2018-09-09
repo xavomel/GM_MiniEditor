@@ -110,7 +110,7 @@ class Ui_MainWindow(object):
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.label_5 = QtGui.QLabel(self.gridLayoutWidget)
         self.label_5.setObjectName(_fromUtf8("label_5"))
-        self.comboBox = QtGui.QComboBox(self.gridLayoutWidget)
+        self.comboBox = CustomComboBox(self)
         self.comboBox.setObjectName(_fromUtf8("comboBox"))
         self.comboBox.addItem(_fromUtf8(""))
         self.comboBox.addItem(_fromUtf8(""))
@@ -129,7 +129,7 @@ class Ui_MainWindow(object):
         self.comboBox.addItem(_fromUtf8(""))
         self.comboBox.addItem(_fromUtf8(""))
         self.comboBox.setEnabled(False)
-        self.comboBox_2 = QtGui.QComboBox(self.gridLayoutWidget)
+        self.comboBox_2 = CustomComboBox(self)
         self.comboBox_2.setObjectName(_fromUtf8("comboBox_2"))
         self.comboBox_2.addItem(_fromUtf8(""))
         self.comboBox_2.addItem(_fromUtf8(""))
@@ -149,7 +149,7 @@ class Ui_MainWindow(object):
         self.comboBox_2.addItem(_fromUtf8(""))
         self.comboBox_2.setItemText(15, _fromUtf8(""))
         self.comboBox_2.setEnabled(False)
-        self.comboBox_6 = QtGui.QComboBox(self.gridLayoutWidget)
+        self.comboBox_6 = CustomComboBox(self)
         self.comboBox_6.setObjectName(_fromUtf8("comboBox_6"))
         self.comboBox_6.addItem(_fromUtf8(""))
         self.comboBox_6.addItem(_fromUtf8(""))
@@ -368,12 +368,12 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
         self.horizontalSlider.setEnabled(False)
         self.verticalLayout_2.addWidget(self.horizontalSlider)
-        self.horizontalSlider_4 = QtGui.QSlider(self.verticalLayoutWidget_2)
+        self.horizontalSlider_4 = CustomSlider(self)
         self.horizontalSlider_4.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider_4.setObjectName(_fromUtf8("horizontalSlider_4"))
         self.horizontalSlider_4.setEnabled(False)
         self.verticalLayout_2.addWidget(self.horizontalSlider_4)
-        self.horizontalSlider_2 = QtGui.QSlider(self.verticalLayoutWidget_2)
+        self.horizontalSlider_2 = CustomSlider(self)
         self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider_2.setObjectName(_fromUtf8("horizontalSlider_2"))
         self.horizontalSlider_2.setEnabled(False)
@@ -709,3 +709,49 @@ class ScriptsWindow(QtGui.QDialog):
             self.grid_layout.addWidget(checkBox, idx, 0)
 
         self.horizontalLayout.addWidget(self.scroll_area)
+
+
+class CustomSlider(QtGui.QSlider):
+    def __init__(self, parent):
+        self.parent = parent
+        super(CustomSlider, self).__init__(parent)
+
+    def enterEvent(self, event):
+        if not self.isEnabled():
+            name = self.objectName()
+            if not self.parent.checkBox11.isChecked() and name == "horizontalSlider_2":
+                self.parent.checkBox11.setStyleSheet("background: yellow")
+            elif not self.parent.checkBox17.isChecked() and name == "horizontalSlider_4":
+                self.parent.checkBox17.setStyleSheet("background: yellow")
+        return super(CustomSlider, self).enterEvent(event)
+
+    def leaveEvent(self, event):
+        name = self.objectName()
+        if name == "horizontalSlider_2":
+            self.parent.checkBox11.setStyleSheet("background: none")
+        elif name == "horizontalSlider_4":
+            self.parent.checkBox17.setStyleSheet("background: none")
+        return super(CustomSlider, self).enterEvent(event)
+
+
+class CustomComboBox(QtGui.QComboBox):
+    def __init__(self, parent):
+        self.parent = parent
+        super(CustomComboBox, self).__init__(parent)
+
+    def enterEvent(self, event):
+        if not self.isEnabled():
+            name = self.objectName()
+            if not self.parent.checkBox13.isChecked() and (name == "comboBox" or name == "comboBox_2"):
+                self.parent.checkBox13.setStyleSheet("background: yellow")
+            elif not self.parent.checkBox15.isChecked() and name == "comboBox_6":
+                self.parent.checkBox15.setStyleSheet("background: yellow")
+        return super(CustomComboBox, self).enterEvent(event)
+
+    def leaveEvent(self, event):
+        name = self.objectName()
+        if name == "comboBox" or name == "comboBox_2":
+            self.parent.checkBox13.setStyleSheet("background: none")
+        elif name == "comboBox_6":
+            self.parent.checkBox15.setStyleSheet("background: none")
+        return super(CustomComboBox, self).enterEvent(event)

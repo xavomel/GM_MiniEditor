@@ -12,7 +12,6 @@ data = None
 data_folder_path = os.path.dirname(os.path.abspath(sys.argv[0])) + "\data"
 scenario_dirs = []
 mortals = []
-scripts = []
 activeMortal = None
 _scenario = None
 
@@ -1070,15 +1069,20 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             checked = self.sender().isChecked()
 
             obj_name = self.sender().objectName().split("_")
-            idx = int(obj_name[2])
-            code_address = scripts[idx][0]
+            checkbox_id = obj_name[2]
 
-            if checked:
-                code_bytes = scripts[idx][1]
-                data = set_bytes(code_address, code_bytes)
-            else:
-                default_other_object_script = "68D01B9000"
-                data = set_bytes(code_address, default_other_object_script)
+            for script in self.scripts_window.scripts:
+                if checkbox_id == script[2]:
+                    code_address = script[0]
+
+                    if checked:
+                        code_bytes = script[1]
+                        data = set_bytes(code_address, code_bytes)
+                    else:
+                        default_other_object_script = "68D01B9000"
+                        data = set_bytes(code_address, default_other_object_script)
+
+                    return
 
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
@@ -1505,13 +1509,15 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def getState_Scripts(self):
         scripts_in_undefined_state = list()
 
-        for idx, elem in enumerate(scripts):
-            checkbox = self.findChild(QtGui.QCheckBox, "checkBox_scr_%d" % idx)
-            checkbox.blockSignals(True)
-
+        scripts = self.scripts_window.scripts
+        for elem in scripts:
             code_address = elem[0]
             code_bytes = elem[1]
+            checkbox_id = elem[2]
             default_other_object_script = "68D01B9000"
+
+            checkbox = self.findChild(QtGui.QCheckBox, "checkBox_scr_%s" % checkbox_id)
+            checkbox.blockSignals(True)
 
             valA = get_bytes(code_address, 5)
             if valA == code_bytes:
@@ -1519,7 +1525,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             elif valA == default_other_object_script:
                 checkbox.setChecked(False)
             else:
-                script_nr = str(idx + 1).zfill(3)
+                script_nr = checkbox_id.zfill(3)
                 scripts_in_undefined_state.append(script_nr)
 
             checkbox.blockSignals(False)
@@ -1559,8 +1565,8 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             byLine = mod_file.read().split("\n")
             mod_file.close()
 
-            global scripts
-            for line in byLine:
+            scripts = list()
+            for idx, line in enumerate(byLine):
                 changes = line.split()
                 code_address = changes[0]
                 code_bytes = changes[1]
@@ -1568,10 +1574,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
                 comment = ""
                 if len(changes) >= 4:
                     comment = " - " + " ".join(changes[3:])
-                scripts.append([code_address, code_bytes, script_name, comment])
+                scripts.append([code_address, code_bytes, str(idx), script_name, comment])
 
-            self.scripts_window = ghostUI.ScriptsWindow(self)
-            self.scripts_window.setupCheckBoxes(scripts)
+            self.scripts_window = ghostUI.ScriptsWindow(self, scripts)
 
         self.getState_Scripts()
         self.scripts_window.show()

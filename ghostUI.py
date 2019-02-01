@@ -467,25 +467,20 @@ class Ui_MainWindow(object):
 
         self.actionOpen = QtGui.QAction(MainWindow)
         self.actionOpen.setObjectName(_fromUtf8("actionOpen"))
-        self.actionOpen.setShortcut(QtGui.QKeySequence("Ctrl+Z"))
+        #self.actionOpen.setShortcut(QtGui.QKeySequence("Ctrl+Z"))
         self.actionSave = QtGui.QAction(MainWindow)
         self.actionSave.setObjectName(_fromUtf8("actionSave"))
-        self.actionSave.setShortcut(QtGui.QKeySequence("Ctrl+C"))
+        #self.actionSave.setShortcut(QtGui.QKeySequence("Ctrl+C"))
         self.actionSave.setEnabled(False)
         self.actionAbout = QtGui.QAction(MainWindow)
         self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
-
-        self.menuMenu = QtGui.QMenu(self.menubar)
-        self.menuMenu.setObjectName(_fromUtf8("menuMenu"))
-        self.menuMenu.addAction(self.actionOpen)
-        self.menuMenu.addAction(self.actionSave)
-        self.menuMenu.addAction(self.actionAbout)
-        self.menubar.addAction(self.menuMenu.menuAction())
-
         self.actionScripts = QtGui.QAction(MainWindow)
         self.actionScripts.setObjectName(_fromUtf8("actionScripts"))
         self.actionScripts.setEnabled(False)
+        self.menubar.addAction(self.actionOpen)
+        self.menubar.addAction(self.actionSave)
         self.menubar.addAction(self.actionScripts)
+        self.menubar.addAction(self.actionAbout)
 
     def add_status_bar(self, MainWindow):
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -598,7 +593,6 @@ class Ui_MainWindow(object):
         self.comboBox_7.setItemText(7, _translate("MainWindow", "global ghost level: 6", None))
         self.comboBox_7.setItemText(8, _translate("MainWindow", "global ghost level: 7", None))
         self.comboBox_7.setItemText(9, _translate("MainWindow", "global ghost level: 8", None))
-        self.menuMenu.setTitle(_translate("MainWindow", "Menu", None))
         self.actionOpen.setText(_translate("MainWindow", "Open", None))
         self.actionSave.setText(_translate("MainWindow", "Save", None))
         self.actionAbout.setText(_translate("MainWindow", "About", None))
@@ -680,35 +674,119 @@ class IntegrityCheckDialog(QtGui.QDialog):
 
 
 class ScriptsWindow(QtGui.QDialog):
-    def __init__(self, parent):
+    def __init__(self, parent, scripts):
         super(ScriptsWindow, self).__init__(parent)
+        self.scripts = scripts
         self.setupUi(self)
+        self.setupCheckBoxes()
 
     def setupUi(self, Dialog):
         Dialog.setWindowTitle("Scripts")
-        self.horizontalLayout = QtGui.QHBoxLayout(Dialog)
+        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+
+        self.pushButton_1 = QtGui.QPushButton()
+        self.pushButton_2 = QtGui.QPushButton()
+        self.pushButton_3 = QtGui.QPushButton()
+        self.pushButton_1.setObjectName(_fromUtf8("pushButton_1"))
+        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
+        self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
+        self.pushButton_1.setText(_translate("MainWindow", "Sort by id", None))
+        self.pushButton_2.setText(_translate("MainWindow", "Sort by name", None))
+        self.pushButton_3.setText(_translate("MainWindow", "Sort by comment", None))
+        self.pushButton_1.clicked.connect(self.sort_by_id)
+        self.pushButton_2.clicked.connect(self.sort_by_name)
+        self.pushButton_3.clicked.connect(self.sort_by_comment)
+
+        self.button_area_content = QtGui.QWidget()
+        self.grid_layout_1 = QtGui.QGridLayout(self.button_area_content)
+        self.grid_layout_1.addWidget(self.pushButton_1, 0, 0)
+        self.grid_layout_1.addWidget(self.pushButton_2, 0, 1)
+        self.grid_layout_1.addWidget(self.pushButton_3, 0, 2)
+
+        self.lineEdit = QtGui.QLineEdit()
+        self.pushButton_4 = QtGui.QPushButton()
+        self.pushButton_5 = QtGui.QPushButton()
+        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+        self.pushButton_5.setObjectName(_fromUtf8("pushButton_5"))
+        self.pushButton_4.setText(_translate("MainWindow", "Search", None))
+        self.pushButton_5.setText(_translate("MainWindow", "Clear", None))
+        self.pushButton_4.clicked.connect(self.search)
+        self.pushButton_5.clicked.connect(self.clear)
+
+        self.search_area_content = QtGui.QWidget()
+        self.grid_layout_2 = QtGui.QGridLayout(self.search_area_content)
+        self.grid_layout_2.addWidget(self.lineEdit, 0, 0)
+        self.grid_layout_2.addWidget(self.pushButton_4, 0, 1)
+        self.grid_layout_2.addWidget(self.pushButton_5, 0, 2)
 
         self.scroll_area_content = QtGui.QWidget()
         self.scroll_area = QtGui.QScrollArea(self)
         self.scroll_area.setWidget(self.scroll_area_content)
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setFixedSize(600, 600)
+        self.grid_layout_3 = QtGui.QGridLayout(self.scroll_area_content)
 
-        self.grid_layout = QtGui.QGridLayout(self.scroll_area_content)
+        self.verticalLayout.addWidget(self.search_area_content)
+        self.verticalLayout.addWidget(self.button_area_content)
+        self.verticalLayout.addWidget(self.scroll_area)
 
-    def setupCheckBoxes(self, scripts):
-        for idx, elem in enumerate(scripts):
-            nr = str(idx + 1).zfill(3)
-            name = elem[2]
-            comment = elem[3]
-            text = "%s - %s%s" % (nr, name, comment)
-            checkBox = QtGui.QCheckBox()
-            checkBox.setObjectName(_fromUtf8("checkBox_scr_%d" % idx))
-            checkBox.setText(_translate("MainWindow", text, None))
-            checkBox.clicked.connect(self.parent().setScript)
-            self.grid_layout.addWidget(checkBox, idx, 0)
+    def setupCheckBoxes(self):
+        for elem in self.scripts:
+            checkbox_id = elem[2]
+            name = elem[3]
+            comment = elem[4]
+            text = "%s - %s%s" % (checkbox_id.zfill(3), name, comment)
+            checkbox = QtGui.QCheckBox()
+            checkbox.setObjectName(_fromUtf8("checkBox_scr_%s" % checkbox_id))
+            checkbox.setText(_translate("MainWindow", text, None))
+            checkbox.clicked.connect(self.parent().setScript)
+            self.grid_layout_3.addWidget(checkbox)
 
-        self.horizontalLayout.addWidget(self.scroll_area)
+    def sort(self, idx, key):
+        regex = QtCore.QRegExp("checkBox_scr_\\d+")
+        checkboxes = self.findChildren(QtGui.QCheckBox, regex)
+        for checkbox in checkboxes:
+            self.grid_layout_3.removeWidget(checkbox)
+
+        reverse = self.scripts[0][idx] < self.scripts[-1][idx]
+        self.scripts.sort(key=key, reverse=reverse)
+        for elem in self.scripts:
+            checkbox_id = elem[2]
+            checkbox = self.findChild(QtGui.QCheckBox, "checkBox_scr_%s" % checkbox_id)
+            self.grid_layout_3.addWidget(checkbox)
+
+    def sort_by_id(self):
+        idx = 2
+        key = lambda x: int(x[idx])
+        self.sort(idx, key)
+
+    def sort_by_name(self):
+        idx = 3
+        key = lambda x: x[idx].lower()
+        self.sort(idx, key)
+
+    def sort_by_comment(self):
+        idx = 4
+        key = lambda x: x[idx].lower()
+        self.sort(idx, key)
+
+    def search(self):
+        search_query = self.lineEdit.text()
+
+        regex = QtCore.QRegExp("checkBox_scr_\\d+")
+        checkboxes = self.findChildren(QtGui.QCheckBox, regex)
+        for checkbox in checkboxes:
+            checkbox.setVisible(True)
+            if not checkbox.text().contains(search_query, QtCore.Qt.CaseInsensitive):
+                checkbox.setVisible(False)
+
+    def clear(self):
+        self.lineEdit.clear()
+
+        regex = QtCore.QRegExp("checkBox_scr_\\d+")
+        checkboxes = self.findChildren(QtGui.QCheckBox, regex)
+        for checkbox in checkboxes:
+            checkbox.setVisible(True)
 
 
 class CustomSlider(QtGui.QSlider):

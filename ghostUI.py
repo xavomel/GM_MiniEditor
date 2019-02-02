@@ -687,37 +687,42 @@ class ScriptsWindow(QtGui.QDialog):
         self.pushButton_1 = QtGui.QPushButton()
         self.pushButton_2 = QtGui.QPushButton()
         self.pushButton_3 = QtGui.QPushButton()
+        self.pushButton_4 = QtGui.QPushButton()
         self.pushButton_1.setObjectName(_fromUtf8("pushButton_1"))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
-        self.pushButton_1.setText(_translate("MainWindow", "Sort by id", None))
-        self.pushButton_2.setText(_translate("MainWindow", "Sort by name", None))
-        self.pushButton_3.setText(_translate("MainWindow", "Sort by comment", None))
-        self.pushButton_1.clicked.connect(self.sort_by_id)
-        self.pushButton_2.clicked.connect(self.sort_by_name)
-        self.pushButton_3.clicked.connect(self.sort_by_comment)
+        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+        self.pushButton_1.setText(_translate("MainWindow", "Sort by state", None))
+        self.pushButton_2.setText(_translate("MainWindow", "Sort by id", None))
+        self.pushButton_3.setText(_translate("MainWindow", "Sort by name", None))
+        self.pushButton_4.setText(_translate("MainWindow", "Sort by comment", None))
+        self.pushButton_1.clicked.connect(self.sort_by_state)
+        self.pushButton_2.clicked.connect(self.sort_by_id)
+        self.pushButton_3.clicked.connect(self.sort_by_name)
+        self.pushButton_4.clicked.connect(self.sort_by_comment)
 
         self.button_area_content = QtGui.QWidget()
         self.grid_layout_1 = QtGui.QGridLayout(self.button_area_content)
         self.grid_layout_1.addWidget(self.pushButton_1, 0, 0)
         self.grid_layout_1.addWidget(self.pushButton_2, 0, 1)
         self.grid_layout_1.addWidget(self.pushButton_3, 0, 2)
+        self.grid_layout_1.addWidget(self.pushButton_4, 0, 3)
 
         self.lineEdit = QtGui.QLineEdit()
-        self.pushButton_4 = QtGui.QPushButton()
         self.pushButton_5 = QtGui.QPushButton()
-        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+        self.pushButton_6 = QtGui.QPushButton()
         self.pushButton_5.setObjectName(_fromUtf8("pushButton_5"))
-        self.pushButton_4.setText(_translate("MainWindow", "Search", None))
-        self.pushButton_5.setText(_translate("MainWindow", "Clear", None))
-        self.pushButton_4.clicked.connect(self.search)
-        self.pushButton_5.clicked.connect(self.clear)
+        self.pushButton_6.setObjectName(_fromUtf8("pushButton_6"))
+        self.pushButton_5.setText(_translate("MainWindow", "Search", None))
+        self.pushButton_6.setText(_translate("MainWindow", "Clear", None))
+        self.pushButton_5.clicked.connect(self.search)
+        self.pushButton_6.clicked.connect(self.clear)
 
         self.search_area_content = QtGui.QWidget()
         self.grid_layout_2 = QtGui.QGridLayout(self.search_area_content)
         self.grid_layout_2.addWidget(self.lineEdit, 0, 0)
-        self.grid_layout_2.addWidget(self.pushButton_4, 0, 1)
-        self.grid_layout_2.addWidget(self.pushButton_5, 0, 2)
+        self.grid_layout_2.addWidget(self.pushButton_5, 0, 1)
+        self.grid_layout_2.addWidget(self.pushButton_6, 0, 2)
 
         self.scroll_area_content = QtGui.QWidget()
         self.scroll_area = QtGui.QScrollArea(self)
@@ -742,7 +747,28 @@ class ScriptsWindow(QtGui.QDialog):
             checkbox.clicked.connect(self.parent().setScript)
             self.grid_layout_3.addWidget(checkbox)
 
-    def sort(self, idx, key):
+    def sort_by_state(self):
+        states = dict()
+
+        regex = QtCore.QRegExp("checkBox_scr_\\d+")
+        checkboxes = self.findChildren(QtGui.QCheckBox, regex)
+        for checkbox in checkboxes:
+            self.grid_layout_3.removeWidget(checkbox)
+
+            obj_name = checkbox.objectName().split("_")
+            checkbox_id = str(obj_name[2])
+            states[checkbox_id] = checkbox.isChecked()
+
+        idx = 2
+        key = lambda x: states[x[idx]]
+        reverse = not states[self.scripts[0][idx]]
+        self.scripts.sort(key=key, reverse=reverse)
+        for elem in self.scripts:
+            checkbox_id = elem[2]
+            checkbox = self.findChild(QtGui.QCheckBox, "checkBox_scr_%s" % checkbox_id)
+            self.grid_layout_3.addWidget(checkbox)
+
+    def generic_sort(self, idx, key):
         regex = QtCore.QRegExp("checkBox_scr_\\d+")
         checkboxes = self.findChildren(QtGui.QCheckBox, regex)
         for checkbox in checkboxes:
@@ -758,17 +784,17 @@ class ScriptsWindow(QtGui.QDialog):
     def sort_by_id(self):
         idx = 2
         key = lambda x: int(x[idx])
-        self.sort(idx, key)
+        self.generic_sort(idx, key)
 
     def sort_by_name(self):
         idx = 3
         key = lambda x: x[idx].lower()
-        self.sort(idx, key)
+        self.generic_sort(idx, key)
 
     def sort_by_comment(self):
         idx = 4
         key = lambda x: x[idx].lower()
-        self.sort(idx, key)
+        self.generic_sort(idx, key)
 
     def search(self):
         search_query = self.lineEdit.text()

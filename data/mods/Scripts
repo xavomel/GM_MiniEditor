@@ -52,7 +52,7 @@
 004F0D3C	68502E8D00	bw_IdleAction_Meander
 004F100E	68682E8D00	bw_IdleAction_WarmUp
 004F286A	68A0C48C00	Conversation
-004F322D	68F42F8D00	trap_darkling
+004F322D	68F42F8D00	trap_darkling	"blairwisp, off: darkling cannot be summoned"
 004F3309	68D42D8D00	blair_call_to_cellar
 004F343F	68D42D8D00	blair_call_to_cellar
 004F3CFF	68A0C48C00	Conversation
@@ -143,7 +143,7 @@
 0052E392	685CA28D00	bent_cop_ambient
 0052E39E	6870A28D00	captain_bonsai
 0052E3AA	68489F8D00	police_aircon_steam
-0052E3B6	6818A18D00	us_mad_scientist
+0052E3B6	6818A18D00	us_mad_scientist	"suspects, off: proffesor won't be escorted out by the mysterious figure"
 0052E3C2	68889F8D00	Check_Prisoners
 0052E3CE	6860A38D00	Police_Witness
 0052E3DA	68C0A08D00	Police_Lineup
@@ -151,7 +151,7 @@
 0052E3F5	68A8A18D00	bluemurder_puzzle
 0052E401	680CB48D00	banzai_puzzle	"suspects, off: banzai cannot be freed but is visible"
 0052E40D	68D8A28D00	electrospasm_puzzle
-0052E419	6880A28D00	coffee_puzzle
+0052E419	6880A28D00	coffee_puzzle	"suspects, off: policewoman doesn't fall asleep"
 0052E425	6808A38D00	guard_puzzle	"suspects, off: evidence room can be entered"
 005316CB	6898C38D00	haunting101_scenario
 00531830	68E8C28D00	haunting101_tutorial
@@ -192,7 +192,7 @@
 00553969	68EC458E00	lucky_puzzle
 00553975	68D8458E00	terroreyes_puzzle
 00553B80	68645E8D00	ring_doorbell	"seance girls wait for the door to open"
-00554879	68B0478E00	play_pinball
+00554879	68B0478E00	play_pinball	"seance, off: pinball cannot be played"
 00556391	68C8498E00	finale_stopGuard
 0055B752	68544B8E00	finale_end
 0055B81E	68F04A8E00	bomb_detonates

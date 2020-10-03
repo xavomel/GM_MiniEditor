@@ -37,8 +37,8 @@ class Scenario:
 
 class Constants:
     NULL = "NULL"
-    NO_OF_CHECKS = 20
-    VERSION = "Ghost Master MiniEditor v0.4.6"
+    NO_OF_CHECKS = 21
+    VERSION = "Ghost Master MiniEditor v0.4.7"
     FEATURE_DISABLED = "This feature has been disabled.\n\n" \
                        "REASON:\n" \
                        "Outdated version of this feature was detected in the .exe.\n\n" \
@@ -119,3 +119,4 @@ class Constants:
                        "\n\nNOTE: press 1 to return camera to starting position" \
                        "\nNOTE: lower camera speed in options to 20 if it's hard to control" \
                        "\nNOTE: some objects may be invisible if you are not on that floor"
+    BENCH_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can bench restless ghosts despite the greyed-out button."

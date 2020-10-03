@@ -1084,6 +1084,20 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
                     return
 
+    def setBenchRestlessGhosts(self):
+        if self.sender().isEnabled():
+            global data
+            checked = self.sender().isChecked()
+
+            if checked:
+                data = set_bytes("0042D55A", "909090909090")
+                data = set_bytes("0042D574", "909090909090")
+                data = set_bytes("0042D580", "909090909090")
+            else:
+                data = set_bytes("0042D55A", "0F84E3000000")
+                data = set_bytes("0042D574", "0F85C9000000")
+                data = set_bytes("0042D580", "0F84BD000000")
+
     def getState_UnlimitedPlasm(self):
         self.checkBox1.blockSignals(True)
 
@@ -1534,6 +1548,24 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.show_message("Scripts in undefined state:\n" + "\n".join(scripts_in_undefined_state),
                               "Choose your preferred settings again \n(unless you made custom changes)")
 
+    def getState_BenchRestlessGhosts(self):
+        self.checkBox21.blockSignals(True)
+
+        valA = get_bytes("0042D55A", 6)
+        valB = get_bytes("0042D574", 6)
+        valC = get_bytes("0042D580", 6)
+        if valA == "909090909090" and valB == "909090909090" and valC == "909090909090":
+            self.checkBox21.setChecked(True)
+            retStr = ("OK", True, "")
+        elif valA == "0F84E3000000" and valB == "0F85C9000000" and valC == "0F84BD000000":
+            self.checkBox21.setChecked(False)
+            retStr = ("OK", False, "")
+        else:
+            retStr = ("FAILED", "Continuous Power Recasting", "")
+
+        self.checkBox21.blockSignals(False)
+        return retStr
+
     def open_data(self):
         filepath = QtGui.QFileDialog.getOpenFileName(self, 'Open file', "", "*.exe")
         if not filepath:
@@ -1623,6 +1655,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox18.setEnabled(True)
         self.checkBox19.setEnabled(True)
         self.checkBox20.setEnabled(True)
+        self.checkBox21.setEnabled(True)
 
     def integrity_check(self):
         stateList = list()
@@ -1646,6 +1679,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         stateList.append(self.getState_UnlockMissingFears())
         stateList.append(self.getState_GhostRetraining())
         stateList.append(self.getState_ExplorationMode())
+        stateList.append(self.getState_BenchRestlessGhosts())
 
         text = ""
         outdated_counter = 0

@@ -16,4 +16,7 @@ issue 3
 in ghostbreakers, changing Windwalker's powers or trying to bind him somewhere else will cause the game to crash,
 most likely because he was not meant to be used in that scenario and was left incomplete 
 (he becomes interactable after enabling Responsive Empty Portraits)
+
+SOLUTION:
+enable Bench Restless Ghosts, bench Windwalker, wait a bit then bind him
 ###

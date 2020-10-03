@@ -21,7 +21,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(800, 639)
+        MainWindow.resize(800, 662)
         MainWindow.setToolTip(_fromUtf8(""))
         MainWindow.setStatusTip(_fromUtf8(""))
         MainWindow.setWhatsThis(_fromUtf8(""))
@@ -51,7 +51,7 @@ class Ui_MainWindow(object):
 
         # left panel
         self.verticalLayoutWidget_3 = QtGui.QWidget(self.centralwidget)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 584)) # increase last param by 23 for each new checkbox
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 175, 607)) # increase last param by 23 for each new checkbox
         self.verticalLayoutWidget_3.setObjectName(_fromUtf8("verticalLayoutWidget_3"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
@@ -256,6 +256,11 @@ class Ui_MainWindow(object):
         self.checkBox10.setToolTip(Constants.MOVABLE_RESTLESS_GHOSTS)
         self.checkBox10.setEnabled(False)
         self.verticalLayout_3.addWidget(self.checkBox10)
+        self.checkBox21 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
+        self.checkBox21.setObjectName(_fromUtf8("checkBox_21"))
+        self.checkBox21.setToolTip(Constants.BENCH_RESTLESS_GHOSTS)
+        self.checkBox21.setEnabled(False)
+        self.verticalLayout_3.addWidget(self.checkBox21)
         self.checkBox7 = QtGui.QCheckBox(self.verticalLayoutWidget_3)
         self.checkBox7.setObjectName(_fromUtf8("checkBox_7"))
         self.checkBox7.setToolTip(Constants.IGNORE_WARDS)
@@ -518,6 +523,7 @@ class Ui_MainWindow(object):
         self.checkBox18.setText(_translate("MainWindow", "Continuous Power Recasting", None))
         self.checkBox19.setText(_translate("MainWindow", "Ghost Retraining", None))
         self.checkBox20.setText(_translate("MainWindow", "Exploration Mode (Alpha)", None))
+        self.checkBox21.setText(_translate("MainWindow", "Bench Restless Ghosts", None))
         self.comboBox.setStatusTip(_translate("MainWindow", "Conscious fear", None))
         self.comboBox.setItemText(0, _translate("MainWindow", "none", None))
         self.comboBox.setItemText(1, _translate("MainWindow", "blood", None))
@@ -631,6 +637,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.checkBox18, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setContinuousPowerRecasting)
         QtCore.QObject.connect(self.checkBox19, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setGhostRetraining)
         QtCore.QObject.connect(self.checkBox20, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setExplorationMode)
+        QtCore.QObject.connect(self.checkBox21, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.setBenchRestlessGhosts)
         QtCore.QObject.connect(self.comboBox, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setConciousFear)
         QtCore.QObject.connect(self.comboBox_2, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setUnconciousFear)
         QtCore.QObject.connect(self.comboBox_6, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.setExtraFear)

@@ -707,10 +707,16 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             global data
             checked = self.sender().isChecked()
 
+            combobox = self.findChild(QtGui.QComboBox, "comboBox_rea_all")
+            combobox_id = combobox.findText("ExtinguishFire")
+            combobox = self.findChild(QtGui.QComboBox, "comboBox_rea_%d" % combobox_id)
+
             if checked:
-                data = set_bytes("0060139E", "6860029000")  # ReactionScream
+                new_id = combobox.findText("Scream")
+                combobox.setCurrentIndex(new_id)
             else:
-                data = set_bytes("0060139E", "68B0FF8F00")  # ReactionExtinguishFire
+                new_id = combobox.findText("ExtinguishFire")
+                combobox.setCurrentIndex(new_id)
 
     def setFetterSharing(self):
         if self.sender().isEnabled():
@@ -1084,6 +1090,46 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
                     return
 
+    def setReaction(self):
+        if self.sender().isEnabled():
+            global data
+
+            obj_name = self.sender().objectName().split("_")
+            combobox_id = int(obj_name[2])
+            new_id = self.sender().currentIndex()
+
+            code_address = self.reactions_window.reactions[combobox_id]["code_address"]
+            code_bytes = self.reactions_window.reactions[new_id]["code_bytes"]
+            data = set_bytes(code_address, code_bytes)
+
+            extinguish_fire_id = self.sender().findText("ExtinguishFire")
+            if combobox_id == extinguish_fire_id:
+                state = True if new_id != extinguish_fire_id else False
+                self.checkBox8.blockSignals(True)
+                self.checkBox8.setChecked(state)
+                self.checkBox8.blockSignals(False)
+
+            if combobox_id != new_id:
+                self.sender().setStyleSheet("QComboBox { color: blue }")
+            else:
+                self.sender().setStyleSheet("")
+
+    def setReactionAll(self):
+        if self.sender().isEnabled():
+            new_id = self.sender().currentIndex()
+
+            regex = QtCore.QRegExp("comboBox_rea_\\d+")
+            comboboxes = self.findChildren(QtGui.QComboBox, regex)
+            for elem in comboboxes:
+                elem.setCurrentIndex(new_id)
+
+    def setReactionsToDefault(self):
+        if self.sender().isEnabled():
+            regex = QtCore.QRegExp("comboBox_rea_\\d+")
+            comboboxes = self.findChildren(QtGui.QComboBox, regex)
+            for idx, elem in enumerate(comboboxes):
+                elem.setCurrentIndex(idx)
+
     def setBenchRestlessGhosts(self):
         if self.sender().isEnabled():
             global data
@@ -1252,18 +1298,23 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.checkBox7.blockSignals(False)
         return retStr
 
-    def getState_DisableFireExtinguishers(self):
+    def getState_DisableFireExtinguishers(self, reactions_state):
         self.checkBox8.blockSignals(True)
 
-        val = get_bytes("0060139E", 5)
-        if val == "6860029000":
-            self.checkBox8.setChecked(True)
-            retStr = ("OK", True, "")
-        elif val == "68B0FF8F00":
-            self.checkBox8.setChecked(False)
-            retStr = ("OK", False, "")
-        else:
+        if reactions_state[0] == "FAILED" and "ExtinguishFire" in reactions_state[1]:
             retStr = ("FAILED", "Disable Fire Extinguishers", "")
+        else:
+            combobox = self.findChild(QtGui.QComboBox, "comboBox_rea_all")
+            combobox_id = combobox.findText("ExtinguishFire")
+            combobox = self.findChild(QtGui.QComboBox, "comboBox_rea_%d" % combobox_id)
+
+            reaction_name = combobox.currentText()
+            if reaction_name != "ExtinguishFire":
+                self.checkBox8.setChecked(True)
+                retStr = ("OK", True, "")
+            else:
+                self.checkBox8.setChecked(False)
+                retStr = ("OK", False, "")
 
         self.checkBox8.blockSignals(False)
         return retStr
@@ -1545,8 +1596,40 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             checkbox.blockSignals(False)
 
         if scripts_in_undefined_state:
-            self.show_message("Scripts in undefined state:\n" + "\n".join(scripts_in_undefined_state),
-                              "Choose your preferred settings again \n(unless you made custom changes)")
+            return ("FAILED", "Scripts\t" + ", ".join(scripts_in_undefined_state), "")
+        else:
+            return ("OK", [], "")
+
+    def getState_Reactions(self):
+        reactions_in_undefined_state = list()
+
+        reactions = self.reactions_window.reactions
+        code_bytes = dict()
+        for idx, elem in enumerate(reactions):
+            code_bytes[elem["code_bytes"]] = idx
+
+        for idx, elem in enumerate(reactions):
+            combobox = self.findChild(QtGui.QComboBox, "comboBox_rea_%d" % idx)
+            combobox.blockSignals(True)
+
+            valA = get_bytes(elem["code_address"], 5)
+            if valA in code_bytes:
+                new_id = code_bytes[valA]
+                combobox.setCurrentIndex(new_id)
+
+                if idx != new_id:
+                    combobox.setStyleSheet("QComboBox { color: blue }")
+                else:
+                    combobox.setStyleSheet("")
+            else:
+                reactions_in_undefined_state.append(elem["reaction_name"])
+
+            combobox.blockSignals(False)
+
+        if reactions_in_undefined_state:
+            return ("FAILED", "Reactions\t" + ", ".join(reactions_in_undefined_state), "")
+        else:
+            return ("OK", [], "")
 
     def getState_BenchRestlessGhosts(self):
         self.checkBox21.blockSignals(True)
@@ -1561,7 +1644,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
             self.checkBox21.setChecked(False)
             retStr = ("OK", False, "")
         else:
-            retStr = ("FAILED", "Continuous Power Recasting", "")
+            retStr = ("FAILED", "Bench Restless Ghosts", "")
 
         self.checkBox21.blockSignals(False)
         return retStr
@@ -1576,6 +1659,8 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         self.show_message("File opened")
 
         self.enable_widgets()
+        self.create_scripts_window()
+        self.create_reactions_window()
         self.integrity_check()
         self.find_scenarios()
 
@@ -1590,8 +1675,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def about(self):
         self.show_message(Constants.VERSION, "created by Xavomel")
 
-    def show_scripts_window(self):
-        # create scripts window if it doesn't exist
+    def create_scripts_window(self):
         if not hasattr(self, "scripts_window"):
             mod_file = open("data\mods\Scripts", "rb")
             byLine = mod_file.read().split("\n")
@@ -1610,8 +1694,35 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
             self.scripts_window = ghostUI.ScriptsWindow(self, scripts)
 
+    def create_reactions_window(self):
+        if not hasattr(self, "reactions_window"):
+            mod_file = open("data\mods\Reactions", "rb")
+            byLine = mod_file.read().split("\n")
+            mod_file.close()
+
+            reactions = list()
+            for idx, line in enumerate(byLine):
+                changes = line.split()
+                code_address = changes[0]
+                code_bytes = changes[1]
+                reaction_name = changes[2]
+                comment = "Description not found"
+                if len(changes) >= 4:
+                    comment = " ".join(changes[3:])
+                reactions.append({"code_address": code_address,
+                                  "code_bytes": code_bytes,
+                                  "reaction_name": reaction_name,
+                                  "comment": comment})
+
+            self.reactions_window = ghostUI.ReactionsWindow(self, reactions)
+
+    def show_scripts_window(self):
         self.getState_Scripts()
         self.scripts_window.show()
+
+    def show_reactions_window(self):
+        self.getState_Reactions()
+        self.reactions_window.show()
 
     def show_tooltip(self, sender, text):
         position = sender.mapToGlobal(QtCore.QPoint(0, 0))
@@ -1634,6 +1745,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
     def enable_widgets(self):
         self.actionSave.setEnabled(True)
         self.actionScripts.setEnabled(True)
+        self.actionReactions.setEnabled(True)
         self.pushButton_9.setEnabled(True)
         self.comboBox_7.setEnabled(True)
         self.checkBox1.setEnabled(True)
@@ -1659,6 +1771,9 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
 
     def integrity_check(self):
         stateList = list()
+        stateList.append(self.getState_Scripts())
+        stateList.append(self.getState_Reactions())
+        reactions_state = stateList[1]
         stateList.append(self.getState_GlobalGhostLevel())
         stateList.append(self.getState_UnlimitedPlasm())
         stateList.append(self.getState_UnlimitedGoldplasm())
@@ -1674,7 +1789,7 @@ class MainWindow(QtGui.QMainWindow, ghostUI.Ui_MainWindow):
         stateList.append(self.getState_DisableCalmingEffects())
         stateList.append(self.getState_UnlockExtraFears())
         stateList.append(self.getState_FixColdPhobia())
-        stateList.append(self.getState_DisableFireExtinguishers())
+        stateList.append(self.getState_DisableFireExtinguishers(reactions_state))
         stateList.append(self.getState_DisableMadnessImmunity())
         stateList.append(self.getState_UnlockMissingFears())
         stateList.append(self.getState_GhostRetraining())

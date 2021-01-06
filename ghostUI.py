@@ -482,9 +482,13 @@ class Ui_MainWindow(object):
         self.actionScripts = QtGui.QAction(MainWindow)
         self.actionScripts.setObjectName(_fromUtf8("actionScripts"))
         self.actionScripts.setEnabled(False)
+        self.actionReactions = QtGui.QAction(MainWindow)
+        self.actionReactions.setObjectName(_fromUtf8("actionReactions"))
+        self.actionReactions.setEnabled(False)
         self.menubar.addAction(self.actionOpen)
         self.menubar.addAction(self.actionSave)
         self.menubar.addAction(self.actionScripts)
+        self.menubar.addAction(self.actionReactions)
         self.menubar.addAction(self.actionAbout)
 
     def add_status_bar(self, MainWindow):
@@ -603,6 +607,7 @@ class Ui_MainWindow(object):
         self.actionSave.setText(_translate("MainWindow", "Save", None))
         self.actionAbout.setText(_translate("MainWindow", "About", None))
         self.actionScripts.setText(_translate("MainWindow", "Scripts", None))
+        self.actionReactions.setText(_translate("MainWindow", "Reactions", None))
         self.spinBox.setStatusTip(_translate("MainWindow", "Haunter Slots", None))
         self.spinBox_2.setStatusTip(_translate("MainWindow", "Mean Terror", None))
         self.lineEdit.setStatusTip(_translate("MainWindow", "Starting Plasm (estimate)", None))
@@ -649,6 +654,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionSave, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.save_data)
         QtCore.QObject.connect(self.actionAbout, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.about)
         QtCore.QObject.connect(self.actionScripts, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.show_scripts_window)
+        QtCore.QObject.connect(self.actionReactions, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.show_reactions_window)
         QtCore.QObject.connect(self.spinBox, QtCore.SIGNAL(_fromUtf8("valueChanged(int)")), MainWindow.setHaunterSlots)
         QtCore.QObject.connect(self.spinBox_2, QtCore.SIGNAL(_fromUtf8("valueChanged(double)")), MainWindow.setMeanTerror)
         QtCore.QObject.connect(self.pushButton_9, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.setBytesAtAddress)
@@ -673,6 +679,7 @@ class IntegrityCheckDialog(QtGui.QDialog):
         self.plainTextEdit = QtGui.QPlainTextEdit(self.splitter)
         self.plainTextEdit.setFixedSize(360, 150)
         self.plainTextEdit.setReadOnly(True)
+        self.plainTextEdit.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
         self.label_2 = QtGui.QLabel(self.splitter)
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setWordWrap(True)
@@ -821,6 +828,71 @@ class ScriptsWindow(QtGui.QDialog):
         for checkbox in checkboxes:
             checkbox.setVisible(True)
 
+
+class ReactionsWindow(QtGui.QDialog):
+    def __init__(self, parent, reactions):
+        super(ReactionsWindow, self).__init__(parent)
+        self.reactions = reactions
+        self.setupUi(self)
+        self.setupComboBoxes()
+
+    def setupUi(self, Dialog):
+        Dialog.setWindowTitle("Reactions")
+        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+
+        self.pushButton_1 = QtGui.QPushButton()
+        self.pushButton_1.setObjectName(_fromUtf8("pushButton_1"))
+        self.pushButton_1.setText(_translate("MainWindow", "Restore defaults", None))
+        self.pushButton_1.clicked.connect(self.parent().setReactionsToDefault)
+
+        self.button_area_content = QtGui.QWidget()
+        self.grid_layout_1 = QtGui.QGridLayout(self.button_area_content)
+        self.grid_layout_1.addWidget(self.pushButton_1, 0, 0)
+
+        self.scroll_area_content = QtGui.QWidget()
+        self.scroll_area = QtGui.QScrollArea(self)
+        self.scroll_area.setWidget(self.scroll_area_content)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setFixedSize(600, 600)
+        self.grid_layout_2 = QtGui.QGridLayout(self.scroll_area_content)
+
+        self.verticalLayout.addWidget(self.button_area_content)
+        self.verticalLayout.addWidget(self.scroll_area)
+
+    def setupComboBoxes(self):
+        label = QtGui.QLabel()
+        label.setText("CHANGE ALL")
+        label_empty = QtGui.QLabel()
+
+        combobox = QtGui.QComboBox()
+        combobox.setObjectName(_fromUtf8("comboBox_rea_all"))
+        combobox.addItems([x["reaction_name"] for x in self.reactions])
+        combobox.currentIndexChanged.connect(self.parent().setReactionAll)
+        combobox.setStyleSheet("QComboBox { color: rgba(0, 0, 0, 0) }")
+
+        self.grid_layout_2.addWidget(label, 0, 0)
+        self.grid_layout_2.addWidget(combobox, 0, 1)
+        self.grid_layout_2.addWidget(label_empty, 1, 0)
+
+        for idx, elem in enumerate(self.reactions):
+            name = elem["reaction_name"]
+            comment = elem["comment"].replace("\"", "")
+            label = QtGui.QLabel()
+            label.setText(name)
+            label.setToolTip(comment)
+
+            combobox = QtGui.QComboBox()
+            combobox.setObjectName(_fromUtf8("comboBox_rea_%d" % idx))
+            model = combobox.model()
+            for x in self.reactions:
+                item = QtGui.QStandardItem(x["reaction_name"])
+                if name != x["reaction_name"]:
+                    item.setForeground(QtGui.QColor("blue"))
+                model.appendRow(item)
+            combobox.currentIndexChanged.connect(self.parent().setReaction)
+
+            self.grid_layout_2.addWidget(label, idx + 2, 0)
+            self.grid_layout_2.addWidget(combobox, idx + 2, 1)
 
 class CustomSlider(QtGui.QSlider):
     def __init__(self, parent):

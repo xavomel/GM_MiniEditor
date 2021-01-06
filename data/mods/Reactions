@@ -1,0 +1,29 @@
+0060127F	68ECFE8F00	Afraid
+00601339	68FCFE8F00	BadSmell	"Causes mortal to wave their hand in front of their face"
+006013E6	6810FF8F00	DoubleTake
+006013DA	6824FF8F00	DoubleTakeAndRunaway
+006013CE	6844FF8F00	DoubleTakeAndRunawayScreaming
+0060139E	68B0FF8F00	ExtinguishFire	"Causes mortal to seek out a fire extinguisher and put out fires"
+006011DD	68ECFF8F00	Faint	"Causes mortal to faint"
+00601167	6824408D00	Flee	"Causes mortal to flee the scenario"
+006013AA	6830009000	FlickLight	"Causes mortal to flick a light switch"
+0060132D	6844009000	Idea
+00601233	68A06A8D00	Investigate	"Causes mortal to investigate strange sounds or be attracted by attraction powers"
+00601392	6894009000	KickMortal
+006011D4	68A8009000	Leave
+00601351	68B8009000	LeaveRoom
+00601345	68CC009000	Listen
+00601267	68DC009000	Look
+006013B6	68EC009000	LookAroundSurprised
+006013F2	6808019000	Point
+00601321	6818019000	Puzzled
+006013C2	6828019000	ResetFuses	"Causes mortal to seek out a fuse box and reset fuses"
+00601315	683C019000	RunInside
+0060136E	6850019000	RunToToilet
+0060137A	68AC019000	RunToToiletAndVomit	"Causes mortal to seek out a toilet and vomit"
+006012FD	6814029000	Runaway
+00601309	6844029000	RunawayScreaming
+006012B8	6860029000	Scream
+00601273	6870029000	Surprise
+006012F1	6884029000	TerrifiedScream
+00601386	689C029000	Vomit

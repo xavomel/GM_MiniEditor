@@ -37,8 +37,8 @@ class Scenario:
 
 class Constants:
     NULL = "NULL"
-    NO_OF_CHECKS = 21
-    VERSION = "Ghost Master MiniEditor v0.4.7"
+    NO_OF_CHECKS = 23
+    VERSION = "Ghost Master MiniEditor v0.4.8"
     FEATURE_DISABLED = "This feature has been disabled.\n\n" \
                        "REASON:\n" \
                        "Outdated version of this feature was detected in the .exe.\n\n" \
@@ -81,7 +81,8 @@ class Constants:
                      "\nBecause possessed mortals are fetters, they also may be shared" \
                      "\n(extra ghosts will be benched when the possession ends)."
     IGNORE_WARDS = "Affects all scenarios."
-    DISABLE_FIRE_EXTINGUISHERS = "Affects all scenarios."
+    DISABLE_FIRE_EXTINGUISHERS = "Affects all scenarios. \n\nReplaces reaction ExtinguishFire with Scream." \
+                                 "\nCan be changed to something else in Reactions window."
     MOVABLE_RESTLESS_GHOSTS = "Affects all scenarios. \n\nYou can rebind restless and banished ghosts to other matching fetters."
     DISABLE_MADNESS_IMMUNITY = "Affects all scenarios. \n\nDisables madness immunity affecting certain mortals in game." \
                                "\nEnables insanity slider for those mortals (default insanity is 1%)."
